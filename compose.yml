@@ -1,0 +1,9 @@
+services:
+  db:
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: burny_user
+      POSTGRES_PASSWORD: pass
+      POSTGRES_DB: burny_db

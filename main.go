@@ -21,7 +21,7 @@ func main() {
 	e.Use(middleware.Recover())
 
 	// PostgreSQLの接続情報
-	dsn := "host=localhost user=yourusername password=yourpassword dbname=yourdbname port=5432 sslmode=disable TimeZone=Asia/Tokyo"
+	dsn := "host=localhost user=burny_user password=pass dbname=burny_db port=5432 sslmode=disable TimeZone=Asia/Tokyo"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		e.Logger.Fatal(err)
