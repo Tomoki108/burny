@@ -4,12 +4,11 @@ import (
 	"log"
 	"net/http"
 
-	"burny-api/models"
+	"burny-api/db"
+	"burny-api/handlers"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
-	"gorm.io/driver/postgres"
-	"gorm.io/gorm"
 )
 
 func main() {
@@ -20,20 +19,9 @@ func main() {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 
-	// PostgreSQLの接続情報
-	dsn := "host=localhost user=burny_user password=pass dbname=burny_db port=5432 sslmode=disable TimeZone=Asia/Tokyo"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
-	if err != nil {
-		e.Logger.Fatal(err)
-	}
-
-	// マイグレーション
-	if err := db.AutoMigrate(
-		&models.Project{},
-		&models.Sprint{},
-		&models.SprintStat{},
-	); err != nil {
-		log.Fatalf("could not migrate: %v", err)
+	// DB接続
+	if err := db.Connect(); err != nil {
+		log.Fatalf(err.Error())
 	}
 
 	// ルートエンドポイント
@@ -42,6 +30,11 @@ func main() {
 	})
 
 	// エンドポイントの追加...
+	e.GET("/projects", handlers.ListProjectsHandler)
+	e.POST("/projects", handlers.CreateProjectHandler)
+	e.GET("/projects/:id", handlers.GetProjectHandler)
+	e.PUT("/projects/:id", handlers.UpdateProjectHandler)
+	e.DELETE("/projects/:id", handlers.DeleteProjectHandler)
 
 	// サーバーの開始
 	e.Logger.Fatal(e.Start(":1323"))
