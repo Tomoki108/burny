@@ -3,7 +3,7 @@ package db
 import (
 	"fmt"
 
-	"github.com/Tomoki108/burny/burny/models"
+	"github.com/Tomoki108/burny/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

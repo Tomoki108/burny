@@ -3,7 +3,7 @@ package handlers
 import (
 	"net/http"
 
-	"github.com/Tomoki108/burny/burny/db"
+	"github.com/Tomoki108/burny/db"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"

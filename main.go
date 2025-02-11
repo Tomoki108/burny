@@ -4,8 +4,8 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/Tomoki108/burny/burny/db"
-	"github.com/Tomoki108/burny/burny/handlers"
+	"github.com/Tomoki108/burny/db"
+	"github.com/Tomoki108/burny/handlers"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"

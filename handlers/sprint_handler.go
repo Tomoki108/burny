@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/Tomoki108/burny/burny/db"
-	"github.com/Tomoki108/burny/burny/models"
+	"github.com/Tomoki108/burny/db"
+	"github.com/Tomoki108/burny/models"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
