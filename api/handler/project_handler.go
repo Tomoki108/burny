@@ -9,6 +9,16 @@ import (
 	"github.com/labstack/echo/v4"
 )
 
+// @Summary      List projects
+// @Description  List projects
+// @Tags         projects
+// @Accept       json
+// @Produce      json
+// @Success      200  {array}   model.Project
+// @Failure      400  {object}  httputil.HTTPError
+// @Failure      404  {object}  httputil.HTTPError
+// @Failure      500  {object}  httputil.HTTPError
+// @Router       /projects [get]
 func ListProjectsHandler(c echo.Context) error {
 	var projects []model.Project
 	if err := db.DB.Preload("Sprints").Find(&projects).Error; err != nil {
@@ -18,6 +28,16 @@ func ListProjectsHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, projects)
 }
 
+// @Summary      Create projects
+// @Description  Create projects
+// @Tags         projects
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}   model.Project
+// @Failure      400  {object}  httputil.HTTPError
+// @Failure      404  {object}  httputil.HTTPError
+// @Failure      500  {object}  httputil.HTTPError
+// @Router       /projects [post]
 func CreateProjectHandler(c echo.Context) error {
 	project := new(model.Project)
 	if err := c.Bind(project); err != nil {
@@ -31,6 +51,16 @@ func CreateProjectHandler(c echo.Context) error {
 	return c.JSON(http.StatusCreated, project)
 }
 
+// @Summary      Get projects
+// @Description  Get projects
+// @Tags         projects
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  model.Project
+// @Failure      400  {object}  httputil.HTTPError
+// @Failure      404  {object}  httputil.HTTPError
+// @Failure      500  {object}  httputil.HTTPError
+// @Router       /projects/{id} [get]
 func GetProjectHandler(c echo.Context) error {
 	id := c.Param("id")
 	var project model.Project
@@ -41,6 +71,16 @@ func GetProjectHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, project)
 }
 
+// @Summary      Update projects
+// @Description  Update projects
+// @Tags         projects
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  model.Project
+// @Failure      400  {object}  httputil.HTTPError
+// @Failure      404  {object}  httputil.HTTPError
+// @Failure      500  {object}  httputil.HTTPError
+// @Router       /projects/{id} [put]
 func UpdateProjectHandler(c echo.Context) error {
 	id := c.Param("id")
 	var project model.Project
@@ -59,6 +99,16 @@ func UpdateProjectHandler(c echo.Context) error {
 	return c.JSON(http.StatusOK, project)
 }
 
+// @Summary      Delete projects
+// @Description  Delete projects
+// @Tags         projects
+// @Accept       json
+// @Produce      json
+// @Success      200  {object}  model.Project
+// @Failure      400  {object}  httputil.HTTPError
+// @Failure      404  {object}  httputil.HTTPError
+// @Failure      500  {object}  httputil.HTTPError
+// @Router       /projects/{id} [delete]
 func DeleteProjectHandler(c echo.Context) error {
 	id := c.Param("id")
 	if err := db.DB.Delete(&model.Project{}, id).Error; err != nil {
