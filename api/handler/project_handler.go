@@ -2,24 +2,15 @@ package handler
 
 import (
 	"net/http"
-	"time"
+	"strconv"
 
-	"github.com/Tomoki108/burny/db"
-	"github.com/Tomoki108/burny/model"
+	"github.com/Tomoki108/burny/domain"
 
 	"github.com/labstack/echo/v4"
 )
 
-type Project struct {
-	Title          string    `json:"title"`
-	Description    string    `json:"description"`
-	StartDate      time.Time `json:"start_date"`
-	EndDate        time.Time `json:"end_date"`
-	TotalSP        int       `json:"total_sp"`
-	SprintDuration int       `json:"sprint_duration"`
-	Sprints        []*Sprint `json:"sprints"`
-	CreatedAt      time.Time `json:"created_at"`
-	UpdatedAt      time.Time `json:"updated_at"`
+type ProjectHandler struct {
+	Repo domain.ProjectRepository
 }
 
 // @Summary      List projects
@@ -27,14 +18,14 @@ type Project struct {
 // @Tags         projects
 // @Accept       json
 // @Produce      json
-// @Success      200  {array}   model.Project
-// @Failure      400  {object}  httputil.HTTPError
-// @Failure      404  {object}  httputil.HTTPError
-// @Failure      500  {object}  httputil.HTTPError
+// @Success      200  {array}   domain.Project
+// @Failure      400
+// @Failure      404
+// @Failure      500
 // @Router       /projects [get]
-func ListProjectsHandler(c echo.Context) error {
-	var projects []model.Project
-	if err := db.DB.Preload("Sprints").Find(&projects).Error; err != nil {
+func (h ProjectHandler) List(c echo.Context) error {
+	projects, err := h.Repo.List()
+	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 
@@ -46,22 +37,23 @@ func ListProjectsHandler(c echo.Context) error {
 // @Tags         projects
 // @Accept       json
 // @Produce      json
-// @Success      200  {object}   model.Project
-// @Failure      400  {object}  httputil.HTTPError
-// @Failure      404  {object}  httputil.HTTPError
-// @Failure      500  {object}  httputil.HTTPError
+// @Success      200  {object}  domain.Project
+// @Failure      400
+// @Failure      404
+// @Failure      500
 // @Router       /projects [post]
-func CreateProjectHandler(c echo.Context) error {
-	project := new(model.Project)
+func (h ProjectHandler) Create(c echo.Context) error {
+	project := new(domain.Project)
 	if err := c.Bind(project); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	if err := db.DB.Create(project).Error; err != nil {
+	created, err := h.Repo.Create(project)
+	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 
-	return c.JSON(http.StatusCreated, project)
+	return c.JSON(http.StatusCreated, created)
 }
 
 // @Summary      Get projects
@@ -69,15 +61,19 @@ func CreateProjectHandler(c echo.Context) error {
 // @Tags         projects
 // @Accept       json
 // @Produce      json
-// @Success      200  {object}  model.Project
-// @Failure      400  {object}  httputil.HTTPError
-// @Failure      404  {object}  httputil.HTTPError
-// @Failure      500  {object}  httputil.HTTPError
+// @Success      200  {object}  domain.Project
+// @Failure      400
+// @Failure      404
+// @Failure      500
 // @Router       /projects/{id} [get]
-func GetProjectHandler(c echo.Context) error {
-	id := c.Param("id")
-	var project model.Project
-	if err := db.DB.Preload("Sprints").First(&project, id).Error; err != nil {
+func (h ProjectHandler) Get(c echo.Context) error {
+	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
+	project, err := h.Repo.Get(uint(id))
+	if err != nil {
 		return c.JSON(http.StatusNotFound, err)
 	}
 
@@ -89,27 +85,23 @@ func GetProjectHandler(c echo.Context) error {
 // @Tags         projects
 // @Accept       json
 // @Produce      json
-// @Success      200  {object}  model.Project
-// @Failure      400  {object}  httputil.HTTPError
-// @Failure      404  {object}  httputil.HTTPError
-// @Failure      500  {object}  httputil.HTTPError
+// @Success      200  {object}  domain.Project
+// @Failure      400
+// @Failure      404
+// @Failure      500
 // @Router       /projects/{id} [put]
-func UpdateProjectHandler(c echo.Context) error {
-	id := c.Param("id")
-	var project model.Project
-	if err := db.DB.First(&project, id).Error; err != nil {
-		return c.JSON(http.StatusNotFound, err)
-	}
-
-	if err := c.Bind(&project); err != nil {
+func (h ProjectHandler) Update(c echo.Context) error {
+	project := new(domain.Project)
+	if err := c.Bind(project); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	if err := db.DB.Save(&project).Error; err != nil {
+	updated, err := h.Repo.Update(project)
+	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 
-	return c.JSON(http.StatusOK, project)
+	return c.JSON(http.StatusOK, updated)
 }
 
 // @Summary      Delete projects
@@ -117,14 +109,19 @@ func UpdateProjectHandler(c echo.Context) error {
 // @Tags         projects
 // @Accept       json
 // @Produce      json
-// @Success      200  {object}  model.Project
-// @Failure      400  {object}  httputil.HTTPError
-// @Failure      404  {object}  httputil.HTTPError
-// @Failure      500  {object}  httputil.HTTPError
+// @Success      200  {object}  domain.Project
+// @Failure      400
+// @Failure      404
+// @Failure      500
 // @Router       /projects/{id} [delete]
-func DeleteProjectHandler(c echo.Context) error {
-	id := c.Param("id")
-	if err := db.DB.Delete(&model.Project{}, id).Error; err != nil {
+func (h ProjectHandler) Delete(c echo.Context) error {
+	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	if err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
+	err = h.Repo.Delete(uint(id))
+	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 

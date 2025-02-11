@@ -1,4 +1,4 @@
-package db
+package infrastructure
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 
 var DB *gorm.DB
 
-func Connect() error {
+func ConnectDB() error {
 	dsn := "host=localhost user=burny_user password=pass dbname=burny_db port=5432 sslmode=disable TimeZone=Asia/Tokyo"
 	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
