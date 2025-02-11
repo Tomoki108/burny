@@ -1,4 +1,4 @@
-module burny-api
+module burny
 
 go 1.20
 

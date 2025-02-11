@@ -1,8 +1,9 @@
 package db
 
 import (
-	"burny-api/models"
 	"fmt"
+
+	"github.com/Tomoki108/burny/burny/models"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"

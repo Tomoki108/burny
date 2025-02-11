@@ -1,8 +1,9 @@
 package handlers
 
 import (
-	"burny-api/db"
 	"net/http"
+
+	"github.com/Tomoki108/burny/burny/db"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"

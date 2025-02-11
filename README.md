@@ -1,4 +1,4 @@
-# burny-api
+# burny
 
 ## Prerequirement
 

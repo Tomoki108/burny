@@ -1,9 +1,10 @@
 package handlers
 
 import (
-	"burny-api/db"
-	"burny-api/models"
 	"net/http"
+
+	"github.com/Tomoki108/burny/burny/db"
+	"github.com/Tomoki108/burny/burny/models"
 
 	"github.com/labstack/echo/v4"
 )
