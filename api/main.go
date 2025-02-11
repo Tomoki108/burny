@@ -5,7 +5,7 @@ import (
 	"net/http"
 
 	"github.com/Tomoki108/burny/db"
-	"github.com/Tomoki108/burny/handlers"
+	"github.com/Tomoki108/burny/handler"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -56,11 +56,11 @@ func main() {
 	})
 
 	// エンドポイントの追加...
-	e.GET("/projects", handlers.ListProjectsHandler)
-	e.POST("/projects", handlers.CreateProjectHandler)
-	e.GET("/projects/:id", handlers.GetProjectHandler)
-	e.PUT("/projects/:id", handlers.UpdateProjectHandler)
-	e.DELETE("/projects/:id", handlers.DeleteProjectHandler)
+	e.GET("/projects", handler.ListProjectsHandler)
+	e.POST("/projects", handler.CreateProjectHandler)
+	e.GET("/projects/:id", handler.GetProjectHandler)
+	e.PUT("/projects/:id", handler.UpdateProjectHandler)
+	e.DELETE("/projects/:id", handler.DeleteProjectHandler)
 	e.GET("test", func(c echo.Context) error {
 		list := []data{
 			{Date: "Jan 22", SolarPanels: 2890, Inverters: 2338},

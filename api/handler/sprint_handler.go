@@ -1,17 +1,17 @@
-package handlers
+package handler
 
 import (
 	"net/http"
 
 	"github.com/Tomoki108/burny/db"
-	"github.com/Tomoki108/burny/models"
+	"github.com/Tomoki108/burny/model"
 
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
 
 func CreateSprintHandler(c echo.Context) error {
-	sprint := new(models.Sprint)
+	sprint := new(model.Sprint)
 	if err := c.Bind(sprint); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
@@ -24,7 +24,7 @@ func CreateSprintHandler(c echo.Context) error {
 func GetSprintHandler(c echo.Context) error {
 	db := c.Get("db").(*gorm.DB)
 	id := c.Param("id")
-	var sprint models.Sprint
+	var sprint model.Sprint
 	if err := db.Preload("SprintStat").First(&sprint, id).Error; err != nil {
 		return c.JSON(http.StatusNotFound, err)
 	}
@@ -33,7 +33,7 @@ func GetSprintHandler(c echo.Context) error {
 
 func UpdateSprintHandler(c echo.Context) error {
 	id := c.Param("id")
-	var sprint models.Sprint
+	var sprint model.Sprint
 	if err := db.DB.First(&sprint, id).Error; err != nil {
 		return c.JSON(http.StatusNotFound, err)
 	}
@@ -48,14 +48,14 @@ func UpdateSprintHandler(c echo.Context) error {
 
 func DeleteSprintHandler(c echo.Context) error {
 	id := c.Param("id")
-	if err := db.DB.Delete(&models.Sprint{}, id).Error; err != nil {
+	if err := db.DB.Delete(&model.Sprint{}, id).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
 	return c.NoContent(http.StatusNoContent)
 }
 
 func ListSprintsHandler(c echo.Context) error {
-	var sprints []models.Sprint
+	var sprints []model.Sprint
 	if err := db.DB.Preload("SprintStat").Find(&sprints).Error; err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}

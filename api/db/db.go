@@ -3,7 +3,7 @@ package db
 import (
 	"fmt"
 
-	"github.com/Tomoki108/burny/models"
+	"github.com/Tomoki108/burny/model"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -19,8 +19,8 @@ func Connect() error {
 	}
 
 	if err := db.AutoMigrate(
-		&models.Project{},
-		&models.Sprint{},
+		&model.Project{},
+		&model.Sprint{},
 	); err != nil {
 		return fmt.Errorf("could not migrate DB: %w", err)
 	}
