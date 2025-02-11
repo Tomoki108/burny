@@ -1,6 +1,6 @@
-module burny
+module github.com/Tomoki108/burny
 
-go 1.20
+go 1.23.4
 
 require (
 	github.com/labstack/echo/v4 v4.12.0
