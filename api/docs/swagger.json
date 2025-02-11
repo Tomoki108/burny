@@ -1,21 +1,16 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "This is a sample server celler server.",
-        "title": "Swagger Example API2",
-        "termsOfService": "http://swagger.io/terms/",
-        "contact": {
-            "name": "API Support",
-            "url": "http://www.swagger.io/support",
-            "email": "support@swagger.io"
-        },
+        "description": "API Doc of Burny Backend",
+        "title": "Burny API",
+        "contact": {},
         "license": {
-            "name": "Apache 2.0",
-            "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+            "name": "GPL 3.0",
+            "url": "https://www.gnu.org/licenses/agpl-3.0.en.html"
         },
         "version": "1.0"
     },
-    "host": "localhost:8080",
+    "host": "temp.com",
     "basePath": "/api/v1",
     "paths": {
         "/projects": {
@@ -209,14 +204,5 @@
                 }
             }
         }
-    },
-    "securityDefinitions": {
-        "BasicAuth": {
-            "type": "basic"
-        }
-    },
-    "externalDocs": {
-        "description": "OpenAPI",
-        "url": "https://swagger.io/resources/open-api/"
     }
 }

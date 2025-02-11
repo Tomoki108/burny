@@ -13,25 +13,15 @@ import (
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
-// @title           Swagger Example API2
+// @title           Burny API
 // @version         1.0
-// @description     This is a sample server celler server.
-// @termsOfService  http://swagger.io/terms/
+// @description     API Doc of Burny Backend
 
-// @contact.name   API Support
-// @contact.url    http://www.swagger.io/support
-// @contact.email  support@swagger.io
+// @license.name  GPL 3.0
+// @license.url   https://www.gnu.org/licenses/agpl-3.0.en.html
 
-// @license.name  Apache 2.0
-// @license.url   http://www.apache.org/licenses/LICENSE-2.0.html
-
-// @host      localhost:8080
+// @host      temp.com
 // @BasePath  /api/v1
-
-// @securityDefinitions.basic  BasicAuth
-
-// @externalDocs.description  OpenAPI
-// @externalDocs.url          https://swagger.io/resources/open-api/
 func main() {
 	// Echoのインスタンス作成
 	e := echo.New()
