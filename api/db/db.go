@@ -21,7 +21,6 @@ func Connect() error {
 	if err := db.AutoMigrate(
 		&models.Project{},
 		&models.Sprint{},
-		&models.SprintStat{},
 	); err != nil {
 		return fmt.Errorf("could not migrate DB: %w", err)
 	}

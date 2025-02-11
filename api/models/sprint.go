@@ -8,9 +8,11 @@ import (
 
 type Sprint struct {
 	gorm.Model
-	ProjectID  uint        `json:"project_id" gorm:"index"`
-	Name       string      `json:"name"`
-	StartDate  time.Time   `json:"start_date"`
-	EndDate    time.Time   `json:"end_date"`
-	SprintStat *SprintStat `json:"sprint_stat" gorm:"constraint:OnUpdate:CASCADE,OnDelete:SET NULL;"`
+	ProjectID int       `json:"project_id" gorm:"index"`
+	StartDate time.Time `json:"start_date"`
+	EndDate   time.Time `json:"end_date"`
+	ActualSP  int       `json:"actual_sp"`
+	IdealSP   int       `json:"ideal_sp"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 }

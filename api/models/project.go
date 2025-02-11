@@ -8,10 +8,13 @@ import (
 
 type Project struct {
 	gorm.Model
-	Name               string    `json:"name"`
-	StartDate          time.Time `json:"start_date"`
-	EndDate            time.Time `json:"end_date"`
-	InitialStoryPoints int       `json:"initial_story_points"`
-	WeeksInSprint      int       `json:"weeks_in_sprint"`
-	Sprints            []*Sprint `json:"sprints"`
+	Title          string    `json:"title"`
+	Description    string    `json:"description"`
+	StartDate      time.Time `json:"start_date"`
+	EndDate        time.Time `json:"end_date"`
+	TotalSP        int       `json:"total_sp"`
+	SprintDuration int       `json:"sprint_duration"`
+	Sprints        []*Sprint `json:"sprints"`
+	CreatedAt      time.Time `json:"created_at"`
+	UpdatedAt      time.Time `json:"updated_at"`
 }
