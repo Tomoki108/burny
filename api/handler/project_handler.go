@@ -2,12 +2,25 @@ package handler
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/Tomoki108/burny/db"
 	"github.com/Tomoki108/burny/model"
 
 	"github.com/labstack/echo/v4"
 )
+
+type Project struct {
+	Title          string    `json:"title"`
+	Description    string    `json:"description"`
+	StartDate      time.Time `json:"start_date"`
+	EndDate        time.Time `json:"end_date"`
+	TotalSP        int       `json:"total_sp"`
+	SprintDuration int       `json:"sprint_duration"`
+	Sprints        []*Sprint `json:"sprints"`
+	CreatedAt      time.Time `json:"created_at"`
+	UpdatedAt      time.Time `json:"updated_at"`
+}
 
 // @Summary      List projects
 // @Description  List projects

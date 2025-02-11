@@ -2,6 +2,7 @@ package handler
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/Tomoki108/burny/db"
 	"github.com/Tomoki108/burny/model"
@@ -9,6 +10,16 @@ import (
 	"github.com/labstack/echo/v4"
 	"gorm.io/gorm"
 )
+
+type Sprint struct {
+	ProjectID int       `json:"project_id"`
+	StartDate time.Time `json:"start_date"`
+	EndDate   time.Time `json:"end_date"`
+	ActualSP  int       `json:"actual_sp"`
+	IdealSP   int       `json:"ideal_sp"`
+	CreatedAt time.Time `json:"created_at"`
+	UpdatedAt time.Time `json:"updated_at"`
+}
 
 func CreateSprintHandler(c echo.Context) error {
 	sprint := new(model.Sprint)
