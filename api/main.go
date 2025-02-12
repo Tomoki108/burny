@@ -41,16 +41,17 @@ func main() {
 		Repo: infrastructure.NewSprintRepository(),
 	}
 
-	e.GET("/swagger/*", echoSwagger.WrapHandler)
+	g := e.Group("/api/v1")
 
-	e.GET("/projects", projectHandler.List)
-	e.POST("/projects", projectHandler.Create)
-	e.GET("/projects/:id", projectHandler.Get)
-	e.PUT("/projects/:id", projectHandler.Update)
-	e.DELETE("/projects/:id", projectHandler.Delete)
+	g.GET("/swagger/*", echoSwagger.WrapHandler)
 
-	e.GET("/sprints", sprintHandler.List)
-	e.PUT("/sprints/:id", sprintHandler.Update)
+	g.GET("/projects", projectHandler.List)
+	g.POST("/projects", projectHandler.Create)
+	g.GET("/projects/:id", projectHandler.Get)
+	g.PUT("/projects/:id", projectHandler.Update)
+	g.DELETE("/projects/:id", projectHandler.Delete)
+	g.GET("/sprints", sprintHandler.List)
+	g.PUT("/sprints/:id", sprintHandler.Update)
 
 	// サーバーの開始
 	e.Logger.Fatal(e.Start(":1323"))
