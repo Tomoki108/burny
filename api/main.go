@@ -39,6 +39,9 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
+	// API DOC
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
+
 	// ルーティング
 	projectHandler := handler.ProjectHandler{
 		Repo: infrastructure.NewProjectRepository(),
@@ -52,7 +55,6 @@ func main() {
 		},
 	}
 	g := e.Group("/api/v1")
-	g.GET("/swagger/*", echoSwagger.WrapHandler)
 	g.POST("/sign_up", authHandler.SignUp)
 	g.POST("/sign_in", authHandler.SignIn)
 	g.GET("/projects", projectHandler.List)

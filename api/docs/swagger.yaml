@@ -30,6 +30,25 @@ definitions:
       password:
         type: string
     type: object
+  io.SignInRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
+  io.SignInResponse:
+    properties:
+      token:
+        type: string
+    type: object
+  io.SignUpRequest:
+    properties:
+      email:
+        type: string
+      password:
+        type: string
+    type: object
 host: temp.com
 info:
   contact: {}
@@ -149,11 +168,20 @@ paths:
       consumes:
       - application/json
       description: Sign in
+      parameters:
+      - description: sign in request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/io.SignInRequest'
       produces:
       - application/json
       responses:
         "200":
           description: OK
+          schema:
+            $ref: '#/definitions/io.SignInResponse'
         "400":
           description: Bad Request
         "500":
@@ -166,6 +194,13 @@ paths:
       consumes:
       - application/json
       description: Sign up
+      parameters:
+      - description: sign up request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/io.SignUpRequest'
       produces:
       - application/json
       responses:

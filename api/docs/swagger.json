@@ -183,9 +183,23 @@
                     "auth"
                 ],
                 "summary": "Sign in",
+                "parameters": [
+                    {
+                        "description": "sign in request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/io.SignInRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
-                        "description": "OK"
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/io.SignInResponse"
+                        }
                     },
                     "400": {
                         "description": "Bad Request"
@@ -209,6 +223,17 @@
                     "auth"
                 ],
                 "summary": "Sign up",
+                "parameters": [
+                    {
+                        "description": "sign up request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/io.SignUpRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "201": {
                         "description": "Created",
@@ -267,6 +292,36 @@
                 },
                 "id": {
                     "type": "integer"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "io.SignInRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "password": {
+                    "type": "string"
+                }
+            }
+        },
+        "io.SignInResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
+                    "type": "string"
+                }
+            }
+        },
+        "io.SignUpRequest": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
                 },
                 "password": {
                     "type": "string"
