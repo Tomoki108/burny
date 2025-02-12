@@ -6,6 +6,7 @@ import (
 	_ "github.com/Tomoki108/burny/docs"
 	"github.com/Tomoki108/burny/handler"
 	"github.com/Tomoki108/burny/infrastructure"
+	"github.com/Tomoki108/burny/usecase"
 
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
@@ -40,15 +41,17 @@ func main() {
 	sprintHandler := handler.SprintHandler{
 		Repo: infrastructure.NewSprintRepository(),
 	}
-	authHandler := handler.AuthHandler{
-		Repo: infrastructure.NewUserRepository(),
-	}
 
 	g := e.Group("/api/v1")
-
 	g.GET("/swagger/*", echoSwagger.WrapHandler)
 
+	authHandler := handler.AuthHandler{
+		Usecase: usecase.SignUpUseCase{
+			Repo: infrastructure.NewUserRepository(),
+		},
+	}
 	g.POST("/sign_up", authHandler.SignUp)
+	g.POST("/sign_in", authHandler.SignIn)
 
 	g.GET("/projects", projectHandler.List)
 	g.POST("/projects", projectHandler.Create)
