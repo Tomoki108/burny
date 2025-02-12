@@ -40,10 +40,15 @@ func main() {
 	sprintHandler := handler.SprintHandler{
 		Repo: infrastructure.NewSprintRepository(),
 	}
+	authHandler := handler.AuthHandler{
+		Repo: infrastructure.NewUserRepository(),
+	}
 
 	g := e.Group("/api/v1")
 
 	g.GET("/swagger/*", echoSwagger.WrapHandler)
+
+	g.POST("/sign_up", authHandler.SignUp)
 
 	g.GET("/projects", projectHandler.List)
 	g.POST("/projects", projectHandler.Create)

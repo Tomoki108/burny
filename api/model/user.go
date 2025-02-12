@@ -2,6 +2,7 @@ package model
 
 import (
 	"github.com/Tomoki108/burny/domain"
+	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
 
@@ -19,9 +20,14 @@ func (u *User) ToDomain() *domain.User {
 	}
 }
 
-func FromDomainUser(user *domain.User) *User {
+func FromDomainUser(user *domain.User) (*User, error) {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, err
+	}
+
 	return &User{
 		Email:    user.Email,
-		Password: user.Password,
-	}
+		Password: string(hashedPassword),
+	}, nil
 }

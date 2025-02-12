@@ -5,11 +5,18 @@ import (
 	"github.com/Tomoki108/burny/model"
 )
 
+func NewUserRepository() domain.UserRepository {
+	return &UserRepository{}
+}
+
 type UserRepository struct {
 }
 
 func (r *UserRepository) Create(user *domain.User) (*domain.User, error) {
-	model := model.FromDomainUser(user)
+	model, err := model.FromDomainUser(user)
+	if err != nil {
+		return nil, err
+	}
 	if err := DB.Create(model).Error; err != nil {
 		return nil, err
 	}

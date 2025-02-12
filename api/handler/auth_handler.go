@@ -2,10 +2,21 @@ package handler
 
 import "github.com/Tomoki108/burny/domain"
 
-type UserHandler struct {
+type AuthHandler struct {
 	Repo domain.UserRepository
 }
 
-func (h UserHandler) SignUp(user *domain.User) (*domain.User, error) {
-	return h.Repo.Create(user)
+// @Summary      Sign up
+// @Description  Sign up
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Success      200
+// @Failure      400
+// @Failure      500
+// @Router       /projects [get]
+func (h AuthHandler) SignUp(user *domain.User) error {
+	_, err := h.Repo.Create(user)
+
+	return err
 }
