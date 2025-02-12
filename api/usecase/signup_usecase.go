@@ -56,7 +56,7 @@ func (u SignUpUseCase) SignIn(user *domain.User) (tokenStr string, err error) {
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	t, err := token.SignedString(config.Conf.JwtSecret)
+	t, err := token.SignedString([]byte(config.Conf.JwtSecret))
 	if err != nil {
 		return "", err
 	}

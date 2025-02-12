@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"log"
 
 	"github.com/Tomoki108/burny/config"
@@ -28,8 +27,6 @@ func main() {
 	if err := config.Init(); err != nil {
 		log.Fatal(err.Error())
 	}
-
-	fmt.Println("jwt: ", config.Conf.JwtSecret)
 
 	// Echo インスタンス生成、ミドルウェア設定
 	e := echo.New()
