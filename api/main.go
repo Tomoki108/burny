@@ -3,6 +3,7 @@ package main
 import (
 	"log"
 
+	"github.com/Tomoki108/burny/config"
 	_ "github.com/Tomoki108/burny/docs"
 	"github.com/Tomoki108/burny/handler"
 	"github.com/Tomoki108/burny/infrastructure"
@@ -22,12 +23,16 @@ import (
 // @host      temp.com
 // @BasePath  /api/v1
 func main() {
-	e := echo.New()
+	// 環境変数の読み込み
+	if err := config.Init(); err != nil {
+		log.Fatal(err.Error())
+	}
 
-	// ミドルウェア
+	// Echo インスタンス生成、ミドルウェア設定
+	e := echo.New()
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
-	e.Use(middleware.CORS()) // デフォルトのCORS設定。（これがないとlocalhost（別のポート）からの通信が許可されない）
+	e.Use(middleware.CORS()) // デフォルトのCORS設定。（これがないとlocalhostの別のポートからの通信が許可されない）
 
 	// DB接続
 	if err := infrastructure.ConnectDB(); err != nil {
@@ -41,18 +46,15 @@ func main() {
 	sprintHandler := handler.SprintHandler{
 		Repo: infrastructure.NewSprintRepository(),
 	}
-
-	g := e.Group("/api/v1")
-	g.GET("/swagger/*", echoSwagger.WrapHandler)
-
 	authHandler := handler.AuthHandler{
 		Usecase: usecase.SignUpUseCase{
 			Repo: infrastructure.NewUserRepository(),
 		},
 	}
+	g := e.Group("/api/v1")
+	g.GET("/swagger/*", echoSwagger.WrapHandler)
 	g.POST("/sign_up", authHandler.SignUp)
 	g.POST("/sign_in", authHandler.SignIn)
-
 	g.GET("/projects", projectHandler.List)
 	g.POST("/projects", projectHandler.Create)
 	g.GET("/projects/:id", projectHandler.Get)
@@ -61,6 +63,6 @@ func main() {
 	g.GET("/sprints", sprintHandler.List)
 	g.PUT("/sprints/:id", sprintHandler.Update)
 
-	// サーバーの開始
+	// サーバー起動
 	e.Logger.Fatal(e.Start(":1323"))
 }

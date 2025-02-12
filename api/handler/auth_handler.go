@@ -18,7 +18,7 @@ type AuthHandler struct {
 // @Tags         auth
 // @Accept       json
 // @Produce      json
-// @Success      201
+// @Success      201 {object} domain.User
 // @Failure      400
 // @Failure      500
 // @Router       /sign_up [post]
@@ -47,12 +47,17 @@ func (h AuthHandler) SignUp(c echo.Context) error {
 // @Success      200
 // @Failure      400
 // @Failure      500
-// @Router        /sign_in [post]
+// @Router       /sign_in [post]
 func (h AuthHandler) SignIn(c echo.Context) error {
 	user := new(domain.User)
 	if err := c.Bind(user); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	return err
+	jwtToken, err := h.Usecase.SignIn(user)
+	if errors.Is(err, usecase.ErrUserNotExists) || errors.Is(err, usecase.ErrInvalidPassword) {
+		return c.JSON(http.StatusUnauthorized, err)
+	}
+
+	return c.JSON(http.StatusOK, echo.Map{"token": jwtToken})
 }

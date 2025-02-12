@@ -6,6 +6,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 
+	"github.com/Tomoki108/burny/config"
 	"github.com/Tomoki108/burny/domain"
 	"golang.org/x/crypto/bcrypt"
 )
@@ -18,7 +19,7 @@ type SignUpUseCase struct {
 	Repo domain.UserRepository
 }
 type JwtCustomClaims struct {
-	Email string `json:"email"`
+	Email string
 	jwt.RegisteredClaims
 }
 
@@ -55,7 +56,7 @@ func (u SignUpUseCase) SignIn(user *domain.User) (tokenStr string, err error) {
 		},
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-	t, err := token.SignedString(jwtSecret)
+	t, err := token.SignedString(config.Conf.JwtSecret)
 	if err != nil {
 		return "", err
 	}

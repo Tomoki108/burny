@@ -21,6 +21,15 @@ definitions:
       updated_at:
         type: string
     type: object
+  domain.User:
+    properties:
+      email:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+    type: object
 host: temp.com
 info:
   contact: {}
@@ -135,4 +144,40 @@ paths:
       summary: Update projects
       tags:
       - projects
+  /sign_in:
+    post:
+      consumes:
+      - application/json
+      description: Sign in
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Sign in
+      tags:
+      - auth
+  /sign_up:
+    post:
+      consumes:
+      - application/json
+      description: Sign up
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/domain.User'
+        "400":
+          description: Bad Request
+        "500":
+          description: Internal Server Error
+      summary: Sign up
+      tags:
+      - auth
 swagger: "2.0"
