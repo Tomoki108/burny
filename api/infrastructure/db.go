@@ -19,6 +19,7 @@ func ConnectDB() error {
 	}
 
 	if err := db.AutoMigrate(
+		&model.User{},
 		&model.Project{},
 		&model.Sprint{},
 	); err != nil {
