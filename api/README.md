@@ -6,7 +6,7 @@ API DOC: http://localhost:1323/swagger/index.html
 
 ## teck stack
 
-| category | TH                               |
+| category | tool                             |
 | -------- | -------------------------------- |
 | **FW**   | https://github.com/labstack/echo |
 | **ORM**  | https://github.com/go-gorm/gorm  |
