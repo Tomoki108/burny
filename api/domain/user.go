@@ -7,6 +7,7 @@ type User struct {
 }
 
 type UserRepository interface {
+	// passwordのハッシュ化はinfrastructure層で行う
 	Create(user *User) (*User, error)
 	Get(id uint) (*User, error)
 	GetByEmail(email string) (*User, error)

@@ -1,9 +1,12 @@
 package handler
 
-import "github.com/Tomoki108/burny/domain"
+import (
+	"github.com/Tomoki108/burny/domain"
+	"github.com/Tomoki108/burny/usecase"
+)
 
 type AuthHandler struct {
-	Repo domain.UserRepository
+	Usecase usecase.SignUpUseCase
 }
 
 // @Summary      Sign up
@@ -16,7 +19,7 @@ type AuthHandler struct {
 // @Failure      500
 // @Router       /projects [get]
 func (h AuthHandler) SignUp(user *domain.User) error {
-	_, err := h.Repo.Create(user)
+	err := h.Usecase.SignUp(user)
 
 	return err
 }
