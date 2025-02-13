@@ -3,6 +3,7 @@ package infrastructure
 import (
 	"github.com/Tomoki108/burny/domain"
 	"github.com/Tomoki108/burny/model"
+	"gorm.io/gorm"
 )
 
 func NewSprintRepository() domain.SprintRepository {
@@ -10,6 +11,16 @@ func NewSprintRepository() domain.SprintRepository {
 }
 
 type SprintRepository struct {
+}
+
+func (r *SprintRepository) Create(tx domain.Transaction, sprint *domain.Sprint) (*domain.Sprint, error) {
+	db := tx.(*gorm.DB)
+	model := model.FromDomainSprint(sprint)
+	if err := db.Create(model).Error; err != nil {
+		return nil, err
+	}
+
+	return r.Get(model.ID)
 }
 
 func (r *SprintRepository) List() ([]*domain.Sprint, error) {

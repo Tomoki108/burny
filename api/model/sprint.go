@@ -9,7 +9,7 @@ import (
 
 type Sprint struct {
 	gorm.Model
-	ProjectID int       `json:"project_id" gorm:"index"`
+	ProjectID uint      `json:"project_id" gorm:"index"`
 	StartDate time.Time `json:"start_date"`
 	EndDate   time.Time `json:"end_date"`
 	ActualSP  int       `json:"actual_sp"`

@@ -3,6 +3,7 @@ package infrastructure
 import (
 	"github.com/Tomoki108/burny/domain"
 	"github.com/Tomoki108/burny/model"
+	"gorm.io/gorm"
 )
 
 func NewProjectRepository() domain.ProjectRepository {
@@ -26,9 +27,10 @@ func (r *ProjectRepository) List() ([]*domain.Project, error) {
 	return domains, nil
 }
 
-func (r *ProjectRepository) Create(project *domain.Project) (*domain.Project, error) {
+func (r *ProjectRepository) Create(tx domain.Transaction, project *domain.Project) (*domain.Project, error) {
+	db := tx.(*gorm.DB)
 	model := model.FromDomainProject(project)
-	if err := DB.Create(model).Error; err != nil {
+	if err := db.Create(model).Error; err != nil {
 		return nil, err
 	}
 

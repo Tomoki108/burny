@@ -16,7 +16,7 @@ type Project struct {
 
 type ProjectRepository interface {
 	List() ([]*Project, error)
-	Create(project *Project) (*Project, error)
+	Create(tx Transaction, project *Project) (*Project, error)
 	Get(id uint) (*Project, error)
 	Update(project *Project) (*Project, error)
 	Delete(id uint) error
