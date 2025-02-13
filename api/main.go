@@ -9,6 +9,7 @@ import (
 	"github.com/Tomoki108/burny/infrastructure"
 	"github.com/Tomoki108/burny/usecase"
 
+	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 
@@ -28,16 +29,16 @@ func main() {
 		log.Fatal(err.Error())
 	}
 
-	// Echo インスタンス生成、ミドルウェア設定
-	e := echo.New()
-	e.Use(middleware.Logger())
-	e.Use(middleware.Recover())
-	e.Use(middleware.CORS()) // デフォルトのCORS設定。（これがないとlocalhostの別のポートからの通信が許可されない）
-
 	// DB接続
 	if err := infrastructure.ConnectDB(); err != nil {
 		log.Fatal(err.Error())
 	}
+
+	// Echo インスタンス生成、全体に適用するミドルウェア設定
+	e := echo.New()
+	e.Use(middleware.Logger())
+	e.Use(middleware.Recover())
+	e.Use(middleware.CORS()) // デフォルトのCORS設定。（これがないとlocalhostの別のポートからの通信が許可されない）
 
 	// API DOC
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
@@ -54,16 +55,19 @@ func main() {
 			Repo: infrastructure.NewUserRepository(),
 		},
 	}
+
 	g := e.Group("/api/v1")
 	g.POST("/sign_up", authHandler.SignUp)
 	g.POST("/sign_in", authHandler.SignIn)
-	g.GET("/projects", projectHandler.List)
-	g.POST("/projects", projectHandler.Create)
-	g.GET("/projects/:id", projectHandler.Get)
-	g.PUT("/projects/:id", projectHandler.Update)
-	g.DELETE("/projects/:id", projectHandler.Delete)
-	g.GET("/sprints", sprintHandler.List)
-	g.PUT("/sprints/:id", sprintHandler.Update)
+
+	ug := e.Group("", echojwt.JWT([]byte([]byte(config.Conf.JwtSecret))))
+	ug.GET("/projects", projectHandler.List)
+	ug.POST("/projects", projectHandler.Create)
+	ug.GET("/projects/:id", projectHandler.Get)
+	ug.PUT("/projects/:id", projectHandler.Update)
+	ug.DELETE("/projects/:id", projectHandler.Delete)
+	ug.GET("/sprints", sprintHandler.List)
+	ug.PUT("/sprints/:id", sprintHandler.Update)
 
 	// サーバー起動
 	e.Logger.Fatal(e.Start(":1323"))
