@@ -1,7 +1,6 @@
 package handler
 
 import (
-	"fmt"
 	"net/http"
 
 	"github.com/Tomoki108/burny/handler/io"
@@ -30,7 +29,6 @@ func (h SprintHandler) List(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	fmt.Printf("req: %+v\n", req)
 	sprints, err := h.UseCase.List(req.ProjectID)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)

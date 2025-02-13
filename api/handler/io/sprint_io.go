@@ -1,11 +1,13 @@
 package io
 
-type ListSprintRequest struct {
+type ProjectSprintRequestBase struct {
 	ProjectID uint `json:"-" param:"project_id"`
 }
 
+type ListSprintRequest ProjectSprintRequestBase
+
 type UpdateSprintRequest struct {
-	ID        uint `json:"-" param:"sprint_id"`
-	ProjectID uint `json:"-" param:"project_id"`
-	ActualSP  int  `json:"actual_sp"`
+	ProjectSprintRequestBase
+	ID       uint `json:"-" param:"sprint_id"`
+	ActualSP int  `json:"actual_sp"`
 }

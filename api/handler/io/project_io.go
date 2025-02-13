@@ -2,9 +2,11 @@ package io
 
 import "time"
 
-type GetProjectRequest struct {
+type ProjectRequestBase struct {
 	ID uint `json:"-" param:"project_id"`
 }
+
+type GetProjectRequest ProjectRequestBase
 
 type CreateProjectRequest struct {
 	Title          string    `json:"title"`
@@ -16,7 +18,7 @@ type CreateProjectRequest struct {
 }
 
 type UpdateProjectRequest struct {
-	ID          uint   `json:"-" param:"project_id"`
+	ProjectRequestBase
 	Title       string `json:"title"`
 	Description string `json:"description"`
 	TotalSP     int    `json:"total_sp"`
