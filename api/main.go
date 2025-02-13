@@ -71,11 +71,11 @@ func main() {
 	ug := g.Group("", echojwt.JWT([]byte([]byte(config.Conf.JwtSecret))))
 	ug.GET("/projects", projectHandler.List)
 	ug.POST("/projects", projectHandler.Create)
-	ug.GET("/projects/:id", projectHandler.Get)
-	ug.PUT("/projects/:id", projectHandler.Update)
-	ug.DELETE("/projects/:id", projectHandler.Delete)
-	ug.GET("/sprints", sprintHandler.List)
-	ug.PUT("/sprints/:id", sprintHandler.Update)
+	ug.GET("/projects/:project_id", projectHandler.Get)
+	ug.PUT("/projects/:project_id", projectHandler.Update)
+	ug.DELETE("/projects/:project_id", projectHandler.Delete)
+	ug.GET("/projects/:project_id/sprints", sprintHandler.List)
+	ug.PUT("/sprints/:project_id/sprints/:sprint_id", sprintHandler.Update)
 
 	// サーバー起動
 	e.Logger.Fatal(e.Start(":1323"))

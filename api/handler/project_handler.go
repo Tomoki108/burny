@@ -72,13 +72,14 @@ func (h ProjectHandler) Create(c echo.Context) error {
 // @Tags         projects
 // @Accept       json
 // @Produce      json
+// @Param 	 	 project_id path int true "project_id"
 // @Success      200  {object}  domain.Project
 // @Failure      400
 // @Failure      404
 // @Failure      500
-// @Router       /projects/{id} [get]
+// @Router       /projects/{project_id} [get]
 func (h ProjectHandler) Get(c echo.Context) error {
-	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	id, err := strconv.ParseUint(c.Param("project_id"), 10, 64)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
@@ -96,11 +97,12 @@ func (h ProjectHandler) Get(c echo.Context) error {
 // @Tags         projects
 // @Accept       json
 // @Produce      json
+// @Param 	 	 project_id path int true "project_id"
 // @Success      200  {object}  domain.Project
 // @Failure      400
 // @Failure      404
 // @Failure      500
-// @Router       /projects/{id} [put]
+// @Router       /projects/{project_id} [put]
 func (h ProjectHandler) Update(c echo.Context) error {
 	project := new(domain.Project)
 	if err := c.Bind(project); err != nil {
@@ -120,13 +122,14 @@ func (h ProjectHandler) Update(c echo.Context) error {
 // @Tags         projects
 // @Accept       json
 // @Produce      json
+// @Param 	 	 project_id path int true "project_id"
 // @Success      200  {object}  domain.Project
 // @Failure      400
 // @Failure      404
 // @Failure      500
-// @Router       /projects/{id} [delete]
+// @Router       /projects/{project_id} [delete]
 func (h ProjectHandler) Delete(c echo.Context) error {
-	id, err := strconv.ParseUint(c.Param("id"), 10, 64)
+	id, err := strconv.ParseUint(c.Param("project_id"), 10, 64)
 	if err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}

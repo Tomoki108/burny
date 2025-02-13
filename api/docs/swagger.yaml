@@ -21,6 +21,25 @@ definitions:
       updatedAt:
         type: string
     type: object
+  domain.Sprint:
+    properties:
+      actual_sp:
+        type: integer
+      created_at:
+        type: string
+      end_date:
+        type: string
+      id:
+        type: integer
+      ideal_sp:
+        type: integer
+      project_id:
+        type: integer
+      start_date:
+        type: string
+      updated_at:
+        type: string
+    type: object
   domain.User:
     properties:
       email:
@@ -63,6 +82,11 @@ definitions:
         type: string
       password:
         type: string
+    type: object
+  io.UpdateSprintRequest:
+    properties:
+      actual_sp:
+        type: integer
     type: object
 host: temp.com
 info:
@@ -124,11 +148,17 @@ paths:
       summary: Create a project
       tags:
       - projects
-  /projects/{id}:
+  /projects/{project_id}:
     delete:
       consumes:
       - application/json
       description: Delete a projects
+      parameters:
+      - description: project_id
+        in: path
+        name: project_id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -149,6 +179,12 @@ paths:
       consumes:
       - application/json
       description: Get a project
+      parameters:
+      - description: project_id
+        in: path
+        name: project_id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -169,6 +205,12 @@ paths:
       consumes:
       - application/json
       description: Update a project
+      parameters:
+      - description: project_id
+        in: path
+        name: project_id
+        required: true
+        type: integer
       produces:
       - application/json
       responses:
@@ -185,6 +227,71 @@ paths:
       summary: Update a project
       tags:
       - projects
+  /projects/{project_id}/sprints:
+    get:
+      consumes:
+      - application/json
+      description: List sprints
+      parameters:
+      - description: project_id
+        in: path
+        name: project_id
+        required: true
+        type: integer
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Sprint'
+            type: array
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: List sprints
+      tags:
+      - sprints
+  /projects/{project_id}/sprints/{sprint_id}:
+    patch:
+      consumes:
+      - application/json
+      description: Update a sprint
+      parameters:
+      - description: project_id
+        in: path
+        name: project_id
+        required: true
+        type: integer
+      - description: sprint_id
+        in: path
+        name: sprint_id
+        required: true
+        type: integer
+      - description: request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/io.UpdateSprintRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/domain.Sprint'
+            type: array
+        "404":
+          description: Not Found
+        "500":
+          description: Internal Server Error
+      summary: Update a sprint
+      tags:
+      - sprints
   /sign_in:
     post:
       consumes:

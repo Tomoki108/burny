@@ -1,8 +1,6 @@
 package usecase
 
 import (
-	"fmt"
-
 	"github.com/Tomoki108/burny/domain"
 )
 
@@ -24,16 +22,21 @@ func (u ProjectUseCase) Create(project *domain.Project) (*domain.Project, error)
 			return err
 		}
 
-		fmt.Printf("createdProject: %+v\n", createdProject)
-
 		sprints := make([]*domain.Sprint, 0, createdProject.SprintCount)
 		idealSP := createdProject.TotalSP / createdProject.SprintCount
+		startDate := createdProject.StartDate
+		endDate := startDate.AddDate(0, 0, 7*createdProject.SprintDuration)
 		for i := 0; i < createdProject.SprintCount; i++ {
 			sprint := &domain.Sprint{
 				ProjectID: createdProject.ID,
 				IdealSP:   idealSP,
+				StartDate: startDate,
+				EndDate:   endDate,
 			}
 			sprints = append(sprints, sprint)
+
+			startDate = endDate
+			endDate = startDate.AddDate(0, 0, 7*createdProject.SprintDuration)
 		}
 
 		for _, sprint := range sprints {

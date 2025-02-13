@@ -95,7 +95,7 @@ const docTemplate = `{
                 }
             }
         },
-        "/projects/{id}": {
+        "/projects/{project_id}": {
             "get": {
                 "description": "Get a project",
                 "consumes": [
@@ -108,6 +108,15 @@ const docTemplate = `{
                     "projects"
                 ],
                 "summary": "Get a project",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "project_id",
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -138,6 +147,15 @@ const docTemplate = `{
                     "projects"
                 ],
                 "summary": "Update a project",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "project_id",
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -168,6 +186,15 @@ const docTemplate = `{
                     "projects"
                 ],
                 "summary": "Delete a projects",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "project_id",
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -177,6 +204,104 @@ const docTemplate = `{
                     },
                     "400": {
                         "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/projects/{project_id}/sprints": {
+            "get": {
+                "description": "List sprints",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sprints"
+                ],
+                "summary": "List sprints",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "project_id",
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Sprint"
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    },
+                    "500": {
+                        "description": "Internal Server Error"
+                    }
+                }
+            }
+        },
+        "/projects/{project_id}/sprints/{sprint_id}": {
+            "patch": {
+                "description": "Update a sprint",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "sprints"
+                ],
+                "summary": "Update a sprint",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "project_id",
+                        "name": "project_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "sprint_id",
+                        "name": "sprint_id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/io.UpdateSprintRequest"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/domain.Sprint"
+                            }
+                        }
                     },
                     "404": {
                         "description": "Not Found"
@@ -301,6 +426,35 @@ const docTemplate = `{
                 }
             }
         },
+        "domain.Sprint": {
+            "type": "object",
+            "properties": {
+                "actual_sp": {
+                    "type": "integer"
+                },
+                "created_at": {
+                    "type": "string"
+                },
+                "end_date": {
+                    "type": "string"
+                },
+                "id": {
+                    "type": "integer"
+                },
+                "ideal_sp": {
+                    "type": "integer"
+                },
+                "project_id": {
+                    "type": "integer"
+                },
+                "start_date": {
+                    "type": "string"
+                },
+                "updated_at": {
+                    "type": "string"
+                }
+            }
+        },
         "domain.User": {
             "type": "object",
             "properties": {
@@ -365,6 +519,14 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string"
+                }
+            }
+        },
+        "io.UpdateSprintRequest": {
+            "type": "object",
+            "properties": {
+                "actual_sp": {
+                    "type": "integer"
                 }
             }
         }
