@@ -6,10 +6,10 @@ type Project struct {
 	ID             uint      `json:"id"`
 	Title          string    `json:"title"`
 	Description    string    `json:"description"`
-	StartDate      time.Time `json:"start_date"`
-	EndDate        time.Time `json:"end_date"`
 	TotalSP        int       `json:"total_sp"`
+	StartDate      time.Time `json:"start_date"`
 	SprintDuration int       `json:"sprint_duration"`
+	SprintCount    int       `json:"sprint_count"`
 	CreatedAt      time.Time `json:"created_at"`
 	UpdatedAt      time.Time `json:"updated_at"`
 }
