@@ -2,23 +2,23 @@ basePath: /api/v1
 definitions:
   domain.Project:
     properties:
-      created_at:
+      createdAt:
         type: string
       description:
         type: string
-      end_date:
-        type: string
       id:
         type: integer
-      sprint_duration:
+      sprintCount:
         type: integer
-      start_date:
+      sprintDuration:
+        type: integer
+      startDate:
         type: string
       title:
         type: string
-      total_sp:
+      totalSP:
         type: integer
-      updated_at:
+      updatedAt:
         type: string
     type: object
   domain.User:
@@ -29,6 +29,21 @@ definitions:
         type: integer
       password:
         type: string
+    type: object
+  io.CreateProjectRequest:
+    properties:
+      description:
+        type: string
+      sprint_count:
+        type: integer
+      sprint_duration:
+        type: integer
+      start_date:
+        type: string
+      title:
+        type: string
+      total_sp:
+        type: integer
     type: object
   io.SignInRequest:
     properties:
@@ -85,7 +100,14 @@ paths:
     post:
       consumes:
       - application/json
-      description: Create projects
+      description: Create a project
+      parameters:
+      - description: request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/io.CreateProjectRequest'
       produces:
       - application/json
       responses:
@@ -99,14 +121,14 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
-      summary: Create projects
+      summary: Create a project
       tags:
       - projects
   /projects/{id}:
     delete:
       consumes:
       - application/json
-      description: Delete projects
+      description: Delete a projects
       produces:
       - application/json
       responses:
@@ -120,13 +142,13 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
-      summary: Delete projects
+      summary: Delete a projects
       tags:
       - projects
     get:
       consumes:
       - application/json
-      description: Get projects
+      description: Get a project
       produces:
       - application/json
       responses:
@@ -140,13 +162,13 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
-      summary: Get projects
+      summary: Get a project
       tags:
       - projects
     put:
       consumes:
       - application/json
-      description: Update projects
+      description: Update a project
       produces:
       - application/json
       responses:
@@ -160,7 +182,7 @@ paths:
           description: Not Found
         "500":
           description: Internal Server Error
-      summary: Update projects
+      summary: Update a project
       tags:
       - projects
   /sign_in:

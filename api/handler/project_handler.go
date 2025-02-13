@@ -5,6 +5,7 @@ import (
 	"strconv"
 
 	"github.com/Tomoki108/burny/domain"
+	"github.com/Tomoki108/burny/handler/io"
 	"github.com/Tomoki108/burny/usecase"
 
 	"github.com/labstack/echo/v4"
@@ -33,22 +34,31 @@ func (h ProjectHandler) List(c echo.Context) error {
 	return c.JSON(http.StatusOK, projects)
 }
 
-// @Summary      Create projects
-// @Description  Create projects
+// @Summary      Create a project
+// @Description  Create a project
 // @Tags         projects
 // @Accept       json
 // @Produce      json
+// @Param 	 	 request body io.CreateProjectRequest true "request"
 // @Success      200  {object}  domain.Project
 // @Failure      400
 // @Failure      404
 // @Failure      500
 // @Router       /projects [post]
 func (h ProjectHandler) Create(c echo.Context) error {
-	project := new(domain.Project)
-	if err := c.Bind(project); err != nil {
+	req := new(io.CreateProjectRequest)
+	if err := c.Bind(req); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
+	project := &domain.Project{
+		Title:          req.Title,
+		Description:    req.Description,
+		TotalSP:        req.TotalSP,
+		StartDate:      req.StartDate,
+		SprintDuration: req.SprintDuration,
+		SprintCount:    req.SprintCount,
+	}
 	created, err := h.Usecase.Create(project)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
@@ -57,8 +67,8 @@ func (h ProjectHandler) Create(c echo.Context) error {
 	return c.JSON(http.StatusCreated, created)
 }
 
-// @Summary      Get projects
-// @Description  Get projects
+// @Summary      Get a project
+// @Description  Get a project
 // @Tags         projects
 // @Accept       json
 // @Produce      json
@@ -81,8 +91,8 @@ func (h ProjectHandler) Get(c echo.Context) error {
 	return c.JSON(http.StatusOK, project)
 }
 
-// @Summary      Update projects
-// @Description  Update projects
+// @Summary      Update a project
+// @Description  Update a project
 // @Tags         projects
 // @Accept       json
 // @Produce      json
@@ -105,8 +115,8 @@ func (h ProjectHandler) Update(c echo.Context) error {
 	return c.JSON(http.StatusOK, updated)
 }
 
-// @Summary      Delete projects
-// @Description  Delete projects
+// @Summary      Delete a projects
+// @Description  Delete a projects
 // @Tags         projects
 // @Accept       json
 // @Produce      json

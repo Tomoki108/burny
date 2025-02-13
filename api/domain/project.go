@@ -3,21 +3,21 @@ package domain
 import "time"
 
 type Project struct {
-	ID             uint      `json:"id"`
-	Title          string    `json:"title"`
-	Description    string    `json:"description"`
-	TotalSP        int       `json:"total_sp"`
-	StartDate      time.Time `json:"start_date"`
-	SprintDuration int       `json:"sprint_duration"`
-	SprintCount    int       `json:"sprint_count"`
-	CreatedAt      time.Time `json:"created_at"`
-	UpdatedAt      time.Time `json:"updated_at"`
+	ID             uint
+	Title          string
+	Description    string
+	TotalSP        int
+	StartDate      time.Time
+	SprintDuration int
+	SprintCount    int
+	CreatedAt      time.Time
+	UpdatedAt      time.Time
 }
 
 type ProjectRepository interface {
 	List() ([]*Project, error)
 	Create(tx Transaction, project *Project) (*Project, error)
-	Get(id uint) (*Project, error)
-	Update(project *Project) (*Project, error)
-	Delete(id uint) error
+	Get(tx Transaction, id uint) (*Project, error)
+	Update(tx Transaction, project *Project) (*Project, error)
+	Delete(tx Transaction, id uint) error
 }

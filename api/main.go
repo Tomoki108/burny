@@ -62,7 +62,7 @@ func main() {
 	g.POST("/sign_up", authHandler.SignUp)
 	g.POST("/sign_in", authHandler.SignIn)
 
-	ug := e.Group("", echojwt.JWT([]byte([]byte(config.Conf.JwtSecret))))
+	ug := g.Group("", echojwt.JWT([]byte([]byte(config.Conf.JwtSecret))))
 	ug.GET("/projects", projectHandler.List)
 	ug.POST("/projects", projectHandler.Create)
 	ug.GET("/projects/:id", projectHandler.Get)

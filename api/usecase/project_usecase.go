@@ -47,13 +47,13 @@ func (u ProjectUseCase) Create(project *domain.Project) (*domain.Project, error)
 }
 
 func (u ProjectUseCase) Get(id uint) (*domain.Project, error) {
-	return u.ProjectRepo.Get(id)
+	return u.ProjectRepo.Get(u.Transactioner.New(), id)
 }
 
 func (u ProjectUseCase) Update(project *domain.Project) (*domain.Project, error) {
-	return u.ProjectRepo.Update(project)
+	return u.ProjectRepo.Update(u.Transactioner.New(), project)
 }
 
 func (u ProjectUseCase) Delete(id uint) error {
-	return u.ProjectRepo.Delete(id)
+	return u.ProjectRepo.Delete(u.Transactioner.New(), id)
 }

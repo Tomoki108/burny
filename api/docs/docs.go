@@ -54,7 +54,7 @@ const docTemplate = `{
                 }
             },
             "post": {
-                "description": "Create projects",
+                "description": "Create a project",
                 "consumes": [
                     "application/json"
                 ],
@@ -64,7 +64,18 @@ const docTemplate = `{
                 "tags": [
                     "projects"
                 ],
-                "summary": "Create projects",
+                "summary": "Create a project",
+                "parameters": [
+                    {
+                        "description": "request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/io.CreateProjectRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -86,7 +97,7 @@ const docTemplate = `{
         },
         "/projects/{id}": {
             "get": {
-                "description": "Get projects",
+                "description": "Get a project",
                 "consumes": [
                     "application/json"
                 ],
@@ -96,7 +107,7 @@ const docTemplate = `{
                 "tags": [
                     "projects"
                 ],
-                "summary": "Get projects",
+                "summary": "Get a project",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -116,7 +127,7 @@ const docTemplate = `{
                 }
             },
             "put": {
-                "description": "Update projects",
+                "description": "Update a project",
                 "consumes": [
                     "application/json"
                 ],
@@ -126,7 +137,7 @@ const docTemplate = `{
                 "tags": [
                     "projects"
                 ],
-                "summary": "Update projects",
+                "summary": "Update a project",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -146,7 +157,7 @@ const docTemplate = `{
                 }
             },
             "delete": {
-                "description": "Delete projects",
+                "description": "Delete a projects",
                 "consumes": [
                     "application/json"
                 ],
@@ -156,7 +167,7 @@ const docTemplate = `{
                 "tags": [
                     "projects"
                 ],
-                "summary": "Delete projects",
+                "summary": "Delete a projects",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -261,31 +272,31 @@ const docTemplate = `{
         "domain.Project": {
             "type": "object",
             "properties": {
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "description": {
                     "type": "string"
                 },
-                "end_date": {
-                    "type": "string"
-                },
                 "id": {
                     "type": "integer"
                 },
-                "sprint_duration": {
+                "sprintCount": {
                     "type": "integer"
                 },
-                "start_date": {
+                "sprintDuration": {
+                    "type": "integer"
+                },
+                "startDate": {
                     "type": "string"
                 },
                 "title": {
                     "type": "string"
                 },
-                "total_sp": {
+                "totalSP": {
                     "type": "integer"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -301,6 +312,29 @@ const docTemplate = `{
                 },
                 "password": {
                     "type": "string"
+                }
+            }
+        },
+        "io.CreateProjectRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "sprint_count": {
+                    "type": "integer"
+                },
+                "sprint_duration": {
+                    "type": "integer"
+                },
+                "start_date": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "total_sp": {
+                    "type": "integer"
                 }
             }
         },

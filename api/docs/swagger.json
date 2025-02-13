@@ -48,7 +48,7 @@
                 }
             },
             "post": {
-                "description": "Create projects",
+                "description": "Create a project",
                 "consumes": [
                     "application/json"
                 ],
@@ -58,7 +58,18 @@
                 "tags": [
                     "projects"
                 ],
-                "summary": "Create projects",
+                "summary": "Create a project",
+                "parameters": [
+                    {
+                        "description": "request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/io.CreateProjectRequest"
+                        }
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -80,7 +91,7 @@
         },
         "/projects/{id}": {
             "get": {
-                "description": "Get projects",
+                "description": "Get a project",
                 "consumes": [
                     "application/json"
                 ],
@@ -90,7 +101,7 @@
                 "tags": [
                     "projects"
                 ],
-                "summary": "Get projects",
+                "summary": "Get a project",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -110,7 +121,7 @@
                 }
             },
             "put": {
-                "description": "Update projects",
+                "description": "Update a project",
                 "consumes": [
                     "application/json"
                 ],
@@ -120,7 +131,7 @@
                 "tags": [
                     "projects"
                 ],
-                "summary": "Update projects",
+                "summary": "Update a project",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -140,7 +151,7 @@
                 }
             },
             "delete": {
-                "description": "Delete projects",
+                "description": "Delete a projects",
                 "consumes": [
                     "application/json"
                 ],
@@ -150,7 +161,7 @@
                 "tags": [
                     "projects"
                 ],
-                "summary": "Delete projects",
+                "summary": "Delete a projects",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -255,31 +266,31 @@
         "domain.Project": {
             "type": "object",
             "properties": {
-                "created_at": {
+                "createdAt": {
                     "type": "string"
                 },
                 "description": {
                     "type": "string"
                 },
-                "end_date": {
-                    "type": "string"
-                },
                 "id": {
                     "type": "integer"
                 },
-                "sprint_duration": {
+                "sprintCount": {
                     "type": "integer"
                 },
-                "start_date": {
+                "sprintDuration": {
+                    "type": "integer"
+                },
+                "startDate": {
                     "type": "string"
                 },
                 "title": {
                     "type": "string"
                 },
-                "total_sp": {
+                "totalSP": {
                     "type": "integer"
                 },
-                "updated_at": {
+                "updatedAt": {
                     "type": "string"
                 }
             }
@@ -295,6 +306,29 @@
                 },
                 "password": {
                     "type": "string"
+                }
+            }
+        },
+        "io.CreateProjectRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "sprint_count": {
+                    "type": "integer"
+                },
+                "sprint_duration": {
+                    "type": "integer"
+                },
+                "start_date": {
+                    "type": "string"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "total_sp": {
+                    "type": "integer"
                 }
             }
         },

@@ -34,27 +34,30 @@ func (r *ProjectRepository) Create(tx domain.Transaction, project *domain.Projec
 		return nil, err
 	}
 
-	return r.Get(model.ID)
+	return r.Get(tx, model.ID)
 }
 
-func (r *ProjectRepository) Get(id uint) (*domain.Project, error) {
+func (r *ProjectRepository) Get(tx domain.Transaction, id uint) (*domain.Project, error) {
+	db := tx.(*gorm.DB)
 	var project model.Project
-	if err := DB.First(&project, id).Error; err != nil {
+	if err := db.First(&project, id).Error; err != nil {
 		return nil, err
 	}
 
 	return project.ToDomain(), nil
 }
 
-func (r *ProjectRepository) Update(project *domain.Project) (*domain.Project, error) {
+func (r *ProjectRepository) Update(tx domain.Transaction, project *domain.Project) (*domain.Project, error) {
+	db := tx.(*gorm.DB)
 	model := model.FromDomainProject(project)
-	if err := DB.Save(model).Error; err != nil {
+	if err := db.Save(model).Error; err != nil {
 		return nil, err
 	}
 
-	return r.Get(model.ID)
+	return r.Get(tx, model.ID)
 }
 
-func (r *ProjectRepository) Delete(id uint) error {
-	return DB.Delete(&model.Project{}, id).Error
+func (r *ProjectRepository) Delete(tx domain.Transaction, id uint) error {
+	db := tx.(*gorm.DB)
+	return db.Delete(&model.Project{}, id).Error
 }
