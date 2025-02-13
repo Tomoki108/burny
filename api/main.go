@@ -45,7 +45,9 @@ func main() {
 
 	// ルーティング
 	projectHandler := handler.ProjectHandler{
-		Repo: infrastructure.NewProjectRepository(),
+		Usecase: usecase.ProjectUseCase{
+			Repo: infrastructure.NewProjectRepository(),
+		},
 	}
 	sprintHandler := handler.SprintHandler{
 		Repo: infrastructure.NewSprintRepository(),

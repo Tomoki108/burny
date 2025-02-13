@@ -5,12 +5,13 @@ import (
 	"strconv"
 
 	"github.com/Tomoki108/burny/domain"
+	"github.com/Tomoki108/burny/usecase"
 
 	"github.com/labstack/echo/v4"
 )
 
 type ProjectHandler struct {
-	Repo domain.ProjectRepository
+	Usecase usecase.ProjectUseCase
 }
 
 // @Summary      List projects
@@ -24,7 +25,7 @@ type ProjectHandler struct {
 // @Failure      500
 // @Router       /projects [get]
 func (h ProjectHandler) List(c echo.Context) error {
-	projects, err := h.Repo.List()
+	projects, err := h.Usecase.List()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -48,7 +49,7 @@ func (h ProjectHandler) Create(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	created, err := h.Repo.Create(project)
+	created, err := h.Usecase.Create(project)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -72,7 +73,7 @@ func (h ProjectHandler) Get(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	project, err := h.Repo.Get(uint(id))
+	project, err := h.Usecase.Get(uint(id))
 	if err != nil {
 		return c.JSON(http.StatusNotFound, err)
 	}
@@ -96,7 +97,7 @@ func (h ProjectHandler) Update(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	updated, err := h.Repo.Update(project)
+	updated, err := h.Usecase.Update(project)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -120,7 +121,7 @@ func (h ProjectHandler) Delete(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	err = h.Repo.Delete(uint(id))
+	err = h.Usecase.Delete(uint(id))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
