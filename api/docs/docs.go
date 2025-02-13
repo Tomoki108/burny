@@ -154,6 +154,15 @@ const docTemplate = `{
                         "name": "project_id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/io.UpdateProjectRequest"
+                        }
                     }
                 ],
                 "responses": {
@@ -522,6 +531,23 @@ const docTemplate = `{
                 }
             }
         },
+        "io.UpdateProjectRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "sprint_count": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "total_sp": {
+                    "type": "integer"
+                }
+            }
+        },
         "io.UpdateSprintRequest": {
             "type": "object",
             "properties": {
@@ -536,7 +562,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "temp.com",
+	Host:             "localhost:1323",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Burny API",

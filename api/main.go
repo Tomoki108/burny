@@ -4,7 +4,7 @@ import (
 	"log"
 
 	"github.com/Tomoki108/burny/config"
-	_ "github.com/Tomoki108/burny/docs"
+	"github.com/Tomoki108/burny/docs"
 	"github.com/Tomoki108/burny/handler"
 	"github.com/Tomoki108/burny/infrastructure"
 	"github.com/Tomoki108/burny/usecase"
@@ -21,7 +21,6 @@ import (
 // @description     API Doc of Burny Backend
 // @license.name  GPL 3.0
 // @license.url   https://www.gnu.org/licenses/agpl-3.0.en.html
-// @host      temp.com
 // @BasePath  /api/v1
 func main() {
 	// 環境変数の読み込み
@@ -42,6 +41,7 @@ func main() {
 
 	// API DOC
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
+	docs.SwaggerInfo.Host = config.Conf.Host
 
 	// ルーティング
 	projectHandler := handler.ProjectHandler{

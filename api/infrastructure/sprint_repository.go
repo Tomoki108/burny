@@ -71,3 +71,12 @@ func (r *SprintRepository) Update(tx domain.Transaction, projectID, sprintID uin
 
 	return r.Get(tx, sprint.ID, sprint.ProjectID)
 }
+
+func (r *SprintRepository) Delete(tx domain.Transaction, projectID, sprintID uint) error {
+	db := tx.(*gorm.DB)
+	if err := db.Where("id = ? AND project_id = ?", sprintID, projectID).Delete(&model.Sprint{}).Error; err != nil {
+		return err
+	}
+
+	return nil
+}

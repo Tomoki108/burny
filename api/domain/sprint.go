@@ -17,4 +17,5 @@ type SprintRepository interface {
 	Create(tx Transaction, sprint *Sprint) (*Sprint, error)
 	List(tx Transaction, pojectID uint) ([]*Sprint, error)
 	Update(tx Transaction, projectID, sprintID uint, actualSP int) (*Sprint, error)
+	Delete(tx Transaction, projectID, sprintID uint) error
 }

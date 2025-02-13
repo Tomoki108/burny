@@ -109,14 +109,7 @@ func (h ProjectHandler) Update(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	project := &domain.Project{
-		ID:          req.ID,
-		Title:       req.Title,
-		Description: req.Description,
-		TotalSP:     req.TotalSP,
-		SprintCount: req.SprintCount,
-	}
-	updated, err := h.UseCase.Update(req)
+	updated, err := h.UseCase.Update(*req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}

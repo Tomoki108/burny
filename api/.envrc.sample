@@ -1,1 +1,2 @@
 export JWT_SECRET= # set random string
+export HOST=localhost

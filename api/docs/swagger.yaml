@@ -83,12 +83,23 @@ definitions:
       password:
         type: string
     type: object
+  io.UpdateProjectRequest:
+    properties:
+      description:
+        type: string
+      sprint_count:
+        type: integer
+      title:
+        type: string
+      total_sp:
+        type: integer
+    type: object
   io.UpdateSprintRequest:
     properties:
       actual_sp:
         type: integer
     type: object
-host: temp.com
+host: localhost:1323
 info:
   contact: {}
   description: API Doc of Burny Backend
@@ -211,6 +222,12 @@ paths:
         name: project_id
         required: true
         type: integer
+      - description: request
+        in: body
+        name: request
+        required: true
+        schema:
+          $ref: '#/definitions/io.UpdateProjectRequest'
       produces:
       - application/json
       responses:

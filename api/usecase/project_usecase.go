@@ -63,12 +63,12 @@ func (u ProjectUseCase) Get(id uint) (*domain.Project, error) {
 }
 
 func (u ProjectUseCase) Update(req io.UpdateProjectRequest) (*domain.Project, error) {
+	var updatedProject *domain.Project
 	err := u.Transactioner.Transaction(func(tx domain.Transaction) (err error) {
 		project, err := u.ProjectRepo.Get(tx, req.ID)
 		if err != nil {
 			return err
 		}
-
 		sprints, err := u.SprintRepo.List(tx, project.ID)
 		if err != nil {
 			return err
@@ -83,7 +83,6 @@ func (u ProjectUseCase) Update(req io.UpdateProjectRequest) (*domain.Project, er
 		if countDiff > 0 {
 			startDate := sprints[len(sprints)-1].EndDate
 			endDate := startDate.AddDate(0, 0, 7*project.SprintDuration)
-
 			for i := 0; i < countDiff; i++ {
 				sprint := &domain.Sprint{
 					ProjectID: project.ID,
@@ -95,22 +94,34 @@ func (u ProjectUseCase) Update(req io.UpdateProjectRequest) (*domain.Project, er
 				startDate = endDate
 				endDate = startDate.AddDate(0, 0, 7*project.SprintDuration)
 			}
-
-			idealSP := project.TotalSP / req.SprintCount
-			for _, sprint := range sprints {
-				sprint.IdealSP = idealSP
-			}
 		} else if countDiff < 0 {
 			sprints = sprints[:req.SprintCount]
-
 			if sprints[len(sprints)-1].EndDate.After(time.Now()) {
-
+				return ErrSprintHasAlreadyStarted
 			}
 
+			for _, sprint := range sprints[req.SprintCount:] {
+				err := u.SprintRepo.Delete(tx, sprint.ProjectID, sprint.ID)
+				if err != nil {
+					return err
+				}
+			}
 		}
+
+		idealSP := project.TotalSP / req.SprintCount
+		for _, sprint := range sprints {
+			sprint.IdealSP = idealSP
+			_, err := u.SprintRepo.Update(tx, sprint.ProjectID, sprint.ID, sprint.IdealSP)
+			if err != nil {
+				return err
+			}
+		}
+
+		updatedProject, err = u.ProjectRepo.Update(tx, project)
+		return err
 	})
 
-	return u.ProjectRepo.Update(u.Transactioner.Default(), project)
+	return updatedProject, err
 }
 
 func (u ProjectUseCase) Delete(id uint) error {

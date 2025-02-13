@@ -10,7 +10,7 @@
         },
         "version": "1.0"
     },
-    "host": "temp.com",
+    "host": "localhost:1323",
     "basePath": "/api/v1",
     "paths": {
         "/projects": {
@@ -148,6 +148,15 @@
                         "name": "project_id",
                         "in": "path",
                         "required": true
+                    },
+                    {
+                        "description": "request",
+                        "name": "request",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/io.UpdateProjectRequest"
+                        }
                     }
                 ],
                 "responses": {
@@ -513,6 +522,23 @@
                 },
                 "password": {
                     "type": "string"
+                }
+            }
+        },
+        "io.UpdateProjectRequest": {
+            "type": "object",
+            "properties": {
+                "description": {
+                    "type": "string"
+                },
+                "sprint_count": {
+                    "type": "integer"
+                },
+                "title": {
+                    "type": "string"
+                },
+                "total_sp": {
+                    "type": "integer"
                 }
             }
         },
