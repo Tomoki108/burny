@@ -27,6 +27,7 @@ func (p *Project) ToDomain() *domain.Project {
 		TotalSP:        p.TotalSP,
 		StartDate:      p.StartDate,
 		SprintDuration: p.SprintDuration,
+		SprintCount:    p.SprintCount,
 		CreatedAt:      p.CreatedAt,
 		UpdatedAt:      p.UpdatedAt,
 	}

@@ -1,13 +1,14 @@
 package usecase
 
 import (
+	"fmt"
+
 	"github.com/Tomoki108/burny/domain"
 )
 
 type ProjectUseCase struct {
-	ProjectRepo domain.ProjectRepository
-	SprintRepo  domain.SprintRepository
-
+	ProjectRepo   domain.ProjectRepository
+	SprintRepo    domain.SprintRepository
 	Transactioner domain.Transactioner
 }
 
@@ -22,6 +23,8 @@ func (u ProjectUseCase) Create(project *domain.Project) (*domain.Project, error)
 		if err != nil {
 			return err
 		}
+
+		fmt.Printf("createdProject: %+v\n", createdProject)
 
 		sprints := make([]*domain.Sprint, 0, createdProject.SprintCount)
 		idealSP := createdProject.TotalSP / createdProject.SprintCount
