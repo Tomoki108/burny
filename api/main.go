@@ -45,14 +45,16 @@ func main() {
 
 	// ルーティング
 	projectHandler := handler.ProjectHandler{
-		Usecase: usecase.ProjectUseCase{
+		UseCase: usecase.ProjectUseCase{
 			ProjectRepo:   infrastructure.NewProjectRepository(),
 			SprintRepo:    infrastructure.NewSprintRepository(),
 			Transactioner: infrastructure.NewTransactioner(),
 		},
 	}
 	sprintHandler := handler.SprintHandler{
-		Repo: infrastructure.NewSprintRepository(),
+		UseCase: usecase.SprintUseCase{
+			SprintRepo: infrastructure.NewSprintRepository(),
+		},
 	}
 	authHandler := handler.AuthHandler{
 		Usecase: usecase.AuthUseCase{

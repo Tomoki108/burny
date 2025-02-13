@@ -3,18 +3,18 @@ package handler
 import (
 	"net/http"
 
-	"github.com/Tomoki108/burny/domain"
 	"github.com/Tomoki108/burny/model"
+	"github.com/Tomoki108/burny/usecase"
 
 	"github.com/labstack/echo/v4"
 )
 
 type SprintHandler struct {
-	Repo domain.SprintRepository
+	UseCase usecase.SprintUseCase
 }
 
 func (h SprintHandler) List(c echo.Context) error {
-	sprints, err := h.Repo.List()
+	sprints, err := h.UseCase.List()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -28,7 +28,7 @@ func (h SprintHandler) Update(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	updated, err := h.Repo.Update(sprint.ToDomain())
+	updated, err := h.UseCase.Update(sprint.ToDomain())
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}

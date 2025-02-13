@@ -15,6 +15,6 @@ type Sprint struct {
 
 type SprintRepository interface {
 	Create(tx Transaction, sprint *Sprint) (*Sprint, error)
-	List() ([]*Sprint, error)
-	Update(sprint *Sprint) (*Sprint, error)
+	List(tx Transaction) ([]*Sprint, error)
+	Update(tx Transaction, sprint *Sprint) (*Sprint, error)
 }

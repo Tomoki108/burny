@@ -12,7 +12,7 @@ import (
 )
 
 type ProjectHandler struct {
-	Usecase usecase.ProjectUseCase
+	UseCase usecase.ProjectUseCase
 }
 
 // @Summary      List projects
@@ -26,7 +26,7 @@ type ProjectHandler struct {
 // @Failure      500
 // @Router       /projects [get]
 func (h ProjectHandler) List(c echo.Context) error {
-	projects, err := h.Usecase.List()
+	projects, err := h.UseCase.List()
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -59,7 +59,7 @@ func (h ProjectHandler) Create(c echo.Context) error {
 		SprintDuration: req.SprintDuration,
 		SprintCount:    req.SprintCount,
 	}
-	created, err := h.Usecase.Create(project)
+	created, err := h.UseCase.Create(project)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -83,7 +83,7 @@ func (h ProjectHandler) Get(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	project, err := h.Usecase.Get(uint(id))
+	project, err := h.UseCase.Get(uint(id))
 	if err != nil {
 		return c.JSON(http.StatusNotFound, err)
 	}
@@ -107,7 +107,7 @@ func (h ProjectHandler) Update(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	updated, err := h.Usecase.Update(project)
+	updated, err := h.UseCase.Update(project)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -131,7 +131,7 @@ func (h ProjectHandler) Delete(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	err = h.Usecase.Delete(uint(id))
+	err = h.UseCase.Delete(uint(id))
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
