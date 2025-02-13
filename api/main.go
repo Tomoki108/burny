@@ -51,7 +51,7 @@ func main() {
 		Repo: infrastructure.NewSprintRepository(),
 	}
 	authHandler := handler.AuthHandler{
-		Usecase: usecase.SignUpUseCase{
+		Usecase: usecase.AuthUseCase{
 			Repo: infrastructure.NewUserRepository(),
 		},
 	}

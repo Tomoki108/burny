@@ -15,7 +15,7 @@ var ErrEmailAlreadyExists = errors.New("メールアドレスが既に使用さ�
 var ErrUserNotExists = errors.New("ユーザーが存在しません")
 var ErrInvalidPassword = errors.New("パスワードが間違っています")
 
-type SignUpUseCase struct {
+type AuthUseCase struct {
 	Repo domain.UserRepository
 }
 type JwtCustomClaims struct {
@@ -23,7 +23,7 @@ type JwtCustomClaims struct {
 	jwt.RegisteredClaims
 }
 
-func (u SignUpUseCase) SignUp(user *domain.User) error {
+func (u AuthUseCase) SignUp(user *domain.User) error {
 	exisitingUser, err := u.Repo.GetByEmail(user.Email)
 	if err != nil {
 		return err
@@ -36,7 +36,7 @@ func (u SignUpUseCase) SignUp(user *domain.User) error {
 	return err
 }
 
-func (u SignUpUseCase) SignIn(user *domain.User) (tokenStr string, err error) {
+func (u AuthUseCase) SignIn(user *domain.User) (tokenStr string, err error) {
 	exisitingUser, err := u.Repo.GetByEmail(user.Email)
 	if err != nil {
 		return "", err

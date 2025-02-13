@@ -11,7 +11,7 @@ import (
 )
 
 type AuthHandler struct {
-	Usecase usecase.SignUpUseCase
+	Usecase usecase.AuthUseCase
 }
 
 // @Summary      Sign up
