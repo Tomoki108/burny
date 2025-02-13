@@ -15,7 +15,7 @@ func NewUserRepository() domain.UserRepository {
 type UserRepository struct {
 }
 
-func (r *UserRepository) Create(user *domain.User) (*domain.User, error) {
+func (r *UserRepository) Create(tx domain.Transaction, user *domain.User) (*domain.User, error) {
 	model, err := model.FromDomainUser(user)
 	if err != nil {
 		return nil, err
@@ -24,10 +24,10 @@ func (r *UserRepository) Create(user *domain.User) (*domain.User, error) {
 		return nil, err
 	}
 
-	return r.Get(model.ID)
+	return r.Get(tx, model.ID)
 }
 
-func (r *UserRepository) Get(id uint) (*domain.User, error) {
+func (r *UserRepository) Get(tx domain.Transaction, id uint) (*domain.User, error) {
 	var user model.User
 	if err := DB.First(&user, id).Error; err != nil {
 		return nil, err
@@ -36,7 +36,7 @@ func (r *UserRepository) Get(id uint) (*domain.User, error) {
 	return user.ToDomain(), nil
 }
 
-func (r *UserRepository) GetByEmail(email string) (*domain.User, error) {
+func (r *UserRepository) GetByEmail(tx domain.Transaction, email string) (*domain.User, error) {
 	var user model.User
 
 	err := DB.Where("email = ?", email).First(&user).Error

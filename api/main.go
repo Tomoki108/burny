@@ -53,12 +53,14 @@ func main() {
 	}
 	sprintHandler := handler.SprintHandler{
 		UseCase: usecase.SprintUseCase{
-			SprintRepo: infrastructure.NewSprintRepository(),
+			SprintRepo:    infrastructure.NewSprintRepository(),
+			Transactioner: infrastructure.NewTransactioner(),
 		},
 	}
 	authHandler := handler.AuthHandler{
 		Usecase: usecase.AuthUseCase{
-			Repo: infrastructure.NewUserRepository(),
+			Repo:          infrastructure.NewUserRepository(),
+			Transactioner: infrastructure.NewTransactioner(),
 		},
 	}
 

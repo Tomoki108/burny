@@ -48,6 +48,6 @@ func (t Transactioner) Transaction(fn func(tx domain.Transaction) error) error {
 	})
 }
 
-func (t Transactioner) New() domain.Transaction {
+func (t Transactioner) Default() domain.Transaction {
 	return t.DB
 }

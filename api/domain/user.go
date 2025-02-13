@@ -22,7 +22,7 @@ func (u User) MarshalJSON() ([]byte, error) {
 // NOTE: 取得したUserのパスワードはハッシュ化されている
 type UserRepository interface {
 	// passwordのハッシュ化はinfrastructure層で行う
-	Create(user *User) (*User, error)
-	Get(id uint) (*User, error)
-	GetByEmail(email string) (*User, error)
+	Create(tx Transaction, user *User) (*User, error)
+	Get(tx Transaction, id uint) (*User, error)
+	GetByEmail(tx Transaction, email string) (*User, error)
 }
