@@ -79,12 +79,11 @@ func (h ProjectHandler) Create(c echo.Context) error {
 // @Failure      500
 // @Router       /projects/{project_id} [get]
 func (h ProjectHandler) Get(c echo.Context) error {
-	id, err := strconv.ParseUint(c.Param("project_id"), 10, 64)
-	if err != nil {
+	req := new(io.GetProjectRequest)
+	if err := c.Bind(req); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
-
-	project, err := h.UseCase.Get(uint(id))
+	project, err := h.UseCase.Get(req.ID)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, err)
 	}
@@ -98,18 +97,26 @@ func (h ProjectHandler) Get(c echo.Context) error {
 // @Accept       json
 // @Produce      json
 // @Param 	 	 project_id path int true "project_id"
+// @Param 	 	 request body io.UpdateProjectRequest true "request"
 // @Success      200  {object}  domain.Project
 // @Failure      400
 // @Failure      404
 // @Failure      500
 // @Router       /projects/{project_id} [put]
 func (h ProjectHandler) Update(c echo.Context) error {
-	project := new(domain.Project)
-	if err := c.Bind(project); err != nil {
+	req := new(io.UpdateProjectRequest)
+	if err := c.Bind(req); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	updated, err := h.UseCase.Update(project)
+	project := &domain.Project{
+		ID:          req.ID,
+		Title:       req.Title,
+		Description: req.Description,
+		TotalSP:     req.TotalSP,
+		SprintCount: req.SprintCount,
+	}
+	updated, err := h.UseCase.Update(req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}

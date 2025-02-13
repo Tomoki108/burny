@@ -30,7 +30,7 @@ func (r *SprintRepository) Create(tx domain.Transaction, sprint *domain.Sprint) 
 func (r *SprintRepository) List(tx domain.Transaction, pojectID uint) ([]*domain.Sprint, error) {
 	db := tx.(*gorm.DB)
 	var sprints []model.Sprint
-	if err := db.Where("project_id = ?", pojectID).Find(&sprints).Error; err != nil {
+	if err := db.Where("project_id = ?", pojectID).Order("start_date ASC").Find(&sprints).Error; err != nil {
 		return nil, err
 	}
 

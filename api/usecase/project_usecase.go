@@ -1,8 +1,14 @@
 package usecase
 
 import (
+	"errors"
+	"time"
+
 	"github.com/Tomoki108/burny/domain"
+	"github.com/Tomoki108/burny/handler/io"
 )
+
+var ErrSprintHasAlreadyStarted = errors.New("既に開始済みのスプリントが削除される様な更新はできません")
 
 type ProjectUseCase struct {
 	ProjectRepo   domain.ProjectRepository
@@ -56,7 +62,54 @@ func (u ProjectUseCase) Get(id uint) (*domain.Project, error) {
 	return u.ProjectRepo.Get(u.Transactioner.Default(), id)
 }
 
-func (u ProjectUseCase) Update(project *domain.Project) (*domain.Project, error) {
+func (u ProjectUseCase) Update(req io.UpdateProjectRequest) (*domain.Project, error) {
+	err := u.Transactioner.Transaction(func(tx domain.Transaction) (err error) {
+		project, err := u.ProjectRepo.Get(tx, req.ID)
+		if err != nil {
+			return err
+		}
+
+		sprints, err := u.SprintRepo.List(tx, project.ID)
+		if err != nil {
+			return err
+		}
+
+		countDiff := req.SprintCount - project.SprintCount
+		project.Title = req.Title
+		project.Description = req.Description
+		project.SprintCount = req.SprintCount
+		project.TotalSP = req.TotalSP
+
+		if countDiff > 0 {
+			startDate := sprints[len(sprints)-1].EndDate
+			endDate := startDate.AddDate(0, 0, 7*project.SprintDuration)
+
+			for i := 0; i < countDiff; i++ {
+				sprint := &domain.Sprint{
+					ProjectID: project.ID,
+					StartDate: startDate,
+					EndDate:   endDate,
+				}
+				sprints = append(sprints, sprint)
+
+				startDate = endDate
+				endDate = startDate.AddDate(0, 0, 7*project.SprintDuration)
+			}
+
+			idealSP := project.TotalSP / req.SprintCount
+			for _, sprint := range sprints {
+				sprint.IdealSP = idealSP
+			}
+		} else if countDiff < 0 {
+			sprints = sprints[:req.SprintCount]
+
+			if sprints[len(sprints)-1].EndDate.After(time.Now()) {
+
+			}
+
+		}
+	})
+
 	return u.ProjectRepo.Update(u.Transactioner.Default(), project)
 }
 
