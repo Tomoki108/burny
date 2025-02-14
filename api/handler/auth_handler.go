@@ -4,7 +4,6 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/Tomoki108/burny/domain"
 	"github.com/Tomoki108/burny/handler/io"
 	"github.com/Tomoki108/burny/usecase"
 	"github.com/labstack/echo/v4"
@@ -57,12 +56,7 @@ func (h AuthHandler) SignIn(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	user := new(domain.User)
-	if err := c.Bind(user); err != nil {
-		return c.JSON(http.StatusBadRequest, err)
-	}
-
-	jwtToken, err := h.Usecase.SignIn(user)
+	jwtToken, err := h.Usecase.SignIn(*req)
 	if errors.Is(err, usecase.ErrUserNotExists) || errors.Is(err, usecase.ErrInvalidPassword) {
 		return c.JSON(http.StatusUnauthorized, err)
 	}

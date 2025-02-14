@@ -21,6 +21,7 @@ type AuthUseCase struct {
 	Transactioner domain.Transactioner
 }
 type JwtCustomClaims struct {
+	ID    uint
 	Email string
 	jwt.RegisteredClaims
 }
@@ -46,20 +47,21 @@ func (u AuthUseCase) SignUp(req io.SignUpRequest) (*domain.User, error) {
 	return u.Repo.Create(u.Transactioner.Default(), user)
 }
 
-func (u AuthUseCase) SignIn(user *domain.User) (tokenStr string, err error) {
-	exisitingUser, err := u.Repo.GetByEmail(u.Transactioner.Default(), user.Email)
+func (u AuthUseCase) SignIn(req io.SignInRequest) (tokenStr string, err error) {
+	user, err := u.Repo.GetByEmail(u.Transactioner.Default(), req.Email)
 	if err != nil {
 		return "", err
 	}
-	if exisitingUser == nil {
+	if user == nil {
 		return "", ErrUserNotExists
 	}
 
-	if err := bcrypt.CompareHashAndPassword([]byte(exisitingUser.Password), []byte(user.Password)); err != nil {
+	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
 		return "", ErrInvalidPassword
 	}
 
 	claims := &JwtCustomClaims{
+		ID:    user.ID,
 		Email: user.Email,
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24)),
