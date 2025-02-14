@@ -9,6 +9,7 @@ import (
 
 type Sprint struct {
 	gorm.Model
+	UserID    uint      `json:"user_id" gorm:"index"`
 	ProjectID uint      `json:"project_id" gorm:"index"`
 	StartDate time.Time `json:"start_date"`
 	EndDate   time.Time `json:"end_date"`
@@ -19,6 +20,7 @@ type Sprint struct {
 func (s *Sprint) ToDomain() *domain.Sprint {
 	return &domain.Sprint{
 		ID:        s.ID,
+		UserID:    s.UserID,
 		ProjectID: s.ProjectID,
 		StartDate: s.StartDate,
 		EndDate:   s.EndDate,
@@ -36,6 +38,7 @@ func FromDomainSprint(sprint *domain.Sprint) *Sprint {
 			CreatedAt: sprint.CreatedAt,
 			UpdatedAt: sprint.UpdatedAt,
 		},
+		UserID:    sprint.UserID,
 		ProjectID: sprint.ProjectID,
 		StartDate: sprint.StartDate,
 		EndDate:   sprint.EndDate,

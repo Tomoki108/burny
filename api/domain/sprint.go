@@ -4,6 +4,7 @@ import "time"
 
 type Sprint struct {
 	ID        uint      `json:"id"`
+	UserID    uint      `json:"user_id"`
 	ProjectID uint      `json:"project_id"`
 	StartDate time.Time `json:"start_date"`
 	EndDate   time.Time `json:"end_date"`

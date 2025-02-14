@@ -4,6 +4,7 @@ import "time"
 
 type Project struct {
 	ID             uint
+	UserID         uint
 	Title          string
 	Description    string
 	TotalSP        int

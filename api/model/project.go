@@ -9,6 +9,7 @@ import (
 
 type Project struct {
 	gorm.Model
+	UserID         uint      `json:"user_id" gorm:"index"`
 	Title          string    `json:"title"`
 	Description    string    `json:"description"`
 	TotalSP        int       `json:"total_sp"`
@@ -20,6 +21,7 @@ type Project struct {
 func (p *Project) ToDomain() *domain.Project {
 	return &domain.Project{
 		ID:             p.ID,
+		UserID:         p.UserID,
 		Title:          p.Title,
 		Description:    p.Description,
 		TotalSP:        p.TotalSP,
@@ -33,6 +35,7 @@ func (p *Project) ToDomain() *domain.Project {
 
 func FromDomainProject(project *domain.Project) *Project {
 	return &Project{
+		UserID:         project.UserID,
 		Title:          project.Title,
 		Description:    project.Description,
 		TotalSP:        project.TotalSP,
