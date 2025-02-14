@@ -30,11 +30,7 @@ func (h AuthHandler) SignUp(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	user := &domain.User{
-		Email:    req.Email,
-		Password: req.Password,
-	}
-	err := h.Usecase.SignUp(user)
+	user, err := h.Usecase.SignUp(*req)
 	if errors.Is(err, usecase.ErrEmailAlreadyExists) {
 		return c.JSON(http.StatusConflict, err)
 	}
@@ -56,6 +52,11 @@ func (h AuthHandler) SignUp(c echo.Context) error {
 // @Failure      500
 // @Router       /sign_in [post]
 func (h AuthHandler) SignIn(c echo.Context) error {
+	req := new(io.SignInRequest)
+	if err := c.Bind(req); err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
 	user := new(domain.User)
 	if err := c.Bind(user); err != nil {
 		return c.JSON(http.StatusBadRequest, err)

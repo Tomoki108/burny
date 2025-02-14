@@ -8,6 +8,7 @@ import (
 
 	"github.com/Tomoki108/burny/config"
 	"github.com/Tomoki108/burny/domain"
+	"github.com/Tomoki108/burny/handler/io"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -24,17 +25,25 @@ type JwtCustomClaims struct {
 	jwt.RegisteredClaims
 }
 
-func (u AuthUseCase) SignUp(user *domain.User) error {
-	exisitingUser, err := u.Repo.GetByEmail(u.Transactioner.Default(), user.Email)
+func (u AuthUseCase) SignUp(req io.SignUpRequest) (*domain.User, error) {
+	exisitingUser, err := u.Repo.GetByEmail(u.Transactioner.Default(), req.Email)
 	if err != nil {
-		return err
+		return nil, err
 	}
 	if exisitingUser != nil {
-		return ErrEmailAlreadyExists
+		return nil, ErrEmailAlreadyExists
 	}
 
-	_, err = u.Repo.Create(u.Transactioner.Default(), user)
-	return err
+	hassedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return nil, err
+	}
+	user := &domain.User{
+		Email:    req.Email,
+		Password: string(hassedPassword),
+	}
+
+	return u.Repo.Create(u.Transactioner.Default(), user)
 }
 
 func (u AuthUseCase) SignIn(user *domain.User) (tokenStr string, err error) {

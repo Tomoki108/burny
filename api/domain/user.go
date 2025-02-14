@@ -5,7 +5,7 @@ import "encoding/json"
 type User struct {
 	ID       uint   `json:"id"`
 	Email    string `json:"email"`
-	Password string `json:"password"`
+	Password string `json:"password"` // always must be hashed
 }
 
 // MarshalJSONをカスタマイズし、パスワードをレスポンスから取り除く
@@ -19,9 +19,7 @@ func (u User) MarshalJSON() ([]byte, error) {
 	})
 }
 
-// NOTE: 取得したUserのパスワードはハッシュ化されている
 type UserRepository interface {
-	// passwordのハッシュ化はinfrastructure層で行う
 	Create(tx Transaction, user *User) (*User, error)
 	Get(tx Transaction, id uint) (*User, error)
 	GetByEmail(tx Transaction, email string) (*User, error)
