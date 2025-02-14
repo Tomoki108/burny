@@ -77,3 +77,21 @@ func (r *SprintRepository) Delete(tx domain.Transaction, projectID, sprintID uin
 
 	return nil
 }
+
+func (r *SprintRepository) UpsertList(tx domain.Transaction, sprints []*domain.Sprint) ([]*domain.Sprint, error) {
+	db := tx.(*gorm.DB)
+	models := make([]model.Sprint, 0, len(sprints))
+	for _, sprint := range sprints {
+		model := model.FromDomainSprint(sprint)
+		models = append(models, *model)
+		if err := db.Save(model).Error; err != nil {
+			return nil, err
+		}
+	}
+
+	domains := make([]*domain.Sprint, 0, len(models))
+	for _, model := range models {
+		domains = append(domains, model.ToDomain())
+	}
+	return domains, nil
+}

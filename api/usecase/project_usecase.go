@@ -122,12 +122,8 @@ func (u ProjectUseCase) Update(userID uint, req io.UpdateProjectRequest) (*domai
 		idealSP := project.TotalSP / req.SprintCount
 		for _, sprint := range sprints {
 			sprint.IdealSP = idealSP
-			_, err := u.SprintRepo.Update(tx, sprint.ProjectID, sprint.ID, sprint.IdealSP)
-			if err != nil {
-				return err
-			}
 		}
-
+		_, err = u.SprintRepo.UpsertList(tx, sprints)
 		updatedProject, err = u.ProjectRepo.Update(tx, project)
 		return err
 	})
