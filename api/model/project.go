@@ -15,8 +15,6 @@ type Project struct {
 	StartDate      time.Time `json:"start_date"`
 	SprintDuration int       `json:"sprint_duration"`
 	SprintCount    int       `json:"sprint_count"`
-	CreatedAt      time.Time `json:"created_at"`
-	UpdatedAt      time.Time `json:"updated_at"`
 }
 
 func (p *Project) ToDomain() *domain.Project {
@@ -41,7 +39,9 @@ func FromDomainProject(project *domain.Project) *Project {
 		StartDate:      project.StartDate,
 		SprintCount:    project.SprintCount,
 		SprintDuration: project.SprintDuration,
-		CreatedAt:      project.CreatedAt,
-		UpdatedAt:      project.UpdatedAt,
+		Model: gorm.Model{
+			CreatedAt: project.CreatedAt,
+			UpdatedAt: project.UpdatedAt,
+		},
 	}
 }

@@ -13,14 +13,21 @@ type User struct {
 
 func (u *User) ToDomain() *domain.User {
 	return &domain.User{
-		ID:       u.ID,
-		Email:    u.Email,
-		Password: u.Password,
+		ID:        u.ID,
+		Email:     u.Email,
+		Password:  u.Password,
+		CreatedAt: u.CreatedAt,
+		UpdatedAt: u.UpdatedAt,
 	}
 }
 
 func FromDomainUser(user *domain.User) *User {
 	return &User{
+		Model: gorm.Model{
+			ID:        user.ID,
+			CreatedAt: user.CreatedAt,
+			UpdatedAt: user.UpdatedAt,
+		},
 		Email:    user.Email,
 		Password: user.Password,
 	}

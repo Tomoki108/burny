@@ -14,8 +14,6 @@ type Sprint struct {
 	EndDate   time.Time `json:"end_date"`
 	ActualSP  int       `json:"actual_sp"`
 	IdealSP   int       `json:"ideal_sp"`
-	CreatedAt time.Time `json:"created_at"`
-	UpdatedAt time.Time `json:"updated_at"`
 }
 
 func (s *Sprint) ToDomain() *domain.Sprint {
@@ -33,6 +31,11 @@ func (s *Sprint) ToDomain() *domain.Sprint {
 
 func FromDomainSprint(sprint *domain.Sprint) *Sprint {
 	return &Sprint{
+		Model: gorm.Model{
+			ID:        sprint.ID,
+			CreatedAt: sprint.CreatedAt,
+			UpdatedAt: sprint.UpdatedAt,
+		},
 		ProjectID: sprint.ProjectID,
 		StartDate: sprint.StartDate,
 		EndDate:   sprint.EndDate,
