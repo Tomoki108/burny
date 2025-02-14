@@ -17,14 +17,11 @@ func NewSprintRepository() domain.SprintRepository {
 type SprintRepository struct {
 }
 
-func (r *SprintRepository) Create(tx domain.Transaction, sprint *domain.Sprint) (*domain.Sprint, error) {
+func (r *SprintRepository) Create(tx domain.Transaction, sprint *domain.Sprint) error {
 	db := tx.(*gorm.DB)
 	model := model.FromDomainSprint(sprint)
-	if err := db.Create(model).Error; err != nil {
-		return nil, err
-	}
 
-	return r.Get(tx, model.ID, model.ProjectID)
+	return db.Create(model).Error
 }
 
 func (r *SprintRepository) List(tx domain.Transaction, pojectID uint) ([]*domain.Sprint, error) {
@@ -43,8 +40,8 @@ func (r *SprintRepository) List(tx domain.Transaction, pojectID uint) ([]*domain
 }
 
 func (r *SprintRepository) Get(tx domain.Transaction, pojectID, sprintID uint) (*domain.Sprint, error) {
-	db := tx.(*gorm.DB)
 	var sprint model.Sprint
+	db := tx.(*gorm.DB)
 	if err := db.Where("id = ? AND project_id = ?", sprintID, pojectID).First(&sprint).Error; err != nil {
 		return nil, err
 	}

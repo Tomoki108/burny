@@ -14,8 +14,8 @@ type ProjectRepository struct {
 }
 
 func (r *ProjectRepository) List(tx domain.Transaction, userID uint) ([]*domain.Project, error) {
-	var projects []model.Project
 	db := tx.(*gorm.DB)
+	var projects []model.Project
 	err := db.Where("user_id = ?", userID).
 		Order("id ASC").
 		Find(&projects).

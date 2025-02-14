@@ -4,7 +4,6 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/Tomoki108/burny/domain"
 	"github.com/Tomoki108/burny/handler/io"
 	"github.com/Tomoki108/burny/usecase"
 
@@ -53,15 +52,8 @@ func (h ProjectHandler) Create(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	project := &domain.Project{
-		Title:          req.Title,
-		Description:    req.Description,
-		TotalSP:        req.TotalSP,
-		StartDate:      req.StartDate,
-		SprintDuration: req.SprintDuration,
-		SprintCount:    req.SprintCount,
-	}
-	created, err := h.UseCase.Create(project)
+	userID := c.Get("user_id").(uint)
+	created, err := h.UseCase.Create(userID, *req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}

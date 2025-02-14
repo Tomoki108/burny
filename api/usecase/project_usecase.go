@@ -20,21 +20,31 @@ func (u ProjectUseCase) List(userID uint) ([]*domain.Project, error) {
 	return u.ProjectRepo.List(u.Transactioner.Default(), userID)
 }
 
-func (u ProjectUseCase) Create(project *domain.Project) (*domain.Project, error) {
-	var createdProject *domain.Project
+func (u ProjectUseCase) Create(userID uint, req io.CreateProjectRequest) (*domain.Project, error) {
+	project := &domain.Project{
+		UserID:         userID,
+		Title:          req.Title,
+		Description:    req.Description,
+		TotalSP:        req.TotalSP,
+		StartDate:      req.StartDate,
+		SprintDuration: req.SprintDuration,
+		SprintCount:    req.SprintCount,
+	}
+
 	err := u.Transactioner.Transaction(func(tx domain.Transaction) (err error) {
-		createdProject, err = u.ProjectRepo.Create(tx, project)
+		project, err = u.ProjectRepo.Create(tx, project)
 		if err != nil {
 			return err
 		}
 
-		sprints := make([]*domain.Sprint, 0, createdProject.SprintCount)
-		idealSP := createdProject.TotalSP / createdProject.SprintCount
-		startDate := createdProject.StartDate
-		endDate := startDate.AddDate(0, 0, 7*createdProject.SprintDuration)
-		for i := 0; i < createdProject.SprintCount; i++ {
+		sprints := make([]*domain.Sprint, 0, project.SprintCount)
+		idealSP := project.TotalSP / project.SprintCount
+		startDate := project.StartDate
+		endDate := startDate.AddDate(0, 0, 7*project.SprintDuration)
+		for i := 0; i < project.SprintCount; i++ {
 			sprint := &domain.Sprint{
-				ProjectID: createdProject.ID,
+				UserID:    userID,
+				ProjectID: project.ID,
 				IdealSP:   idealSP,
 				StartDate: startDate,
 				EndDate:   endDate,
@@ -42,11 +52,11 @@ func (u ProjectUseCase) Create(project *domain.Project) (*domain.Project, error)
 			sprints = append(sprints, sprint)
 
 			startDate = endDate
-			endDate = startDate.AddDate(0, 0, 7*createdProject.SprintDuration)
+			endDate = startDate.AddDate(0, 0, 7*project.SprintDuration)
 		}
 
 		for _, sprint := range sprints {
-			_, err := u.SprintRepo.Create(tx, sprint)
+			err := u.SprintRepo.Create(tx, sprint)
 			if err != nil {
 				return err
 			}
@@ -55,7 +65,7 @@ func (u ProjectUseCase) Create(project *domain.Project) (*domain.Project, error)
 		return nil
 	})
 
-	return createdProject, err
+	return project, err
 }
 
 func (u ProjectUseCase) Get(id uint) (*domain.Project, error) {
@@ -85,6 +95,7 @@ func (u ProjectUseCase) Update(req io.UpdateProjectRequest) (*domain.Project, er
 			endDate := startDate.AddDate(0, 0, 7*project.SprintDuration)
 			for i := 0; i < countDiff; i++ {
 				sprint := &domain.Sprint{
+					UserID:    project.UserID,
 					ProjectID: project.ID,
 					StartDate: startDate,
 					EndDate:   endDate,
