@@ -2,7 +2,6 @@ package handler
 
 import (
 	"net/http"
-	"strconv"
 
 	"github.com/Tomoki108/burny/handler/io"
 	"github.com/Tomoki108/burny/usecase"
@@ -77,7 +76,9 @@ func (h ProjectHandler) Get(c echo.Context) error {
 	if err := c.Bind(req); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
-	project, err := h.UseCase.Get(req.PrrojectID)
+
+	userID := c.Get("user_id").(uint)
+	project, err := h.UseCase.Get(userID, req.ProjectID)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, err)
 	}
@@ -103,7 +104,8 @@ func (h ProjectHandler) Update(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	updated, err := h.UseCase.Update(*req)
+	userID := c.Get("user_id").(uint)
+	updated, err := h.UseCase.Update(userID, *req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -123,12 +125,13 @@ func (h ProjectHandler) Update(c echo.Context) error {
 // @Failure      500
 // @Router       /projects/{project_id} [delete]
 func (h ProjectHandler) Delete(c echo.Context) error {
-	id, err := strconv.ParseUint(c.Param("project_id"), 10, 64)
-	if err != nil {
+	req := new(io.DeleteProjectRequest)
+	if err := c.Bind(req); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
 
-	err = h.UseCase.Delete(uint(id))
+	userID := c.Get("user_id").(uint)
+	err := h.UseCase.Delete(userID, *req)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}

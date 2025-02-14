@@ -38,17 +38,15 @@ func (r *ProjectRepository) Create(tx domain.Transaction, project *domain.Projec
 	if err := db.Create(model).Error; err != nil {
 		return nil, err
 	}
-
-	return r.Get(tx, model.ID)
+	return model.ToDomain(), nil
 }
 
-func (r *ProjectRepository) Get(tx domain.Transaction, id uint) (*domain.Project, error) {
+func (r *ProjectRepository) Get(tx domain.Transaction, userID, id uint) (*domain.Project, error) {
 	db := tx.(*gorm.DB)
 	var project model.Project
 	if err := db.First(&project, id).Error; err != nil {
 		return nil, err
 	}
-
 	return project.ToDomain(), nil
 }
 
@@ -58,11 +56,10 @@ func (r *ProjectRepository) Update(tx domain.Transaction, project *domain.Projec
 	if err := db.Save(model).Error; err != nil {
 		return nil, err
 	}
-
-	return r.Get(tx, model.ID)
+	return model.ToDomain(), nil
 }
 
-func (r *ProjectRepository) Delete(tx domain.Transaction, id uint) error {
+func (r *ProjectRepository) Delete(tx domain.Transaction, userID, id uint) error {
 	db := tx.(*gorm.DB)
 	return db.Delete(&model.Project{}, id).Error
 }

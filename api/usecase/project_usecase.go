@@ -68,14 +68,14 @@ func (u ProjectUseCase) Create(userID uint, req io.CreateProjectRequest) (*domai
 	return project, err
 }
 
-func (u ProjectUseCase) Get(id uint) (*domain.Project, error) {
-	return u.ProjectRepo.Get(u.Transactioner.Default(), id)
+func (u ProjectUseCase) Get(userID, id uint) (*domain.Project, error) {
+	return u.ProjectRepo.Get(u.Transactioner.Default(), userID, id)
 }
 
-func (u ProjectUseCase) Update(req io.UpdateProjectRequest) (*domain.Project, error) {
+func (u ProjectUseCase) Update(userID uint, req io.UpdateProjectRequest) (*domain.Project, error) {
 	var updatedProject *domain.Project
 	err := u.Transactioner.Transaction(func(tx domain.Transaction) (err error) {
-		project, err := u.ProjectRepo.Get(tx, req.PrrojectID)
+		project, err := u.ProjectRepo.Get(tx, userID, req.ProjectID)
 		if err != nil {
 			return err
 		}
@@ -135,6 +135,6 @@ func (u ProjectUseCase) Update(req io.UpdateProjectRequest) (*domain.Project, er
 	return updatedProject, err
 }
 
-func (u ProjectUseCase) Delete(id uint) error {
-	return u.ProjectRepo.Delete(u.Transactioner.Default(), id)
+func (u ProjectUseCase) Delete(userID uint, req io.DeleteProjectRequest) error {
+	return u.ProjectRepo.Delete(u.Transactioner.Default(), userID, req.ProjectID)
 }

@@ -20,6 +20,8 @@ definitions:
         type: integer
       updatedAt:
         type: string
+      userID:
+        type: integer
     type: object
   domain.Sprint:
     properties:
@@ -39,14 +41,21 @@ definitions:
         type: string
       updated_at:
         type: string
+      user_id:
+        type: integer
     type: object
   domain.User:
     properties:
+      created_at:
+        type: string
       email:
         type: string
       id:
         type: integer
       password:
+        description: always must be hashed
+        type: string
+      updated_at:
         type: string
     type: object
   io.CreateProjectRequest:
@@ -99,7 +108,6 @@ definitions:
       actual_sp:
         type: integer
     type: object
-host: localhost:1323
 info:
   contact: {}
   description: API Doc of Burny Backend

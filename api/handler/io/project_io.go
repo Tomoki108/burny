@@ -3,7 +3,7 @@ package io
 import "time"
 
 type ProjectRequestBase struct {
-	PrrojectID uint `json:"-" param:"project_id"`
+	ProjectID uint `json:"-" param:"project_id"`
 }
 
 type GetProjectRequest ProjectRequestBase
@@ -24,3 +24,5 @@ type UpdateProjectRequest struct {
 	TotalSP     int    `json:"total_sp"`
 	SprintCount int    `json:"sprint_count"`
 }
+
+type DeleteProjectRequest ProjectRequestBase

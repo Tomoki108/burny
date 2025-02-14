@@ -10,7 +10,6 @@
         },
         "version": "1.0"
     },
-    "host": "localhost:1323",
     "basePath": "/api/v1",
     "paths": {
         "/projects": {
@@ -426,6 +425,9 @@
                 },
                 "updatedAt": {
                     "type": "string"
+                },
+                "userID": {
+                    "type": "integer"
                 }
             }
         },
@@ -455,12 +457,18 @@
                 },
                 "updated_at": {
                     "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         },
         "domain.User": {
             "type": "object",
             "properties": {
+                "created_at": {
+                    "type": "string"
+                },
                 "email": {
                     "type": "string"
                 },
@@ -468,6 +476,10 @@
                     "type": "integer"
                 },
                 "password": {
+                    "description": "always must be hashed",
+                    "type": "string"
+                },
+                "updated_at": {
                     "type": "string"
                 }
             }

@@ -66,7 +66,7 @@ func (r *SprintRepository) Update(tx domain.Transaction, projectID, sprintID uin
 		return nil, err
 	}
 
-	return r.Get(tx, sprint.ID, sprint.ProjectID)
+	return r.Get(tx, sprint.ProjectID, sprint.ID)
 }
 
 func (r *SprintRepository) Delete(tx domain.Transaction, projectID, sprintID uint) error {

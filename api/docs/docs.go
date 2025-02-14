@@ -432,6 +432,9 @@ const docTemplate = `{
                 },
                 "updatedAt": {
                     "type": "string"
+                },
+                "userID": {
+                    "type": "integer"
                 }
             }
         },
@@ -461,12 +464,18 @@ const docTemplate = `{
                 },
                 "updated_at": {
                     "type": "string"
+                },
+                "user_id": {
+                    "type": "integer"
                 }
             }
         },
         "domain.User": {
             "type": "object",
             "properties": {
+                "created_at": {
+                    "type": "string"
+                },
                 "email": {
                     "type": "string"
                 },
@@ -474,6 +483,10 @@ const docTemplate = `{
                     "type": "integer"
                 },
                 "password": {
+                    "description": "always must be hashed",
+                    "type": "string"
+                },
+                "updated_at": {
                     "type": "string"
                 }
             }
@@ -562,7 +575,7 @@ const docTemplate = `{
 // SwaggerInfo holds exported Swagger Info so clients can modify it
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
-	Host:             "localhost:1323",
+	Host:             "",
 	BasePath:         "/api/v1",
 	Schemes:          []string{},
 	Title:            "Burny API",
