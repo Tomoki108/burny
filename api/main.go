@@ -2,12 +2,15 @@ package main
 
 import (
 	"log"
+	"net/http"
+	"strconv"
 
 	"github.com/Tomoki108/burny/config"
 	"github.com/Tomoki108/burny/docs"
 	"github.com/Tomoki108/burny/handler"
 	"github.com/Tomoki108/burny/infrastructure"
 	"github.com/Tomoki108/burny/usecase"
+	"github.com/golang-jwt/jwt/v5"
 
 	echojwt "github.com/labstack/echo-jwt/v4"
 	"github.com/labstack/echo/v4"
@@ -68,7 +71,7 @@ func main() {
 	g.POST("/sign_up", authHandler.SignUp)
 	g.POST("/sign_in", authHandler.SignIn)
 
-	ug := g.Group("", echojwt.JWT([]byte([]byte(config.Conf.JwtSecret))))
+	ug := g.Group("", customJWTMiddleware([]byte(config.Conf.JwtSecret)))
 	ug.GET("/projects", projectHandler.List)
 	ug.POST("/projects", projectHandler.Create)
 	ug.GET("/projects/:project_id", projectHandler.Get)
@@ -79,4 +82,24 @@ func main() {
 
 	// サーバー起動
 	e.Logger.Fatal(e.Start(":1323"))
+}
+
+func customJWTMiddleware(secretKey []byte) echo.MiddlewareFunc {
+	return echojwt.WithConfig(echojwt.Config{
+		SigningKey: secretKey,
+		SuccessHandler: func(c echo.Context) {
+			user := c.Get("user").(*jwt.Token)
+			claims := user.Claims.(jwt.MapClaims)
+
+			if userID, ok := claims["user_id"].(string); ok {
+				userIDInt, _ := strconv.Atoi(userID)
+				c.Set("user_id", uint(userIDInt))
+			} else if userIDFloat, ok := claims["user_id"].(float64); ok {
+				c.Set("user_id", uint(userIDFloat)) // 数値の場合
+			}
+		},
+		ErrorHandler: func(c echo.Context, err error) error {
+			return c.JSON(http.StatusUnauthorized, echo.Map{"error": "invalid token"})
+		},
+	})
 }

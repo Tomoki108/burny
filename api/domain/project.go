@@ -15,7 +15,7 @@ type Project struct {
 }
 
 type ProjectRepository interface {
-	List() ([]*Project, error)
+	List(tx Transaction, userID uint) ([]*Project, error)
 	Create(tx Transaction, project *Project) (*Project, error)
 	Get(tx Transaction, id uint) (*Project, error)
 	Update(tx Transaction, project *Project) (*Project, error)

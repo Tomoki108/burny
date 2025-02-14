@@ -20,11 +20,6 @@ type AuthUseCase struct {
 	Repo          domain.UserRepository
 	Transactioner domain.Transactioner
 }
-type JwtCustomClaims struct {
-	ID    uint
-	Email string
-	jwt.RegisteredClaims
-}
 
 func (u AuthUseCase) SignUp(req io.SignUpRequest) (*domain.User, error) {
 	exisitingUser, err := u.Repo.GetByEmail(u.Transactioner.Default(), req.Email)
@@ -60,12 +55,10 @@ func (u AuthUseCase) SignIn(req io.SignInRequest) (tokenStr string, err error) {
 		return "", ErrInvalidPassword
 	}
 
-	claims := &JwtCustomClaims{
-		ID:    user.ID,
-		Email: user.Email,
-		RegisteredClaims: jwt.RegisteredClaims{
-			ExpiresAt: jwt.NewNumericDate(time.Now().Add(time.Hour * 24)),
-		},
+	claims := &jwt.MapClaims{
+		"user_id": user.ID,
+		"email":   user.Email,
+		"exp":     time.Now().Add(time.Hour * 24).Unix(),
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
 	t, err := token.SignedString([]byte(config.Conf.JwtSecret))

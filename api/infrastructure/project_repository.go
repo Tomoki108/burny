@@ -13,9 +13,14 @@ func NewProjectRepository() domain.ProjectRepository {
 type ProjectRepository struct {
 }
 
-func (r *ProjectRepository) List() ([]*domain.Project, error) {
+func (r *ProjectRepository) List(tx domain.Transaction, userID uint) ([]*domain.Project, error) {
 	var projects []model.Project
-	if err := DB.Find(&projects).Error; err != nil {
+	db := tx.(*gorm.DB)
+	err := db.Where("user_id = ?", userID).
+		Order("id ASC").
+		Find(&projects).
+		Error
+	if err != nil {
 		return nil, err
 	}
 

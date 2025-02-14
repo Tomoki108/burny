@@ -3,8 +3,7 @@ package io
 import "time"
 
 type ProjectRequestBase struct {
-	ID     uint `json:"-" param:"project_id"`
-	UserID uint `json:"-" param:"user_id"`
+	PrrojectID uint `json:"-" param:"project_id"`
 }
 
 type GetProjectRequest ProjectRequestBase

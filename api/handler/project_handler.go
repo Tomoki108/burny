@@ -26,7 +26,9 @@ type ProjectHandler struct {
 // @Failure      500
 // @Router       /projects [get]
 func (h ProjectHandler) List(c echo.Context) error {
-	projects, err := h.UseCase.List()
+	userID := c.Get("user_id").(uint)
+
+	projects, err := h.UseCase.List(userID)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, err)
 	}
@@ -83,7 +85,7 @@ func (h ProjectHandler) Get(c echo.Context) error {
 	if err := c.Bind(req); err != nil {
 		return c.JSON(http.StatusBadRequest, err)
 	}
-	project, err := h.UseCase.Get(req.ID)
+	project, err := h.UseCase.Get(req.PrrojectID)
 	if err != nil {
 		return c.JSON(http.StatusNotFound, err)
 	}

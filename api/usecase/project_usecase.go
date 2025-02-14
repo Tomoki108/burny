@@ -16,8 +16,8 @@ type ProjectUseCase struct {
 	Transactioner domain.Transactioner
 }
 
-func (u ProjectUseCase) List() ([]*domain.Project, error) {
-	return u.ProjectRepo.List()
+func (u ProjectUseCase) List(userID uint) ([]*domain.Project, error) {
+	return u.ProjectRepo.List(u.Transactioner.Default(), userID)
 }
 
 func (u ProjectUseCase) Create(project *domain.Project) (*domain.Project, error) {
@@ -65,7 +65,7 @@ func (u ProjectUseCase) Get(id uint) (*domain.Project, error) {
 func (u ProjectUseCase) Update(req io.UpdateProjectRequest) (*domain.Project, error) {
 	var updatedProject *domain.Project
 	err := u.Transactioner.Transaction(func(tx domain.Transaction) (err error) {
-		project, err := u.ProjectRepo.Get(tx, req.ID)
+		project, err := u.ProjectRepo.Get(tx, req.PrrojectID)
 		if err != nil {
 			return err
 		}
