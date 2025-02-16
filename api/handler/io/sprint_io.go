@@ -8,6 +8,6 @@ type ListSprintRequest ProjectSprintRequestBase
 
 type UpdateSprintRequest struct {
 	ProjectSprintRequestBase
-	ID       uint `json:"-" param:"sprint_id"`
-	ActualSP int  `json:"actual_sp"`
+	ID       uint `json:"-" param:"sprint_id" validate:"required"`
+	ActualSP int  `json:"actual_sp" validate:"required max=100"`
 }

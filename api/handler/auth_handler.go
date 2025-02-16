@@ -25,8 +25,8 @@ type AuthHandler struct {
 // @Router       /sign_up [post]
 func (h AuthHandler) SignUp(c echo.Context) error {
 	req := new(io.SignUpRequest)
-	if err := c.Bind(req); err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+	if err := handleReq(c, req); err != nil {
+		return err
 	}
 
 	user, err := h.Usecase.SignUp(*req)
@@ -52,8 +52,8 @@ func (h AuthHandler) SignUp(c echo.Context) error {
 // @Router       /sign_in [post]
 func (h AuthHandler) SignIn(c echo.Context) error {
 	req := new(io.SignInRequest)
-	if err := c.Bind(req); err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+	if err := handleReq(c, req); err != nil {
+		return err
 	}
 
 	jwtToken, err := h.Usecase.SignIn(*req)

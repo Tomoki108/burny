@@ -47,8 +47,8 @@ func (h ProjectHandler) List(c echo.Context) error {
 // @Router       /projects [post]
 func (h ProjectHandler) Create(c echo.Context) error {
 	req := new(io.CreateProjectRequest)
-	if err := c.Bind(req); err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+	if err := handleReq(c, req); err != nil {
+		return err
 	}
 
 	userID := c.Get("user_id").(uint)
@@ -73,8 +73,8 @@ func (h ProjectHandler) Create(c echo.Context) error {
 // @Router       /projects/{project_id} [get]
 func (h ProjectHandler) Get(c echo.Context) error {
 	req := new(io.GetProjectRequest)
-	if err := c.Bind(req); err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+	if err := handleReq(c, req); err != nil {
+		return err
 	}
 
 	userID := c.Get("user_id").(uint)
@@ -100,8 +100,8 @@ func (h ProjectHandler) Get(c echo.Context) error {
 // @Router       /projects/{project_id} [put]
 func (h ProjectHandler) Update(c echo.Context) error {
 	req := new(io.UpdateProjectRequest)
-	if err := c.Bind(req); err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+	if err := handleReq(c, req); err != nil {
+		return err
 	}
 
 	userID := c.Get("user_id").(uint)
@@ -126,8 +126,8 @@ func (h ProjectHandler) Update(c echo.Context) error {
 // @Router       /projects/{project_id} [delete]
 func (h ProjectHandler) Delete(c echo.Context) error {
 	req := new(io.DeleteProjectRequest)
-	if err := c.Bind(req); err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+	if err := handleReq(c, req); err != nil {
+		return err
 	}
 
 	userID := c.Get("user_id").(uint)

@@ -25,8 +25,8 @@ type SprintHandler struct {
 // @Router       /projects/{project_id}/sprints [get]
 func (h SprintHandler) List(c echo.Context) error {
 	req := new(io.ListSprintRequest)
-	if err := c.Bind(req); err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+	if err := handleReq(c, req); err != nil {
+		return err
 	}
 
 	sprints, err := h.UseCase.List(req.ProjectID)
@@ -51,8 +51,8 @@ func (h SprintHandler) List(c echo.Context) error {
 // @Router       /projects/{project_id}/sprints/{sprint_id} [patch]
 func (h SprintHandler) Update(c echo.Context) error {
 	req := new(io.UpdateSprintRequest)
-	if err := c.Bind(req); err != nil {
-		return c.JSON(http.StatusBadRequest, err)
+	if err := handleReq(c, req); err != nil {
+		return err
 	}
 
 	updated, err := h.UseCase.Update(req.ProjectID, req.ID, req.ActualSP)
