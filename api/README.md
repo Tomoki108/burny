@@ -14,11 +14,12 @@ API DOC: http://localhost:1323/swagger/index.html
 
 ## Prerequisites
 
-- Install [goenv](https://github.com/go-nv/goenv) and specified go version.
+- Install [goenv](https://github.com/go-nv/goenv), specified go version and tools.
 
   ```shell
   brew install goenv
   goenv install 1.23.4
+  go install github.com/swaggo/swag/cmd/swag@latest
   ```
 
 - Create `.envrc` from `.envrc.sample`. (Don't forget `direnv allow` after adding some env var.)
