@@ -31,10 +31,10 @@ func (h AuthHandler) SignUp(c echo.Context) error {
 
 	user, err := h.Usecase.SignUp(*req)
 	if errors.Is(err, usecase.ErrEmailAlreadyExists) {
-		return c.JSON(http.StatusConflict, err)
+		return c.JSON(http.StatusConflict, io.NewErrResp(err.Error()))
 	}
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}
 
 	return c.JSON(http.StatusCreated, user)
@@ -58,7 +58,7 @@ func (h AuthHandler) SignIn(c echo.Context) error {
 
 	jwtToken, err := h.Usecase.SignIn(*req)
 	if errors.Is(err, usecase.ErrUserNotExists) || errors.Is(err, usecase.ErrInvalidPassword) {
-		return c.JSON(http.StatusUnauthorized, err)
+		return c.JSON(http.StatusUnauthorized, io.NewErrResp(err.Error()))
 	}
 
 	res := io.SignInResponse{

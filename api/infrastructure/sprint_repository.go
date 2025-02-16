@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-var ErrrSprintNotFound = errors.New("スプリントが存在しません")
+var ErrrSprintNotFound = errors.New("sprint not found")
 
 func NewSprintRepository() domain.SprintRepository {
 	return &SprintRepository{}

@@ -12,9 +12,9 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-var ErrEmailAlreadyExists = errors.New("メールアドレスが既に使用されています")
-var ErrUserNotExists = errors.New("ユーザーが存在しません")
-var ErrInvalidPassword = errors.New("パスワードが間違っています")
+var ErrEmailAlreadyExists = errors.New("email has already been registered")
+var ErrUserNotExists = errors.New("user not exists")
+var ErrInvalidPassword = errors.New("password is invalid")
 
 type AuthUseCase struct {
 	Repo          domain.UserRepository

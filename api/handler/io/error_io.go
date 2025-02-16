@@ -9,3 +9,9 @@ type ErrorDetail struct {
 	Field   string `json:"field"`
 	Message string `json:"message"`
 }
+
+func NewErrResp(message string) ErrorResponse {
+	return ErrorResponse{
+		Message: message,
+	}
+}

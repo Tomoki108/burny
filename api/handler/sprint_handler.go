@@ -31,7 +31,7 @@ func (h SprintHandler) List(c echo.Context) error {
 
 	sprints, err := h.UseCase.List(req.ProjectID)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}
 
 	return c.JSON(http.StatusOK, sprints)
@@ -57,7 +57,7 @@ func (h SprintHandler) Update(c echo.Context) error {
 
 	updated, err := h.UseCase.Update(req.ProjectID, req.ID, req.ActualSP)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}
 
 	return c.JSON(http.StatusOK, updated)

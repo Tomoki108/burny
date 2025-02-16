@@ -28,7 +28,7 @@ func (h ProjectHandler) List(c echo.Context) error {
 
 	projects, err := h.UseCase.List(userID)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}
 
 	return c.JSON(http.StatusOK, projects)
@@ -54,7 +54,7 @@ func (h ProjectHandler) Create(c echo.Context) error {
 	userID := c.Get("user_id").(uint)
 	created, err := h.UseCase.Create(userID, *req)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}
 
 	return c.JSON(http.StatusCreated, created)
@@ -80,7 +80,7 @@ func (h ProjectHandler) Get(c echo.Context) error {
 	userID := c.Get("user_id").(uint)
 	project, err := h.UseCase.Get(userID, req.ProjectID)
 	if err != nil {
-		return c.JSON(http.StatusNotFound, err)
+		return c.JSON(http.StatusNotFound, io.NewErrResp(err.Error()))
 	}
 
 	return c.JSON(http.StatusOK, project)
@@ -107,7 +107,7 @@ func (h ProjectHandler) Update(c echo.Context) error {
 	userID := c.Get("user_id").(uint)
 	updated, err := h.UseCase.Update(userID, *req)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}
 
 	return c.JSON(http.StatusOK, updated)
@@ -133,7 +133,7 @@ func (h ProjectHandler) Delete(c echo.Context) error {
 	userID := c.Get("user_id").(uint)
 	err := h.UseCase.Delete(userID, *req)
 	if err != nil {
-		return c.JSON(http.StatusInternalServerError, err)
+		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}
 
 	return c.NoContent(http.StatusNoContent)

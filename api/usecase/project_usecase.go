@@ -8,7 +8,7 @@ import (
 	"github.com/Tomoki108/burny/handler/io"
 )
 
-var ErrSprintHasAlreadyStarted = errors.New("既に開始済みのスプリントが削除される様な更新はできません")
+var ErrSprintHasAlreadyStarted = errors.New("can not delete sprint that has already started")
 
 type ProjectUseCase struct {
 	ProjectRepo   domain.ProjectRepository
@@ -124,6 +124,10 @@ func (u ProjectUseCase) Update(userID uint, req io.UpdateProjectRequest) (*domai
 			sprint.IdealSP = idealSP
 		}
 		_, err = u.SprintRepo.UpsertList(tx, sprints)
+		if err != nil {
+			return err
+		}
+
 		updatedProject, err = u.ProjectRepo.Update(tx, project)
 		return err
 	})

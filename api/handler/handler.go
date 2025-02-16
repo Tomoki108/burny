@@ -33,17 +33,19 @@ func init() {
 	en_translations.RegisterDefaultTranslations(Validator, Trans)
 }
 
+// handleReq binds and validates request
 func handleReq[T any](c echo.Context, req *T) error {
+	// bind
 	if err := c.Bind(req); err != nil {
-		return c.JSON(http.StatusBadRequest, io.ErrorResponse{
-			Message: fmt.Sprintf("Failed to bind request: %w", err),
-		})
+		return c.JSON(
+			http.StatusBadRequest,
+			io.NewErrResp(fmt.Sprintf("Failed to bind request: %s", err.Error())),
+		)
 	}
 
+	// validate
 	if err := Validator.Struct(req); err != nil {
-		er := &io.ErrorResponse{
-			Message: "Validation error",
-		}
+		er := io.NewErrResp("Validation error")
 		validationErrors := err.(validator.ValidationErrors)
 		for _, e := range validationErrors {
 			er.Details = append(er.Details, io.ErrorDetail{
