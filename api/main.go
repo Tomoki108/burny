@@ -22,7 +22,7 @@ import (
 // @title           Burny API
 // @version         1.0
 // @description     API Doc of Burny Backend
-// @license.name  GPL 3.0
+// @license.name  AGPL 3.0
 // @license.url   https://www.gnu.org/licenses/agpl-3.0.en.html
 // @BasePath  /api/v1
 func main() {
