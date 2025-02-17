@@ -37,6 +37,7 @@ func (u AuthUseCase) SignUp(req io.SignUpRequest) (*domain.User, error) {
 		return nil, ErrEmailAlreadyExists
 	}
 
+	// NOTE: ハッシュ生成時には内部でランダムなソルトが利用される。ハッシュにはソルトの情報も含まれるため、後で平文と比較検証ができる。
 	hassedPassword, err := bcrypt.GenerateFromPassword([]byte(req.Password), bcrypt.DefaultCost)
 	if err != nil {
 		return nil, err

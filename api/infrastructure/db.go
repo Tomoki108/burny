@@ -32,14 +32,14 @@ func ConnectDB() error {
 	return nil
 }
 
+type Transactioner struct {
+	DB *gorm.DB
+}
+
 func NewTransactioner() domain.Transactioner {
 	return Transactioner{
 		DB: DB,
 	}
-}
-
-type Transactioner struct {
-	DB *gorm.DB
 }
 
 func (t Transactioner) Transaction(fn func(tx domain.Transaction) error) error {
@@ -50,4 +50,16 @@ func (t Transactioner) Transaction(fn func(tx domain.Transaction) error) error {
 
 func (t Transactioner) Default() domain.Transaction {
 	return t.DB
+}
+
+type TestTransactioner struct {
+	Transactioner
+}
+
+func NewTestTransactioner(tx *gorm.DB) domain.Transactioner {
+	return &TestTransactioner{
+		Transactioner: Transactioner{
+			DB: tx,
+		},
+	}
 }
