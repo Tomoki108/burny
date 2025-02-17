@@ -13,6 +13,12 @@ type AuthHandler struct {
 	Usecase usecase.AuthUseCase
 }
 
+func NewAuthHandler(usecase usecase.AuthUseCase) AuthHandler {
+	return AuthHandler{
+		Usecase: usecase,
+	}
+}
+
 // @Summary      Sign up
 // @Description  Sign up
 // @Tags         auth

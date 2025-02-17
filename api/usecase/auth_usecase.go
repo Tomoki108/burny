@@ -21,6 +21,13 @@ type AuthUseCase struct {
 	Transactioner domain.Transactioner
 }
 
+func NewAuthUseCase(repo domain.UserRepository, transactioner domain.Transactioner) AuthUseCase {
+	return AuthUseCase{
+		Repo:          repo,
+		Transactioner: transactioner,
+	}
+}
+
 func (u AuthUseCase) SignUp(req io.SignUpRequest) (*domain.User, error) {
 	exisitingUser, err := u.Repo.GetByEmail(u.Transactioner.Default(), req.Email)
 	if err != nil {

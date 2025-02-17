@@ -14,6 +14,12 @@ type ProjectHandler struct {
 	UseCase usecase.ProjectUseCase
 }
 
+func NewProjectHandler(usecase usecase.ProjectUseCase) ProjectHandler {
+	return ProjectHandler{
+		UseCase: usecase,
+	}
+}
+
 // @Summary      List projects
 // @Description  List projects
 // @Tags         projects

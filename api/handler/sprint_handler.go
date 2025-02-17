@@ -14,6 +14,12 @@ type SprintHandler struct {
 	UseCase usecase.SprintUseCase
 }
 
+func NewSprintHandler(usecase usecase.SprintUseCase) SprintHandler {
+	return SprintHandler{
+		UseCase: usecase,
+	}
+}
+
 // @Summary      List sprints
 // @Description  List sprints
 // @Tags         sprints

@@ -9,7 +9,6 @@ import (
 	"github.com/Tomoki108/burny/docs"
 	"github.com/Tomoki108/burny/handler"
 	"github.com/Tomoki108/burny/infrastructure"
-	"github.com/Tomoki108/burny/usecase"
 	"github.com/golang-jwt/jwt/v5"
 
 	echojwt "github.com/labstack/echo-jwt/v4"
@@ -46,39 +45,34 @@ func main() {
 	e.GET("/swagger/*", echoSwagger.WrapHandler)
 	docs.SwaggerInfo.Host = config.Conf.Host
 
-	// ルーティング
-	projectHandler := handler.ProjectHandler{
-		UseCase: usecase.ProjectUseCase{
-			ProjectRepo:   infrastructure.NewProjectRepository(),
-			SprintRepo:    infrastructure.NewSprintRepository(),
-			Transactioner: infrastructure.NewTransactioner(),
-		},
-	}
-	sprintHandler := handler.SprintHandler{
-		UseCase: usecase.SprintUseCase{
-			SprintRepo:    infrastructure.NewSprintRepository(),
-			Transactioner: infrastructure.NewTransactioner(),
-		},
-	}
-	authHandler := handler.AuthHandler{
-		Usecase: usecase.AuthUseCase{
-			Repo:          infrastructure.NewUserRepository(),
-			Transactioner: infrastructure.NewTransactioner(),
-		},
-	}
+	// DIコンテナからハンドラーを取得
+	ProvideDependencies()
+	var authH handler.AuthHandler
+	container.Invoke(func(h handler.AuthHandler) {
+		authH = h
+	})
+	var projectH handler.ProjectHandler
+	container.Invoke(func(h handler.ProjectHandler) {
+		projectH = h
+	})
+	var sprintH handler.SprintHandler
+	container.Invoke(func(h handler.SprintHandler) {
+		sprintH = h
+	})
 
+	// ルーティング
 	g := e.Group("/api/v1")
-	g.POST("/sign_up", authHandler.SignUp)
-	g.POST("/sign_in", authHandler.SignIn)
+	g.POST("/sign_up", authH.SignUp)
+	g.POST("/sign_in", authH.SignIn)
 
 	ug := g.Group("", customJWTMiddleware([]byte(config.Conf.JwtSecret)))
-	ug.GET("/projects", projectHandler.List)
-	ug.POST("/projects", projectHandler.Create)
-	ug.GET("/projects/:project_id", projectHandler.Get)
-	ug.PUT("/projects/:project_id", projectHandler.Update)
-	ug.DELETE("/projects/:project_id", projectHandler.Delete)
-	ug.GET("/projects/:project_id/sprints", sprintHandler.List)
-	ug.PUT("/sprints/:project_id/sprints/:sprint_id", sprintHandler.Update)
+	ug.GET("/projects", projectH.List)
+	ug.POST("/projects", projectH.Create)
+	ug.GET("/projects/:project_id", projectH.Get)
+	ug.PUT("/projects/:project_id", projectH.Update)
+	ug.DELETE("/projects/:project_id", projectH.Delete)
+	ug.GET("/projects/:project_id/sprints", sprintH.List)
+	ug.PUT("/sprints/:project_id/sprints/:sprint_id", sprintH.Update)
 
 	// サーバー起動
 	e.Logger.Fatal(e.Start(":1323"))

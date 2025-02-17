@@ -17,6 +17,18 @@ type ProjectUseCase struct {
 	Transactioner domain.Transactioner
 }
 
+func NewProjectUseCase(
+	projectRepo domain.ProjectRepository,
+	sprintRepo domain.SprintRepository,
+	transactioner domain.Transactioner,
+) ProjectUseCase {
+	return ProjectUseCase{
+		ProjectRepo:   projectRepo,
+		SprintRepo:    sprintRepo,
+		Transactioner: transactioner,
+	}
+}
+
 func (u ProjectUseCase) List(userID uint) ([]*domain.Project, error) {
 	return u.ProjectRepo.List(u.Transactioner.Default(), userID)
 }

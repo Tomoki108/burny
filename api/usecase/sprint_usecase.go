@@ -13,6 +13,16 @@ type SprintUseCase struct {
 	Transactioner domain.Transactioner
 }
 
+func NewSprintUseCase(
+	sprintRepo domain.SprintRepository,
+	transactioner domain.Transactioner,
+) SprintUseCase {
+	return SprintUseCase{
+		SprintRepo:    sprintRepo,
+		Transactioner: transactioner,
+	}
+}
+
 func (u SprintUseCase) List(pojectID uint) ([]*domain.Sprint, error) {
 	return u.SprintRepo.List(u.Transactioner.Default(), pojectID)
 }

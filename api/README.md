@@ -4,13 +4,17 @@ REST API Server for Burny.
 
 API DOC: http://localhost:1323/swagger/index.html
 
-## teck stack
+## Teck Stack
 
-| category | tool                             |
-| -------- | -------------------------------- |
-| **FW**   | https://github.com/labstack/echo |
-| **ORM**  | https://github.com/go-gorm/gorm  |
-| **DB**   | PostgreSQL                       |
+| Category         | Tool                                       |
+| ---------------- | ------------------------------------------ |
+| **FW**           | https://github.com/labstack/echo           |
+| **ORM**          | https://github.com/go-gorm/gorm            |
+| **DB**           | PostgreSQL                                 |
+| **validation**   | https://github.com/go-playground/validator |
+| **di container** | https://github.com/uber-go/dig             |
+| **e2e test**     | https://github.com/sebdah/goldie           |
+| **doc**          | https://github.com/swaggo/swag             |
 
 ## Prerequisites
 
