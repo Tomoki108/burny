@@ -15,7 +15,7 @@ type provideArg struct {
 	opts        []dig.ProvideOption
 }
 
-func ProvideDependencies() {
+func InitDIContainer() {
 	Container = dig.New()
 
 	args := []provideArg{

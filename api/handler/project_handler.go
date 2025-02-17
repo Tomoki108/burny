@@ -25,7 +25,7 @@ func NewProjectHandler(usecase usecase.ProjectUseCase) ProjectHandler {
 // @Tags         projects
 // @Accept       json
 // @Produce      json
-// @Success      200  {array}   domain.Project
+// @Success      201  {array} domain.Project
 // @Failure      400
 // @Failure      404
 // @Failure      500
@@ -38,7 +38,7 @@ func (h ProjectHandler) List(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}
 
-	return c.JSON(http.StatusOK, projects)
+	return c.JSON(http.StatusCreated, projects)
 }
 
 // @Summary      Create a project

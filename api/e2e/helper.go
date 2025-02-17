@@ -2,8 +2,8 @@ package e2e
 
 import "encoding/json"
 
-// レスポンスのJSONから動的なフィールドを削除する
-// デフォルトでid, created_at, updated_atを削除する
+// レスポンスのJSONから動的なフィールドを削除する.
+// デフォルトでid, created_at, updated_atを削除する.
 func removeDynamicFields(res []byte, ignoreFields ...string) ([]byte, error) {
 	ignoreFields = append(ignoreFields, "id", "created_at", "updated_at")
 

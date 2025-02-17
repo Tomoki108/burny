@@ -11,9 +11,9 @@ import (
 	"github.com/Tomoki108/burny/config"
 	"github.com/Tomoki108/burny/di"
 	"github.com/Tomoki108/burny/domain"
-	"github.com/Tomoki108/burny/handler"
 	"github.com/Tomoki108/burny/handler/io"
 	"github.com/Tomoki108/burny/infrastructure"
+	"github.com/Tomoki108/burny/server"
 	"github.com/labstack/echo/v4"
 	"github.com/sebdah/goldie/v2"
 	"gorm.io/gorm"
@@ -32,14 +32,14 @@ func init() {
 		log.Fatal(err.Error())
 	}
 	// DIコンテナの初期化
-	di.ProvideDependencies()
+	di.InitDIContainer()
 	// テスト用トランザクションの初期化
 	testTx = infrastructure.DB.Begin()
 	di.Container.Decorate(func(transactioner domain.Transactioner) domain.Transactioner {
 		return infrastructure.NewTestTransactioner(testTx)
 	})
-	// Echoインスタンス生成
-	e = echo.New()
+	// サーバーの取得
+	e = server.NewEchoServer()
 }
 
 func TestE2E(t *testing.T) {
@@ -47,26 +47,19 @@ func TestE2E(t *testing.T) {
 
 	UserCanSignUp(t)
 	token := UserCanSignIn(t)
+	UserCanCreateProject(t, token)
 }
 
 func UserCanSignUp(t *testing.T) {
 	reqBody := strings.NewReader(`{"email":"test@test.com","password":"passwd12345"}`)
-	req := httptest.NewRequest(http.MethodPost, "/sign_up", reqBody)
+	req := httptest.NewRequest(http.MethodPost, "/api/v1/sign_up", reqBody)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
 	recorder := httptest.NewRecorder()
-	c := e.NewContext(req, recorder)
+	e.ServeHTTP(recorder, req)
 
-	var authH handler.AuthHandler
-	di.Container.Invoke(func(h handler.AuthHandler) {
-		authH = h
-	})
-
-	if err := authH.SignUp(c); err != nil {
-		t.Fatal(err)
-	}
 	if http.StatusCreated != recorder.Code {
-		t.Fatal("status code is not 201")
+		t.Fatalf("status code is not 201: %d", recorder.Code)
 	}
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "password")
 	if err != nil {
@@ -78,22 +71,14 @@ func UserCanSignUp(t *testing.T) {
 
 func UserCanSignIn(t *testing.T) (token string) {
 	reqBody := strings.NewReader(`{"email":"test@test.com","password":"passwd12345"}`)
-	req := httptest.NewRequest(http.MethodPost, "/sign_int", reqBody)
+	req := httptest.NewRequest(http.MethodPost, "/api/v1/sign_in", reqBody)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
 	recorder := httptest.NewRecorder()
-	c := e.NewContext(req, recorder)
+	e.ServeHTTP(recorder, req)
 
-	var authH handler.AuthHandler
-	di.Container.Invoke(func(h handler.AuthHandler) {
-		authH = h
-	})
-
-	if err := authH.SignIn(c); err != nil {
-		t.Fatal(err)
-	}
 	if http.StatusOK != recorder.Code {
-		t.Fatal("status code is not 200")
+		t.Fatalf("status code is not 200: %d", recorder.Code)
 	}
 
 	bodyBytes := recorder.Body.Bytes()
@@ -103,4 +88,31 @@ func UserCanSignIn(t *testing.T) (token string) {
 		t.Fatal(err)
 	}
 	return res.JwtToken
+}
+
+func UserCanCreateProject(t *testing.T, token string) {
+	reqBody := strings.NewReader(`{
+	  	"title": "test project",
+  		"description": "this is test project",
+		"start_date": "2100-04-01T09:00:00+09:00",
+  		"sprint_count": 100,
+  		"sprint_duration": 1,
+  		"total_sp": 1000
+	}`)
+	req := httptest.NewRequest(http.MethodPost, "/api/v1/projects", reqBody)
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
+
+	recorder := httptest.NewRecorder()
+	e.ServeHTTP(recorder, req)
+
+	if http.StatusCreated != recorder.Code {
+		t.Fatalf("status code is not 201: %d", recorder.Code)
+	}
+	body, err := removeDynamicFields(recorder.Body.Bytes())
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := goldie.New(t)
+	g.Assert(t, "create_project_response", body)
 }
