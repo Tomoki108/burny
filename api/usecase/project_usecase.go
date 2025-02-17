@@ -120,7 +120,7 @@ func (u ProjectUseCase) Update(userID uint, req io.UpdateProjectRequest) (*domai
 			}
 		} else if countDiff < 0 {
 			sprints = sprints[:req.SprintCount]
-			if sprints[len(sprints)-1].EndDate.After(time.Now()) {
+			if sprints[len(sprints)-1].EndDate.Before(time.Now()) {
 				return ErrSprintHasAlreadyStarted
 			}
 

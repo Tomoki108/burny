@@ -2,9 +2,9 @@ package e2e
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http/httptest"
 	"strconv"
-	"testing"
 )
 
 // レスポンスのJSONから動的なフィールドを削除する.
@@ -44,10 +44,11 @@ func removeDynamicFieldsFromObject(obj map[string]interface{}, ignoreFields ...s
 	}
 }
 
-func assertSatusCode(t *testing.T, expected int, recorder *httptest.ResponseRecorder) {
+func assertSatusCode(expected int, recorder *httptest.ResponseRecorder) error {
 	if expected != recorder.Code {
-		t.Fatalf("expected status is %d, got: %d, resp: %s", expected, recorder.Code, recorder.Body.String())
+		return fmt.Errorf("expected status is %d, got: %d, resp: %s", expected, recorder.Code, recorder.Body.String())
 	}
+	return nil
 }
 
 func uintToStr(id uint) string {

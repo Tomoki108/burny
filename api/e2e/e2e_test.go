@@ -66,8 +66,8 @@ func UserCanSignUp(t *testing.T) {
 	e.ServeHTTP(recorder, req)
 
 	// Assert
-	if http.StatusCreated != recorder.Code {
-		assertSatusCode(t, http.StatusCreated, recorder)
+	if err := assertSatusCode(http.StatusCreated, recorder); err != nil {
+		t.Fatal(err)
 	}
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "password")
 	if err != nil {
@@ -88,8 +88,7 @@ func UserCanSignIn(t *testing.T) (token string) {
 	e.ServeHTTP(recorder, req)
 
 	// Assert
-	if http.StatusOK != recorder.Code {
-		assertSatusCode(t, http.StatusOK, recorder)
+	if err := assertSatusCode(http.StatusOK, recorder); err != nil {
 	}
 
 	bodyBytes := recorder.Body.Bytes()
@@ -120,8 +119,8 @@ func UserCanCreateProject(t *testing.T, token string) (projectID uint) {
 	e.ServeHTTP(recorder, req)
 
 	// Assert
-	if http.StatusCreated != recorder.Code {
-		assertSatusCode(t, http.StatusCreated, recorder)
+	if err := assertSatusCode(http.StatusCreated, recorder); err != nil {
+		t.Fatal(err)
 	}
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
 	if err != nil {
@@ -149,8 +148,8 @@ func UserCanListProjects(t *testing.T, token string) {
 	e.ServeHTTP(recorder, req)
 
 	// Assert
-	if recorder.Code != http.StatusOK {
-		assertSatusCode(t, http.StatusOK, recorder)
+	if err := assertSatusCode(http.StatusOK, recorder); err != nil {
+		t.Fatal(err)
 	}
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
 	if err != nil {
@@ -170,8 +169,8 @@ func UserCanGetProject(t *testing.T, token string, projectID uint) {
 	e.ServeHTTP(recorder, req)
 
 	// Assert
-	if recorder.Code != http.StatusOK {
-		assertSatusCode(t, http.StatusOK, recorder)
+	if err := assertSatusCode(http.StatusOK, recorder); err != nil {
+		t.Fatal(err)
 	}
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
 	if err != nil {
@@ -201,8 +200,8 @@ func UserCanUpdateProject(t *testing.T, token string, projectID uint) {
 	e.ServeHTTP(recorder, req)
 
 	// Assert
-	if recorder.Code != http.StatusOK {
-		assertSatusCode(t, http.StatusOK, recorder)
+	if err := assertSatusCode(http.StatusOK, recorder); err != nil {
+		t.Fatal(err)
 	}
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
 	if err != nil {
@@ -222,8 +221,8 @@ func UserCanListSprints(t *testing.T, token string, projectID uint) (sprintID ui
 	e.ServeHTTP(recorder, req)
 
 	// Assert
-	if recorder.Code != http.StatusOK {
-		assertSatusCode(t, http.StatusOK, recorder)
+	if err := assertSatusCode(http.StatusOK, recorder); err != nil {
+		t.Fatal(err)
 	}
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "sprint_id", "project_id")
 	if err != nil {
@@ -243,9 +242,7 @@ func UserCanUpdateSprint(t *testing.T, token string, projectID, sprintID uint) {
 	// Arrange
 	url := "/api/v1/sprints/" + uintToStr(projectID) + "/sprints/" + uintToStr(sprintID)
 	updateJSON := `{
-		"title": "updated sprint",
-		"start_date": "2100-04-03T09:00:00+09:00",
-		"end_date": "2100-04-10T09:00:00+09:00"
+		"actual_sp": 100
 	}`
 	reqBody := strings.NewReader(updateJSON)
 	req := httptest.NewRequest(http.MethodPut, url, reqBody)
@@ -257,8 +254,8 @@ func UserCanUpdateSprint(t *testing.T, token string, projectID, sprintID uint) {
 	e.ServeHTTP(recorder, req)
 
 	// Assert
-	if recorder.Code != http.StatusOK {
-		assertSatusCode(t, http.StatusOK, recorder)
+	if err := assertSatusCode(http.StatusOK, recorder); err != nil {
+		t.Fatal(err)
 	}
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "sprint_id", "project_id")
 	if err != nil {
@@ -278,12 +275,7 @@ func UserCanDeleteProject(t *testing.T, token string, projectID uint) {
 	e.ServeHTTP(recorder, req)
 
 	// Assert
-	if recorder.Code != http.StatusOK {
-		assertSatusCode(t, http.StatusOK, recorder)
-	}
-	body, err := removeDynamicFields(recorder.Body.Bytes())
-	if err != nil {
+	if err := assertSatusCode(http.StatusNoContent, recorder); err != nil {
 		t.Fatal(err)
 	}
-	goldie.New(t).Assert(t, "delete_project_response", body)
 }

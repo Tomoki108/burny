@@ -88,8 +88,7 @@ func (h ProjectHandler) Get(c echo.Context) error {
 	project, err := h.UseCase.Get(userID, req.ProjectID)
 	if errors.Is(err, usecase.ErrProjectNotFound) {
 		return c.JSON(http.StatusNotFound, io.NewErrResp(err.Error()))
-	}
-	if err != nil {
+	} else if err != nil {
 		return c.JSON(http.StatusNotFound, io.NewErrResp(err.Error()))
 	}
 
@@ -118,8 +117,9 @@ func (h ProjectHandler) Update(c echo.Context) error {
 	updated, err := h.UseCase.Update(userID, *req)
 	if errors.Is(err, usecase.ErrProjectNotFound) {
 		return c.JSON(http.StatusNotFound, io.NewErrResp(err.Error()))
-	}
-	if err != nil {
+	} else if errors.Is(err, usecase.ErrSprintHasAlreadyStarted) {
+		return c.JSON(http.StatusBadRequest, io.NewErrResp(err.Error()))
+	} else if err != nil {
 		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}
 
@@ -132,7 +132,7 @@ func (h ProjectHandler) Update(c echo.Context) error {
 // @Accept       json
 // @Produce      json
 // @Param 	 	 project_id path int true "project_id"
-// @Success      200 {object}  domain.Project
+// @Success      204
 // @Failure      400 {object} io.ErrorResponse
 // @Failure      404 {object} io.ErrorResponse
 // @Failure      500 {object} io.ErrorResponse
@@ -147,8 +147,7 @@ func (h ProjectHandler) Delete(c echo.Context) error {
 	err := h.UseCase.Delete(userID, *req)
 	if errors.Is(err, usecase.ErrProjectNotFound) {
 		return c.JSON(http.StatusNotFound, io.NewErrResp(err.Error()))
-	}
-	if err != nil {
+	} else if err != nil {
 		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}
 
