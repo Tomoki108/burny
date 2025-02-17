@@ -122,7 +122,7 @@ func UserCanCreateProject(t *testing.T, token string) (projectID uint) {
 	if err := assertSatusCode(http.StatusCreated, recorder); err != nil {
 		t.Fatal(err)
 	}
-	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
+	body, err := removeDynamicFields(recorder.Body.Bytes())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -151,7 +151,7 @@ func UserCanListProjects(t *testing.T, token string) {
 	if err := assertSatusCode(http.StatusOK, recorder); err != nil {
 		t.Fatal(err)
 	}
-	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
+	body, err := removeDynamicFields(recorder.Body.Bytes())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -172,7 +172,7 @@ func UserCanGetProject(t *testing.T, token string, projectID uint) {
 	if err := assertSatusCode(http.StatusOK, recorder); err != nil {
 		t.Fatal(err)
 	}
-	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
+	body, err := removeDynamicFields(recorder.Body.Bytes())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -203,7 +203,7 @@ func UserCanUpdateProject(t *testing.T, token string, projectID uint) {
 	if err := assertSatusCode(http.StatusOK, recorder); err != nil {
 		t.Fatal(err)
 	}
-	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
+	body, err := removeDynamicFields(recorder.Body.Bytes())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -224,7 +224,7 @@ func UserCanListSprints(t *testing.T, token string, projectID uint) (sprintID ui
 	if err := assertSatusCode(http.StatusOK, recorder); err != nil {
 		t.Fatal(err)
 	}
-	body, err := removeDynamicFields(recorder.Body.Bytes(), "sprint_id", "project_id")
+	body, err := removeDynamicFields(recorder.Body.Bytes())
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -257,7 +257,7 @@ func UserCanUpdateSprint(t *testing.T, token string, projectID, sprintID uint) {
 	if err := assertSatusCode(http.StatusOK, recorder); err != nil {
 		t.Fatal(err)
 	}
-	body, err := removeDynamicFields(recorder.Body.Bytes(), "sprint_id", "project_id")
+	body, err := removeDynamicFields(recorder.Body.Bytes())
 	if err != nil {
 		t.Fatal(err)
 	}

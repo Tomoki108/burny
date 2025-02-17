@@ -8,7 +8,7 @@ import (
 )
 
 // レスポンスのJSONから動的なフィールドを削除する.
-// デフォルトでid, created_at, updated_atを削除する.
+// デフォルトでid, created_at, updated_at, _idサフィックスのフィールドを削除する.
 func removeDynamicFields(res []byte, ignoreFields ...string) ([]byte, error) {
 	var data interface{}
 	if err := json.Unmarshal(res, &data); err != nil {
@@ -34,6 +34,11 @@ func removeDynamicFieldsFromArray(arr []interface{}, ignoreFields ...string) {
 			}
 			arr[i] = obj
 		}
+		for key := range elem.(map[string]interface{}) {
+			if len(key) > 3 && key[len(key)-3:] == "_id" {
+				delete(elem.(map[string]interface{}), key)
+			}
+		}
 	}
 }
 
@@ -41,6 +46,11 @@ func removeDynamicFieldsFromObject(obj map[string]interface{}, ignoreFields ...s
 	ignoreFields = append(ignoreFields, "id", "created_at", "updated_at")
 	for _, field := range ignoreFields {
 		delete(obj, field)
+	}
+	for key := range obj {
+		if len(key) > 3 && key[len(key)-3:] == "_id" {
+			delete(obj, key)
+		}
 	}
 }
 
