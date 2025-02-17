@@ -1,6 +1,7 @@
 package e2e
 
 import (
+	"encoding/json"
 	"log"
 	"net/http"
 	"net/http/httptest"
@@ -11,10 +12,10 @@ import (
 	"github.com/Tomoki108/burny/di"
 	"github.com/Tomoki108/burny/domain"
 	"github.com/Tomoki108/burny/handler"
+	"github.com/Tomoki108/burny/handler/io"
 	"github.com/Tomoki108/burny/infrastructure"
 	"github.com/labstack/echo/v4"
 	"github.com/sebdah/goldie/v2"
-	"github.com/stretchr/testify/assert"
 	"gorm.io/gorm"
 )
 
@@ -45,10 +46,12 @@ func TestE2E(t *testing.T) {
 	defer testTx.Rollback()
 
 	UserCanSignUp(t)
+	token := UserCanSignIn(t)
 }
 
 func UserCanSignUp(t *testing.T) {
-	req := httptest.NewRequest(http.MethodPost, "/sign_up", strings.NewReader(`{"email":"test@test.com","password":"passwd12345"}`))
+	reqBody := strings.NewReader(`{"email":"test@test.com","password":"passwd12345"}`)
+	req := httptest.NewRequest(http.MethodPost, "/sign_up", reqBody)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 
 	recorder := httptest.NewRecorder()
@@ -59,13 +62,45 @@ func UserCanSignUp(t *testing.T) {
 		authH = h
 	})
 
-	if assert.NoError(t, authH.SignUp(c)) {
-		assert.Equal(t, http.StatusCreated, recorder.Code)
-		body, err := removeDynamicFields(recorder.Body.Bytes(), "password")
-		if err != nil {
-			t.Fatal(err)
-		}
-		g := goldie.New(t)
-		g.Assert(t, "signup_response", body)
+	if err := authH.SignUp(c); err != nil {
+		t.Fatal(err)
 	}
+	if http.StatusCreated != recorder.Code {
+		t.Fatal("status code is not 201")
+	}
+	body, err := removeDynamicFields(recorder.Body.Bytes(), "password")
+	if err != nil {
+		t.Fatal(err)
+	}
+	g := goldie.New(t)
+	g.Assert(t, "signup_response", body)
+}
+
+func UserCanSignIn(t *testing.T) (token string) {
+	reqBody := strings.NewReader(`{"email":"test@test.com","password":"passwd12345"}`)
+	req := httptest.NewRequest(http.MethodPost, "/sign_int", reqBody)
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+
+	recorder := httptest.NewRecorder()
+	c := e.NewContext(req, recorder)
+
+	var authH handler.AuthHandler
+	di.Container.Invoke(func(h handler.AuthHandler) {
+		authH = h
+	})
+
+	if err := authH.SignIn(c); err != nil {
+		t.Fatal(err)
+	}
+	if http.StatusOK != recorder.Code {
+		t.Fatal("status code is not 200")
+	}
+
+	bodyBytes := recorder.Body.Bytes()
+	res := io.SignInResponse{}
+	err := json.Unmarshal(bodyBytes, &res)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return res.JwtToken
 }
