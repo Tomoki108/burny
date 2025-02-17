@@ -6,6 +6,7 @@ import (
 	"strconv"
 
 	"github.com/Tomoki108/burny/config"
+	"github.com/Tomoki108/burny/di"
 	"github.com/Tomoki108/burny/docs"
 	"github.com/Tomoki108/burny/handler"
 	"github.com/Tomoki108/burny/infrastructure"
@@ -46,17 +47,17 @@ func main() {
 	docs.SwaggerInfo.Host = config.Conf.Host
 
 	// DIコンテナからハンドラーを取得
-	ProvideDependencies()
+	di.ProvideDependencies()
 	var authH handler.AuthHandler
-	container.Invoke(func(h handler.AuthHandler) {
+	di.Container.Invoke(func(h handler.AuthHandler) {
 		authH = h
 	})
 	var projectH handler.ProjectHandler
-	container.Invoke(func(h handler.ProjectHandler) {
+	di.Container.Invoke(func(h handler.ProjectHandler) {
 		projectH = h
 	})
 	var sprintH handler.SprintHandler
-	container.Invoke(func(h handler.SprintHandler) {
+	di.Container.Invoke(func(h handler.SprintHandler) {
 		sprintH = h
 	})
 

@@ -1,4 +1,4 @@
-package main
+package di
 
 import (
 	"github.com/Tomoki108/burny/domain"
@@ -8,7 +8,7 @@ import (
 	"go.uber.org/dig"
 )
 
-var container *dig.Container
+var Container *dig.Container
 
 type provideArg struct {
 	constructor interface{}
@@ -16,7 +16,7 @@ type provideArg struct {
 }
 
 func ProvideDependencies() {
-	container = dig.New()
+	Container = dig.New()
 
 	args := []provideArg{
 		// handler
@@ -35,7 +35,7 @@ func ProvideDependencies() {
 	}
 
 	for _, arg := range args {
-		if err := container.Provide(arg.constructor, arg.opts...); err != nil {
+		if err := Container.Provide(arg.constructor, arg.opts...); err != nil {
 			panic(err)
 		}
 	}
