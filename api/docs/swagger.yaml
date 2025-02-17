@@ -61,58 +61,111 @@ definitions:
   io.CreateProjectRequest:
     properties:
       description:
+        maxLength: 500
         type: string
       sprint_count:
+        maximum: 100
+        minimum: 1
         type: integer
       sprint_duration:
+        enum:
+        - 1
+        - 2
+        - 3
         type: integer
       start_date:
         type: string
       title:
+        maxLength: 100
         type: string
       total_sp:
+        maximum: 1000
         type: integer
+    required:
+    - sprint_count
+    - sprint_duration
+    - start_date
+    - title
+    - total_sp
+    type: object
+  io.ErrorDetail:
+    properties:
+      field:
+        type: string
+      message:
+        type: string
+    type: object
+  io.ErrorResponse:
+    properties:
+      details:
+        items:
+          $ref: '#/definitions/io.ErrorDetail'
+        type: array
+      message:
+        type: string
     type: object
   io.SignInRequest:
     properties:
       email:
         type: string
       password:
+        maxLength: 20
+        minLength: 8
         type: string
+    required:
+    - password
     type: object
   io.SignInResponse:
     properties:
       token:
         type: string
+    required:
+    - token
     type: object
   io.SignUpRequest:
     properties:
       email:
         type: string
       password:
+        maxLength: 20
+        minLength: 8
         type: string
+    required:
+    - password
     type: object
   io.UpdateProjectRequest:
     properties:
       description:
+        maxLength: 500
         type: string
       sprint_count:
+        maximum: 100
+        minimum: 1
         type: integer
       title:
+        maxLength: 100
         type: string
       total_sp:
+        maximum: 1000
         type: integer
+    required:
+    - sprint_count
+    - title
+    - total_sp
     type: object
   io.UpdateSprintRequest:
     properties:
       actual_sp:
+        maximum: 100
         type: integer
+    required:
+    - actual_sp
     type: object
 info:
   contact: {}
   description: API Doc of Burny Backend
   license:
-    name: GPL 3.0
+    name: AGPL 3.0
     url: https://www.gnu.org/licenses/agpl-3.0.en.html
   title: Burny API
   version: "1.0"
@@ -187,10 +240,16 @@ paths:
             $ref: '#/definitions/domain.Project'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
         "404":
           description: Not Found
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
         "500":
           description: Internal Server Error
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
       summary: Delete a projects
       tags:
       - projects
@@ -213,10 +272,16 @@ paths:
             $ref: '#/definitions/domain.Project'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
         "404":
           description: Not Found
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
         "500":
           description: Internal Server Error
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
       summary: Get a project
       tags:
       - projects
@@ -245,10 +310,16 @@ paths:
             $ref: '#/definitions/domain.Project'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
         "404":
           description: Not Found
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
         "500":
           description: Internal Server Error
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
       summary: Update a project
       tags:
       - projects
@@ -274,8 +345,12 @@ paths:
             type: array
         "404":
           description: Not Found
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
         "500":
           description: Internal Server Error
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
       summary: List sprints
       tags:
       - sprints
@@ -312,8 +387,12 @@ paths:
             type: array
         "404":
           description: Not Found
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
         "500":
           description: Internal Server Error
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
       summary: Update a sprint
       tags:
       - sprints
@@ -338,8 +417,12 @@ paths:
             $ref: '#/definitions/io.SignInResponse'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
         "500":
           description: Internal Server Error
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
       summary: Sign in
       tags:
       - auth
@@ -364,8 +447,12 @@ paths:
             $ref: '#/definitions/domain.User'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
         "500":
           description: Internal Server Error
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
       summary: Sign up
       tags:
       - auth

@@ -19,9 +19,9 @@ type SprintHandler struct {
 // @Accept       json
 // @Produce      json
 // @Param 	 	 project_id path int true "project_id"
-// @Success      200  {array}  domain.Sprint
-// @Failure      404
-// @Failure      500
+// @Success      200 {array}  domain.Sprint
+// @Failure      404 {object} io.ErrorResponse
+// @Failure      500 {object} io.ErrorResponse
 // @Router       /projects/{project_id}/sprints [get]
 func (h SprintHandler) List(c echo.Context) error {
 	req := new(io.ListSprintRequest)
@@ -42,12 +42,12 @@ func (h SprintHandler) List(c echo.Context) error {
 // @Tags         sprints
 // @Accept       json
 // @Produce      json
-// @Success      200  {array}  domain.Sprint
 // @Param 	 	 project_id path int true "project_id"
 // @Param 	 	 sprint_id path int true "sprint_id"
 // @Param 	 	 request body io.UpdateSprintRequest true "request"
-// @Failure      404
-// @Failure      500
+// @Success      200 {array}  domain.Sprint
+// @Failure      404 {object} io.ErrorResponse
+// @Failure      500 {object} io.ErrorResponse
 // @Router       /projects/{project_id}/sprints/{sprint_id} [patch]
 func (h SprintHandler) Update(c echo.Context) error {
 	req := new(io.UpdateSprintRequest)
