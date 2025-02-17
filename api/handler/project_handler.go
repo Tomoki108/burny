@@ -25,9 +25,7 @@ func NewProjectHandler(usecase usecase.ProjectUseCase) ProjectHandler {
 // @Tags         projects
 // @Accept       json
 // @Produce      json
-// @Success      201 {array} domain.Project
-// @Failure      400 {object} io.ErrorResponse
-// @Failure      500 {object} io.ErrorResponse
+// @Success      200 {array} domain.Project
 // @Router       /projects [get]
 func (h ProjectHandler) List(c echo.Context) error {
 	userID := c.Get("user_id").(uint)
@@ -46,10 +44,8 @@ func (h ProjectHandler) List(c echo.Context) error {
 // @Accept       json
 // @Produce      json
 // @Param 	 	 request body io.CreateProjectRequest true "request"
-// @Success      200 {object} domain.Project
-// @Failure      400 {object} io.ErrorResponse
-// @Failure      404 {object} io.ErrorResponse
-// @Failure      500 {object} io.ErrorResponse
+// @Success      201 {object} domain.Project
+// @Failure      400 {object} io.ValidationErrorResponse
 // @Router       /projects [post]
 func (h ProjectHandler) Create(c echo.Context) error {
 	req := new(io.CreateProjectRequest)
@@ -73,9 +69,7 @@ func (h ProjectHandler) Create(c echo.Context) error {
 // @Produce      json
 // @Param 	 	 project_id path int true "project_id"
 // @Success      200 {object}  domain.Project
-// @Failure      400 {object} io.ErrorResponse
 // @Failure      404 {object} io.ErrorResponse
-// @Failure      500 {object} io.ErrorResponse
 // @Router       /projects/{project_id} [get]
 func (h ProjectHandler) Get(c echo.Context) error {
 	req := new(io.GetProjectRequest)
@@ -101,10 +95,9 @@ func (h ProjectHandler) Get(c echo.Context) error {
 // @Produce      json
 // @Param 	 	 project_id path int true "project_id"
 // @Param 	 	 request body io.UpdateProjectRequest true "request"
-// @Success      200 {object}  domain.Project
-// @Failure      400 {object} io.ErrorResponse
+// @Success      200 {object} domain.Project
+// @Failure      400 {object} io.ValidationErrorResponse
 // @Failure      404 {object} io.ErrorResponse
-// @Failure      500 {object} io.ErrorResponse
 // @Router       /projects/{project_id} [put]
 func (h ProjectHandler) Update(c echo.Context) error {
 	req := new(io.UpdateProjectRequest)
@@ -132,9 +125,7 @@ func (h ProjectHandler) Update(c echo.Context) error {
 // @Produce      json
 // @Param 	 	 project_id path int true "project_id"
 // @Success      204
-// @Failure      400 {object} io.ErrorResponse
 // @Failure      404 {object} io.ErrorResponse
-// @Failure      500 {object} io.ErrorResponse
 // @Router       /projects/{project_id} [delete]
 func (h ProjectHandler) Delete(c echo.Context) error {
 	req := new(io.DeleteProjectRequest)

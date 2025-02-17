@@ -1,8 +1,12 @@
 package io
 
 type ErrorResponse struct {
-	Message string        `json:"message"`
-	Details []ErrorDetail `json:"details,omitempty"`
+	Message string `json:"message"`
+}
+
+type ValidationErrorResponse struct {
+	ErrorResponse
+	Details []ErrorDetail `json:"details"`
 }
 
 type ErrorDetail struct {
@@ -13,5 +17,13 @@ type ErrorDetail struct {
 func NewErrResp(message string) ErrorResponse {
 	return ErrorResponse{
 		Message: message,
+	}
+}
+
+func NewValidationErrResp(message string) ValidationErrorResponse {
+	return ValidationErrorResponse{
+		ErrorResponse: ErrorResponse{
+			Message: message,
+		},
 	}
 }

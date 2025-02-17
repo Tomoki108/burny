@@ -28,7 +28,6 @@ func NewSprintHandler(usecase usecase.SprintUseCase) SprintHandler {
 // @Param 	 	 project_id path int true "project_id"
 // @Success      200 {array}  domain.Sprint
 // @Failure      404 {object} io.ErrorResponse
-// @Failure      500 {object} io.ErrorResponse
 // @Router       /projects/{project_id}/sprints [get]
 func (h SprintHandler) List(c echo.Context) error {
 	req := new(io.ListSprintRequest)
@@ -54,7 +53,6 @@ func (h SprintHandler) List(c echo.Context) error {
 // @Param 	 	 request body io.UpdateSprintRequest true "request"
 // @Success      200 {array}  domain.Sprint
 // @Failure      404 {object} io.ErrorResponse
-// @Failure      500 {object} io.ErrorResponse
 // @Router       /projects/{project_id}/sprints/{sprint_id} [patch]
 func (h SprintHandler) Update(c echo.Context) error {
 	req := new(io.UpdateSprintRequest)

@@ -45,7 +45,7 @@ func handleReq[T any](c echo.Context, req *T) error {
 
 	// validate
 	if err := Validator.Struct(req); err != nil {
-		er := io.NewErrResp("Validation error")
+		er := io.NewValidationErrResp("Validation error")
 		validationErrors := err.(validator.ValidationErrors)
 		for _, e := range validationErrors {
 			er.Details = append(er.Details, io.ErrorDetail{

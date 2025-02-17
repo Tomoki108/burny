@@ -97,10 +97,6 @@ definitions:
     type: object
   io.ErrorResponse:
     properties:
-      details:
-        items:
-          $ref: '#/definitions/io.ErrorDetail'
-        type: array
       message:
         type: string
     type: object
@@ -161,6 +157,15 @@ definitions:
     required:
     - actual_sp
     type: object
+  io.ValidationErrorResponse:
+    properties:
+      details:
+        items:
+          $ref: '#/definitions/io.ErrorDetail'
+        type: array
+      message:
+        type: string
+    type: object
 info:
   contact: {}
   description: API Doc of Burny Backend
@@ -178,20 +183,12 @@ paths:
       produces:
       - application/json
       responses:
-        "201":
-          description: Created
+        "200":
+          description: OK
           schema:
             items:
               $ref: '#/definitions/domain.Project'
             type: array
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/io.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/io.ErrorResponse'
       summary: List projects
       tags:
       - projects
@@ -209,22 +206,14 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
             $ref: '#/definitions/domain.Project'
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/io.ErrorResponse'
-        "404":
-          description: Not Found
-          schema:
-            $ref: '#/definitions/io.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/io.ErrorResponse'
+            $ref: '#/definitions/io.ValidationErrorResponse'
       summary: Create a project
       tags:
       - projects
@@ -244,16 +233,8 @@ paths:
       responses:
         "204":
           description: No Content
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/io.ErrorResponse'
         "404":
           description: Not Found
-          schema:
-            $ref: '#/definitions/io.ErrorResponse'
-        "500":
-          description: Internal Server Error
           schema:
             $ref: '#/definitions/io.ErrorResponse'
       summary: Delete a projects
@@ -276,16 +257,8 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/domain.Project'
-        "400":
-          description: Bad Request
-          schema:
-            $ref: '#/definitions/io.ErrorResponse'
         "404":
           description: Not Found
-          schema:
-            $ref: '#/definitions/io.ErrorResponse'
-        "500":
-          description: Internal Server Error
           schema:
             $ref: '#/definitions/io.ErrorResponse'
       summary: Get a project
@@ -317,13 +290,9 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/io.ErrorResponse'
+            $ref: '#/definitions/io.ValidationErrorResponse'
         "404":
           description: Not Found
-          schema:
-            $ref: '#/definitions/io.ErrorResponse'
-        "500":
-          description: Internal Server Error
           schema:
             $ref: '#/definitions/io.ErrorResponse'
       summary: Update a project
@@ -351,10 +320,6 @@ paths:
             type: array
         "404":
           description: Not Found
-          schema:
-            $ref: '#/definitions/io.ErrorResponse'
-        "500":
-          description: Internal Server Error
           schema:
             $ref: '#/definitions/io.ErrorResponse'
       summary: List sprints
@@ -395,10 +360,6 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/io.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/io.ErrorResponse'
       summary: Update a sprint
       tags:
       - sprints
@@ -424,11 +385,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/io.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/io.ErrorResponse'
+            $ref: '#/definitions/io.ValidationErrorResponse'
       summary: Sign in
       tags:
       - auth
@@ -454,11 +411,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/io.ErrorResponse'
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/io.ErrorResponse'
+            $ref: '#/definitions/io.ValidationErrorResponse'
       summary: Sign up
       tags:
       - auth

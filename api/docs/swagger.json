@@ -26,25 +26,13 @@
                 ],
                 "summary": "List projects",
                 "responses": {
-                    "201": {
-                        "description": "Created",
+                    "200": {
+                        "description": "OK",
                         "schema": {
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/domain.Project"
                             }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
                         }
                     }
                 }
@@ -73,8 +61,8 @@
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/domain.Project"
                         }
@@ -82,19 +70,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
+                            "$ref": "#/definitions/io.ValidationErrorResponse"
                         }
                     }
                 }
@@ -129,20 +105,8 @@
                             "$ref": "#/definitions/domain.Project"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
                     "404": {
                         "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/io.ErrorResponse"
                         }
@@ -189,17 +153,11 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
+                            "$ref": "#/definitions/io.ValidationErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/io.ErrorResponse"
                         }
@@ -231,20 +189,8 @@
                     "204": {
                         "description": "No Content"
                     },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
                     "404": {
                         "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/io.ErrorResponse"
                         }
@@ -286,12 +232,6 @@
                     },
                     "404": {
                         "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/io.ErrorResponse"
                         }
@@ -352,12 +292,6 @@
                         "schema": {
                             "$ref": "#/definitions/io.ErrorResponse"
                         }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
                     }
                 }
             }
@@ -396,13 +330,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
+                            "$ref": "#/definitions/io.ValidationErrorResponse"
                         }
                     }
                 }
@@ -442,13 +370,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
+                            "$ref": "#/definitions/io.ValidationErrorResponse"
                         }
                     }
                 }
@@ -598,12 +520,6 @@
         "io.ErrorResponse": {
             "type": "object",
             "properties": {
-                "details": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/io.ErrorDetail"
-                    }
-                },
                 "message": {
                     "type": "string"
                 }
@@ -688,6 +604,20 @@
                 "actual_sp": {
                     "type": "integer",
                     "maximum": 100
+                }
+            }
+        },
+        "io.ValidationErrorResponse": {
+            "type": "object",
+            "properties": {
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/io.ErrorDetail"
+                    }
+                },
+                "message": {
+                    "type": "string"
                 }
             }
         }

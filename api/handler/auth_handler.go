@@ -26,8 +26,7 @@ func NewAuthHandler(usecase usecase.AuthUseCase) AuthHandler {
 // @Produce      json
 // @Param        request body io.SignUpRequest true "sign up request"
 // @Success      201 {object} domain.User
-// @Failure      400 {object} io.ErrorResponse
-// @Failure      500 {object} io.ErrorResponse
+// @Failure      400 {object} io.ValidationErrorResponse
 // @Router       /sign_up [post]
 func (h AuthHandler) SignUp(c echo.Context) error {
 	req := new(io.SignUpRequest)
@@ -53,8 +52,7 @@ func (h AuthHandler) SignUp(c echo.Context) error {
 // @Produce      json
 // @Param        request body io.SignInRequest true "sign in request"
 // @Success      200 {object} io.SignInResponse
-// @Failure      400 {object} io.ErrorResponse
-// @Failure      500 {object} io.ErrorResponse
+// @Failure      400 {object} io.ValidationErrorResponse
 // @Router       /sign_in [post]
 func (h AuthHandler) SignIn(c echo.Context) error {
 	req := new(io.SignInRequest)

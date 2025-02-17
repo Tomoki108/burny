@@ -33,25 +33,13 @@ const docTemplate = `{
                 ],
                 "summary": "List projects",
                 "responses": {
-                    "201": {
-                        "description": "Created",
+                    "200": {
+                        "description": "OK",
                         "schema": {
                             "type": "array",
                             "items": {
                                 "$ref": "#/definitions/domain.Project"
                             }
-                        }
-                    },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
                         }
                     }
                 }
@@ -80,8 +68,8 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "$ref": "#/definitions/domain.Project"
                         }
@@ -89,19 +77,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
-                    "404": {
-                        "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
+                            "$ref": "#/definitions/io.ValidationErrorResponse"
                         }
                     }
                 }
@@ -136,20 +112,8 @@ const docTemplate = `{
                             "$ref": "#/definitions/domain.Project"
                         }
                     },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
                     "404": {
                         "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/io.ErrorResponse"
                         }
@@ -196,17 +160,11 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
+                            "$ref": "#/definitions/io.ValidationErrorResponse"
                         }
                     },
                     "404": {
                         "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/io.ErrorResponse"
                         }
@@ -238,20 +196,8 @@ const docTemplate = `{
                     "204": {
                         "description": "No Content"
                     },
-                    "400": {
-                        "description": "Bad Request",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
                     "404": {
                         "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/io.ErrorResponse"
                         }
@@ -293,12 +239,6 @@ const docTemplate = `{
                     },
                     "404": {
                         "description": "Not Found",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
                         "schema": {
                             "$ref": "#/definitions/io.ErrorResponse"
                         }
@@ -359,12 +299,6 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/io.ErrorResponse"
                         }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
                     }
                 }
             }
@@ -403,13 +337,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
+                            "$ref": "#/definitions/io.ValidationErrorResponse"
                         }
                     }
                 }
@@ -449,13 +377,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/io.ErrorResponse"
+                            "$ref": "#/definitions/io.ValidationErrorResponse"
                         }
                     }
                 }
@@ -605,12 +527,6 @@ const docTemplate = `{
         "io.ErrorResponse": {
             "type": "object",
             "properties": {
-                "details": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/io.ErrorDetail"
-                    }
-                },
                 "message": {
                     "type": "string"
                 }
@@ -695,6 +611,20 @@ const docTemplate = `{
                 "actual_sp": {
                     "type": "integer",
                     "maximum": 100
+                }
+            }
+        },
+        "io.ValidationErrorResponse": {
+            "type": "object",
+            "properties": {
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/io.ErrorDetail"
+                    }
+                },
+                "message": {
+                    "type": "string"
                 }
             }
         }
