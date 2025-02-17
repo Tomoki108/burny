@@ -1,4 +1,4 @@
-package di
+package server
 
 import (
 	"github.com/Tomoki108/burny/domain"

@@ -1,12 +1,8 @@
 {
-  "CreatedAt": "2025-02-17T18:39:57.815145+09:00",
-  "Description": "this is test project",
-  "ID": 14,
-  "SprintCount": 100,
-  "SprintDuration": 1,
-  "StartDate": "2100-04-01T09:00:00+09:00",
-  "Title": "test project",
-  "TotalSP": 1000,
-  "UpdatedAt": "2025-02-17T18:39:57.815145+09:00",
-  "UserID": 27
+  "description": "this is test project",
+  "sprint_count": 100,
+  "sprint_duration": 1,
+  "start_date": "2100-04-01T09:00:00+09:00",
+  "title": "test project",
+  "total_sp": 1000
 }

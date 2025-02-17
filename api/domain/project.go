@@ -3,16 +3,16 @@ package domain
 import "time"
 
 type Project struct {
-	ID             uint
-	UserID         uint
-	Title          string
-	Description    string
-	TotalSP        int
-	StartDate      time.Time
-	SprintDuration int
-	SprintCount    int
-	CreatedAt      time.Time
-	UpdatedAt      time.Time
+	ID             uint      `json:"project_id"`
+	UserID         uint      `json:"user_id"`
+	Title          string    `json:"title"`
+	Description    string    `json:"description"`
+	TotalSP        int       `json:"total_sp"`
+	StartDate      time.Time `json:"start_date"`
+	SprintDuration int       `json:"sprint_duration"`
+	SprintCount    int       `json:"sprint_count"`
+	CreatedAt      time.Time `json:"created_at"`
+	UpdatedAt      time.Time `json:"updated_at"`
 }
 
 type ProjectRepository interface {

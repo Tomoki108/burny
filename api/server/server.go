@@ -5,7 +5,6 @@ import (
 	"strconv"
 
 	"github.com/Tomoki108/burny/config"
-	"github.com/Tomoki108/burny/di"
 	"github.com/Tomoki108/burny/docs"
 	"github.com/Tomoki108/burny/handler"
 	"github.com/golang-jwt/jwt/v5"
@@ -29,15 +28,15 @@ func NewEchoServer() *echo.Echo {
 
 	// DIコンテナからハンドラーを取得
 	var authH handler.AuthHandler
-	di.Container.Invoke(func(h handler.AuthHandler) {
+	Container.Invoke(func(h handler.AuthHandler) {
 		authH = h
 	})
 	var projectH handler.ProjectHandler
-	di.Container.Invoke(func(h handler.ProjectHandler) {
+	Container.Invoke(func(h handler.ProjectHandler) {
 		projectH = h
 	})
 	var sprintH handler.SprintHandler
-	di.Container.Invoke(func(h handler.SprintHandler) {
+	Container.Invoke(func(h handler.SprintHandler) {
 		sprintH = h
 	})
 

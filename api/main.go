@@ -4,7 +4,6 @@ import (
 	"log"
 
 	"github.com/Tomoki108/burny/config"
-	"github.com/Tomoki108/burny/di"
 	"github.com/Tomoki108/burny/infrastructure"
 	"github.com/Tomoki108/burny/server"
 )
@@ -25,7 +24,7 @@ func main() {
 		log.Fatal(err.Error())
 	}
 	// DIコンテナの初期化
-	di.InitDIContainer()
+	server.InitDIContainer()
 	// サーバーの起動
 	e := server.NewEchoServer()
 	e.Logger.Fatal(e.Start(":1323"))

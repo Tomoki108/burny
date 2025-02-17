@@ -9,7 +9,6 @@ import (
 	"testing"
 
 	"github.com/Tomoki108/burny/config"
-	"github.com/Tomoki108/burny/di"
 	"github.com/Tomoki108/burny/domain"
 	"github.com/Tomoki108/burny/handler/io"
 	"github.com/Tomoki108/burny/infrastructure"
@@ -32,10 +31,10 @@ func init() {
 		log.Fatal(err.Error())
 	}
 	// DIコンテナの初期化
-	di.InitDIContainer()
+	server.InitDIContainer()
 	// テスト用トランザクションの初期化
 	testTx = infrastructure.DB.Begin()
-	di.Container.Decorate(func(transactioner domain.Transactioner) domain.Transactioner {
+	server.Container.Decorate(func(transactioner domain.Transactioner) domain.Transactioner {
 		return infrastructure.NewTestTransactioner(testTx)
 	})
 	// サーバーの取得
@@ -109,7 +108,7 @@ func UserCanCreateProject(t *testing.T, token string) {
 	if http.StatusCreated != recorder.Code {
 		t.Fatalf("status code is not 201: %d", recorder.Code)
 	}
-	body, err := removeDynamicFields(recorder.Body.Bytes())
+	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
 	if err != nil {
 		t.Fatal(err)
 	}
