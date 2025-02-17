@@ -2,25 +2,25 @@ basePath: /api/v1
 definitions:
   domain.Project:
     properties:
-      createdAt:
+      created_at:
         type: string
       description:
         type: string
-      id:
+      project_id:
         type: integer
-      sprintCount:
+      sprint_count:
         type: integer
-      sprintDuration:
+      sprint_duration:
         type: integer
-      startDate:
+      start_date:
         type: string
       title:
         type: string
-      totalSP:
+      total_sp:
         type: integer
-      updatedAt:
+      updated_at:
         type: string
-      userID:
+      user_id:
         type: integer
     type: object
   domain.Sprint:
@@ -178,18 +178,24 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
+        "201":
+          description: Created
           schema:
             items:
               $ref: '#/definitions/domain.Project'
             type: array
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
         "404":
           description: Not Found
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
         "500":
           description: Internal Server Error
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
       summary: List projects
       tags:
       - projects
@@ -213,10 +219,16 @@ paths:
             $ref: '#/definitions/domain.Project'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
         "404":
           description: Not Found
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
         "500":
           description: Internal Server Error
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
       summary: Create a project
       tags:
       - projects
@@ -234,10 +246,8 @@ paths:
       produces:
       - application/json
       responses:
-        "200":
-          description: OK
-          schema:
-            $ref: '#/definitions/domain.Project'
+        "204":
+          description: No Content
         "400":
           description: Bad Request
           schema:

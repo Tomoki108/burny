@@ -33,8 +33,8 @@ const docTemplate = `{
                 ],
                 "summary": "List projects",
                 "responses": {
-                    "200": {
-                        "description": "OK",
+                    "201": {
+                        "description": "Created",
                         "schema": {
                             "type": "array",
                             "items": {
@@ -43,13 +43,22 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Bad Request"
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/io.ErrorResponse"
+                        }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/io.ErrorResponse"
+                        }
                     },
                     "500": {
-                        "description": "Internal Server Error"
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/io.ErrorResponse"
+                        }
                     }
                 }
             },
@@ -84,13 +93,22 @@ const docTemplate = `{
                         }
                     },
                     "400": {
-                        "description": "Bad Request"
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/io.ErrorResponse"
+                        }
                     },
                     "404": {
-                        "description": "Not Found"
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/io.ErrorResponse"
+                        }
                     },
                     "500": {
-                        "description": "Internal Server Error"
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/io.ErrorResponse"
+                        }
                     }
                 }
             }
@@ -223,11 +241,8 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "$ref": "#/definitions/domain.Project"
-                        }
+                    "204": {
+                        "description": "No Content"
                     },
                     "400": {
                         "description": "Bad Request",
@@ -457,34 +472,34 @@ const docTemplate = `{
         "domain.Project": {
             "type": "object",
             "properties": {
-                "createdAt": {
+                "created_at": {
                     "type": "string"
                 },
                 "description": {
                     "type": "string"
                 },
-                "id": {
+                "project_id": {
                     "type": "integer"
                 },
-                "sprintCount": {
+                "sprint_count": {
                     "type": "integer"
                 },
-                "sprintDuration": {
+                "sprint_duration": {
                     "type": "integer"
                 },
-                "startDate": {
+                "start_date": {
                     "type": "string"
                 },
                 "title": {
                     "type": "string"
                 },
-                "totalSP": {
+                "total_sp": {
                     "type": "integer"
                 },
-                "updatedAt": {
+                "updated_at": {
                     "type": "string"
                 },
-                "userID": {
+                "user_id": {
                     "type": "integer"
                 }
             }
