@@ -56,13 +56,16 @@ func TestE2E(t *testing.T) {
 }
 
 func UserCanSignUp(t *testing.T) {
+	// Arrange
 	reqBody := strings.NewReader(`{"email":"test@test.com","password":"passwd12345"}`)
 	req := httptest.NewRequest(http.MethodPost, "/api/v1/sign_up", reqBody)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-
 	recorder := httptest.NewRecorder()
+
+	// Act
 	e.ServeHTTP(recorder, req)
 
+	// Assert
 	if http.StatusCreated != recorder.Code {
 		assertSatusCode(t, http.StatusCreated, recorder)
 	}
@@ -75,13 +78,16 @@ func UserCanSignUp(t *testing.T) {
 }
 
 func UserCanSignIn(t *testing.T) (token string) {
+	// Arrange
 	reqBody := strings.NewReader(`{"email":"test@test.com","password":"passwd12345"}`)
 	req := httptest.NewRequest(http.MethodPost, "/api/v1/sign_in", reqBody)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-
 	recorder := httptest.NewRecorder()
+
+	// Act
 	e.ServeHTTP(recorder, req)
 
+	// Assert
 	if http.StatusOK != recorder.Code {
 		assertSatusCode(t, http.StatusOK, recorder)
 	}
@@ -96,6 +102,7 @@ func UserCanSignIn(t *testing.T) (token string) {
 }
 
 func UserCanCreateProject(t *testing.T, token string) (projectID uint) {
+	// Arrange
 	reqBody := strings.NewReader(`{
 	  	"title": "test project",
   		"description": "this is test project",
@@ -107,10 +114,12 @@ func UserCanCreateProject(t *testing.T, token string) (projectID uint) {
 	req := httptest.NewRequest(http.MethodPost, "/api/v1/projects", reqBody)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
-
 	recorder := httptest.NewRecorder()
+
+	// Act
 	e.ServeHTTP(recorder, req)
 
+	// Assert
 	if http.StatusCreated != recorder.Code {
 		assertSatusCode(t, http.StatusCreated, recorder)
 	}
@@ -131,16 +140,18 @@ func UserCanCreateProject(t *testing.T, token string) (projectID uint) {
 }
 
 func UserCanListProjects(t *testing.T, token string) {
+	// Arrange
 	req := httptest.NewRequest(http.MethodGet, "/api/v1/projects", nil)
 	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
 	recorder := httptest.NewRecorder()
 
+	// Act
 	e.ServeHTTP(recorder, req)
 
+	// Assert
 	if recorder.Code != http.StatusOK {
 		assertSatusCode(t, http.StatusOK, recorder)
 	}
-
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
 	if err != nil {
 		t.Fatal(err)
@@ -149,17 +160,19 @@ func UserCanListProjects(t *testing.T, token string) {
 }
 
 func UserCanGetProject(t *testing.T, token string, projectID uint) {
+	// Arrange
 	url := "/api/v1/projects/" + uintToStr(projectID)
 	req := httptest.NewRequest(http.MethodGet, url, nil)
 	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
 	recorder := httptest.NewRecorder()
 
+	// Act
 	e.ServeHTTP(recorder, req)
 
+	// Assert
 	if recorder.Code != http.StatusOK {
 		assertSatusCode(t, http.StatusOK, recorder)
 	}
-
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
 	if err != nil {
 		t.Fatal(err)
@@ -168,6 +181,7 @@ func UserCanGetProject(t *testing.T, token string, projectID uint) {
 }
 
 func UserCanUpdateProject(t *testing.T, token string, projectID uint) {
+	// Arrange
 	updateJSON := `{
 		"title": "updated project",
 		"description": "updated description",
@@ -183,12 +197,13 @@ func UserCanUpdateProject(t *testing.T, token string, projectID uint) {
 	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
 	recorder := httptest.NewRecorder()
 
+	// Act
 	e.ServeHTTP(recorder, req)
 
+	// Assert
 	if recorder.Code != http.StatusOK {
 		assertSatusCode(t, http.StatusOK, recorder)
 	}
-
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
 	if err != nil {
 		t.Fatal(err)
@@ -197,17 +212,19 @@ func UserCanUpdateProject(t *testing.T, token string, projectID uint) {
 }
 
 func UserCanListSprints(t *testing.T, token string, projectID uint) (sprintID uint) {
+	// Arrange
 	url := "/api/v1/projects/" + uintToStr(projectID) + "/sprints"
 	req := httptest.NewRequest(http.MethodGet, url, nil)
 	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
 	recorder := httptest.NewRecorder()
 
+	// Act
 	e.ServeHTTP(recorder, req)
 
+	// Assert
 	if recorder.Code != http.StatusOK {
 		assertSatusCode(t, http.StatusOK, recorder)
 	}
-
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "sprint_id", "project_id")
 	if err != nil {
 		t.Fatal(err)
@@ -223,6 +240,7 @@ func UserCanListSprints(t *testing.T, token string, projectID uint) (sprintID ui
 }
 
 func UserCanUpdateSprint(t *testing.T, token string, projectID, sprintID uint) {
+	// Arrange
 	url := "/api/v1/sprints/" + uintToStr(projectID) + "/sprints/" + uintToStr(sprintID)
 	updateJSON := `{
 		"title": "updated sprint",
@@ -235,12 +253,13 @@ func UserCanUpdateSprint(t *testing.T, token string, projectID, sprintID uint) {
 	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
 	recorder := httptest.NewRecorder()
 
+	// Act
 	e.ServeHTTP(recorder, req)
 
+	// Assert
 	if recorder.Code != http.StatusOK {
 		assertSatusCode(t, http.StatusOK, recorder)
 	}
-
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "sprint_id", "project_id")
 	if err != nil {
 		t.Fatal(err)
@@ -249,13 +268,16 @@ func UserCanUpdateSprint(t *testing.T, token string, projectID, sprintID uint) {
 }
 
 func UserCanDeleteProject(t *testing.T, token string, projectID uint) {
+	// Arrange
 	url := "/api/v1/projects/" + uintToStr(projectID)
 	req := httptest.NewRequest(http.MethodDelete, url, nil)
 	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
 	recorder := httptest.NewRecorder()
 
+	// Act
 	e.ServeHTTP(recorder, req)
 
+	// Assert
 	if recorder.Code != http.StatusOK {
 		assertSatusCode(t, http.StatusOK, recorder)
 	}
