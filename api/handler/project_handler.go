@@ -27,7 +27,6 @@ func NewProjectHandler(usecase usecase.ProjectUseCase) ProjectHandler {
 // @Produce      json
 // @Success      201 {array} domain.Project
 // @Failure      400 {object} io.ErrorResponse
-// @Failure      404 {object} io.ErrorResponse
 // @Failure      500 {object} io.ErrorResponse
 // @Router       /projects [get]
 func (h ProjectHandler) List(c echo.Context) error {
