@@ -1,4 +1,4 @@
-name: API E2E Tests
+name: API E2E Test
 
 on:
   push:
@@ -9,6 +9,9 @@ on:
 defaults:
   run:
     working-directory: api
+
+env:
+    TZ: Asia/Tokyo
 
 jobs:
   e2e-test:
