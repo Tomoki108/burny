@@ -8,6 +8,7 @@ import (
 	"github.com/Tomoki108/burny/handler/io"
 )
 
+var ErrProjectNotFound = errors.New("project not found")
 var ErrSprintHasAlreadyStarted = errors.New("can not delete sprint that has already started")
 
 type ProjectUseCase struct {

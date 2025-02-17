@@ -1,8 +1,11 @@
 package infrastructure
 
 import (
+	"errors"
+
 	"github.com/Tomoki108/burny/domain"
 	"github.com/Tomoki108/burny/model"
+	"github.com/Tomoki108/burny/usecase"
 	"gorm.io/gorm"
 )
 
@@ -44,7 +47,11 @@ func (r *ProjectRepository) Create(tx domain.Transaction, project *domain.Projec
 func (r *ProjectRepository) Get(tx domain.Transaction, userID, id uint) (*domain.Project, error) {
 	db := tx.(*gorm.DB)
 	var project model.Project
-	if err := db.First(&project, id).Error; err != nil {
+	err := db.First(&project, id).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, usecase.ErrProjectNotFound
+	}
+	if err != nil {
 		return nil, err
 	}
 	return project.ToDomain(), nil

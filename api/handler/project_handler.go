@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/Tomoki108/burny/handler/io"
@@ -79,6 +80,9 @@ func (h ProjectHandler) Get(c echo.Context) error {
 
 	userID := c.Get("user_id").(uint)
 	project, err := h.UseCase.Get(userID, req.ProjectID)
+	if errors.Is(err, usecase.ErrProjectNotFound) {
+		return c.JSON(http.StatusNotFound, io.NewErrResp(err.Error()))
+	}
 	if err != nil {
 		return c.JSON(http.StatusNotFound, io.NewErrResp(err.Error()))
 	}
@@ -106,6 +110,9 @@ func (h ProjectHandler) Update(c echo.Context) error {
 
 	userID := c.Get("user_id").(uint)
 	updated, err := h.UseCase.Update(userID, *req)
+	if errors.Is(err, usecase.ErrProjectNotFound) {
+		return c.JSON(http.StatusNotFound, io.NewErrResp(err.Error()))
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}
@@ -132,6 +139,9 @@ func (h ProjectHandler) Delete(c echo.Context) error {
 
 	userID := c.Get("user_id").(uint)
 	err := h.UseCase.Delete(userID, *req)
+	if errors.Is(err, usecase.ErrProjectNotFound) {
+		return c.JSON(http.StatusNotFound, io.NewErrResp(err.Error()))
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}

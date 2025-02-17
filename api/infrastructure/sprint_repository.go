@@ -5,10 +5,9 @@ import (
 
 	"github.com/Tomoki108/burny/domain"
 	"github.com/Tomoki108/burny/model"
+	"github.com/Tomoki108/burny/usecase"
 	"gorm.io/gorm"
 )
-
-var ErrrSprintNotFound = errors.New("sprint not found")
 
 func NewSprintRepository() domain.SprintRepository {
 	return &SprintRepository{}
@@ -55,7 +54,7 @@ func (r *SprintRepository) Update(tx domain.Transaction, projectID, sprintID uin
 	db := tx.(*gorm.DB)
 	err := db.Where("id = ? AND project_id = ?", sprintID, projectID).First(&sprint).Error
 	if errors.Is(err, gorm.ErrRecordNotFound) {
-		return nil, ErrrSprintNotFound
+		return nil, usecase.ErrSprintNotFound
 	}
 	if err != nil {
 		return nil, err

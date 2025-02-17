@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/Tomoki108/burny/handler/io"
@@ -56,6 +57,9 @@ func (h SprintHandler) Update(c echo.Context) error {
 	}
 
 	updated, err := h.UseCase.Update(req.ProjectID, req.ID, req.ActualSP)
+	if errors.Is(err, usecase.ErrSprintNotFound) {
+		return c.JSON(http.StatusNotFound, io.NewErrResp(err.Error()))
+	}
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}

@@ -1,6 +1,12 @@
 package usecase
 
-import "github.com/Tomoki108/burny/domain"
+import (
+	"errors"
+
+	"github.com/Tomoki108/burny/domain"
+)
+
+var ErrSprintNotFound = errors.New("sprint not found")
 
 type SprintUseCase struct {
 	SprintRepo    domain.SprintRepository
