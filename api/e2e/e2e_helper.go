@@ -1,6 +1,11 @@
 package e2e
 
-import "encoding/json"
+import (
+	"encoding/json"
+	"net/http/httptest"
+	"strconv"
+	"testing"
+)
 
 // レスポンスのJSONから動的なフィールドを削除する.
 // デフォルトでid, created_at, updated_atを削除する.
@@ -37,4 +42,14 @@ func removeDynamicFieldsFromObject(obj map[string]interface{}, ignoreFields ...s
 	for _, field := range ignoreFields {
 		delete(obj, field)
 	}
+}
+
+func assertSatusCode(t *testing.T, expected int, recorder *httptest.ResponseRecorder) {
+	if expected != recorder.Code {
+		t.Fatalf("expected status is %d, got: %d, resp: %s", expected, recorder.Code, recorder.Body.String())
+	}
+}
+
+func uintToStr(id uint) string {
+	return strconv.FormatUint(uint64(id), 10)
 }

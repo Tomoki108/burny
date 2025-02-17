@@ -5,7 +5,6 @@ import (
 	"log"
 	"net/http"
 	"net/http/httptest"
-	"strconv"
 	"strings"
 	"testing"
 
@@ -48,9 +47,6 @@ func TestE2E(t *testing.T) {
 	UserCanSignUp(t)
 	token := UserCanSignIn(t)
 	projectID := UserCanCreateProject(t, token)
-
-	t.Log("projectID: ", projectID)
-
 	UserCanListProjects(t, token)
 	UserCanGetProject(t, token, projectID)
 	UserCanUpdateProject(t, token, projectID)
@@ -68,7 +64,7 @@ func UserCanSignUp(t *testing.T) {
 	e.ServeHTTP(recorder, req)
 
 	if http.StatusCreated != recorder.Code {
-		t.Fatalf("expected status is 201, got: %d, resp: %s", recorder.Code, recorder.Body.String())
+		assertSatusCode(t, http.StatusCreated, recorder)
 	}
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "password")
 	if err != nil {
@@ -87,7 +83,7 @@ func UserCanSignIn(t *testing.T) (token string) {
 	e.ServeHTTP(recorder, req)
 
 	if http.StatusOK != recorder.Code {
-		t.Fatalf("expected status is 200, got: %d, resp: %s", recorder.Code, recorder.Body.String())
+		assertSatusCode(t, http.StatusOK, recorder)
 	}
 
 	bodyBytes := recorder.Body.Bytes()
@@ -116,7 +112,7 @@ func UserCanCreateProject(t *testing.T, token string) (projectID uint) {
 	e.ServeHTTP(recorder, req)
 
 	if http.StatusCreated != recorder.Code {
-		t.Fatalf("expected status is 201, got: %d, resp: %s", recorder.Code, recorder.Body.String())
+		assertSatusCode(t, http.StatusCreated, recorder)
 	}
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
 	if err != nil {
@@ -142,7 +138,7 @@ func UserCanListProjects(t *testing.T, token string) {
 	e.ServeHTTP(recorder, req)
 
 	if recorder.Code != http.StatusOK {
-		t.Fatalf("expected status 200, got %d, resp: %s", recorder.Code, recorder.Body.String())
+		assertSatusCode(t, http.StatusOK, recorder)
 	}
 
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
@@ -161,7 +157,7 @@ func UserCanGetProject(t *testing.T, token string, projectID uint) {
 	e.ServeHTTP(recorder, req)
 
 	if recorder.Code != http.StatusOK {
-		t.Fatalf("expected status 200, got %d, resp: %s", recorder.Code, recorder.Body.String())
+		assertSatusCode(t, http.StatusOK, recorder)
 	}
 
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
@@ -190,7 +186,7 @@ func UserCanUpdateProject(t *testing.T, token string, projectID uint) {
 	e.ServeHTTP(recorder, req)
 
 	if recorder.Code != http.StatusOK {
-		t.Fatalf("expected status 200, got %d, resp: %s", recorder.Code, recorder.Body.String())
+		assertSatusCode(t, http.StatusOK, recorder)
 	}
 
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
@@ -209,7 +205,7 @@ func UserCanListSprints(t *testing.T, token string, projectID uint) (sprintID ui
 	e.ServeHTTP(recorder, req)
 
 	if recorder.Code != http.StatusOK {
-		t.Fatalf("expected status 200, got %d, resp: %s", recorder.Code, recorder.Body.String())
+		assertSatusCode(t, http.StatusOK, recorder)
 	}
 
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "sprint_id", "project_id")
@@ -242,7 +238,7 @@ func UserCanUpdateSprint(t *testing.T, token string, projectID, sprintID uint) {
 	e.ServeHTTP(recorder, req)
 
 	if recorder.Code != http.StatusOK {
-		t.Fatalf("expected status 200, got %d, resp: %s", recorder.Code, recorder.Body.String())
+		assertSatusCode(t, http.StatusOK, recorder)
 	}
 
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "sprint_id", "project_id")
@@ -261,20 +257,11 @@ func UserCanDeleteProject(t *testing.T, token string, projectID uint) {
 	e.ServeHTTP(recorder, req)
 
 	if recorder.Code != http.StatusOK {
-		t.Fatalf("expected status 200, got %d, resp: %s", recorder.Code, recorder.Body.String())
+		assertSatusCode(t, http.StatusOK, recorder)
 	}
-
-	// レスポンス内容がある場合はスナップショット比較
-	if recorder.Body.Len() > 0 {
-		body, err := removeDynamicFields(recorder.Body.Bytes())
-		if err != nil {
-			t.Fatal(err)
-		}
-		goldie.New(t).Assert(t, "delete_project_response", body)
+	body, err := removeDynamicFields(recorder.Body.Bytes())
+	if err != nil {
+		t.Fatal(err)
 	}
-}
-
-// 補助関数: uint を文字列に変換
-func uintToStr(id uint) string {
-	return strconv.FormatUint(uint64(id), 10)
+	goldie.New(t).Assert(t, "delete_project_response", body)
 }
