@@ -6,6 +6,10 @@ on:
       - main
   pull_request:
 
+defaults:
+  run:
+    working-directory: api
+
 jobs:
   e2e-test:
     runs-on: ubuntu-latest
@@ -34,7 +38,6 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
 
       - name: Install dependencies
-        working-directory: api
         run: go mod download
 
       - name: Run E2E tests
