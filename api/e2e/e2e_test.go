@@ -35,7 +35,7 @@ func init() {
 	// テスト用トランザクションの初期化
 	testTx = infrastructure.DB.Begin()
 	server.Container.Decorate(func(transactioner domain.Transactioner) domain.Transactioner {
-		return infrastructure.NewTestTransactioner(testTx)
+		return infrastructure.Transactioner{DB: testTx}
 	})
 	// サーバーの取得
 	e = server.NewEchoServer()
