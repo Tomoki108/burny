@@ -20,7 +20,7 @@ jobs:
 
       - name: Set up Docker Compose environment
         run: |
-          docker compose -f api/compose.yml up -d
+          docker compose -f compose.yml up -d
           # Wait for postgres container to be ready
           sleep 10
 
@@ -41,8 +41,8 @@ jobs:
         run: go mod download
 
       - name: Run E2E tests
-        run: go test -v ./api/e2e/...
+        run: go test -v ./e2e/...
 
       - name: Shutdown Docker Compose services
         if: always()
-        run: docker compose -f api/compose.yml down
+        run: docker compose -f compose.yml down
