@@ -25,10 +25,10 @@ func NewProjectHandler(usecase usecase.ProjectUseCase) ProjectHandler {
 // @Tags         projects
 // @Accept       json
 // @Produce      json
-// @Success      201  {array} domain.Project
-// @Failure      400
-// @Failure      404
-// @Failure      500
+// @Success      201 {array} domain.Project
+// @Failure      400 {object} io.ErrorResponse
+// @Failure      404 {object} io.ErrorResponse
+// @Failure      500 {object} io.ErrorResponse
 // @Router       /projects [get]
 func (h ProjectHandler) List(c echo.Context) error {
 	userID := c.Get("user_id").(uint)
@@ -38,7 +38,7 @@ func (h ProjectHandler) List(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}
 
-	return c.JSON(http.StatusCreated, projects)
+	return c.JSON(http.StatusOK, projects)
 }
 
 // @Summary      Create a project
@@ -47,10 +47,10 @@ func (h ProjectHandler) List(c echo.Context) error {
 // @Accept       json
 // @Produce      json
 // @Param 	 	 request body io.CreateProjectRequest true "request"
-// @Success      200  {object}  domain.Project
-// @Failure      400
-// @Failure      404
-// @Failure      500
+// @Success      200 {object} domain.Project
+// @Failure      400 {object} io.ErrorResponse
+// @Failure      404 {object} io.ErrorResponse
+// @Failure      500 {object} io.ErrorResponse
 // @Router       /projects [post]
 func (h ProjectHandler) Create(c echo.Context) error {
 	req := new(io.CreateProjectRequest)

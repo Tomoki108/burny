@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 	"strings"
 	"testing"
 
@@ -46,7 +47,16 @@ func TestE2E(t *testing.T) {
 
 	UserCanSignUp(t)
 	token := UserCanSignIn(t)
-	UserCanCreateProject(t, token)
+	projectID := UserCanCreateProject(t, token)
+
+	t.Log("projectID: ", projectID)
+
+	UserCanListProjects(t, token)
+	UserCanGetProject(t, token, projectID)
+	UserCanUpdateProject(t, token, projectID)
+	sprintID := UserCanListSprints(t, token, projectID)
+	UserCanUpdateSprint(t, token, projectID, sprintID)
+	UserCanDeleteProject(t, token, projectID)
 }
 
 func UserCanSignUp(t *testing.T) {
@@ -58,7 +68,7 @@ func UserCanSignUp(t *testing.T) {
 	e.ServeHTTP(recorder, req)
 
 	if http.StatusCreated != recorder.Code {
-		t.Fatalf("status code is not 201: %d", recorder.Code)
+		t.Fatalf("expected status is 201, got: %d, resp: %s", recorder.Code, recorder.Body.String())
 	}
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "password")
 	if err != nil {
@@ -77,7 +87,7 @@ func UserCanSignIn(t *testing.T) (token string) {
 	e.ServeHTTP(recorder, req)
 
 	if http.StatusOK != recorder.Code {
-		t.Fatalf("status code is not 200: %d", recorder.Code)
+		t.Fatalf("expected status is 200, got: %d, resp: %s", recorder.Code, recorder.Body.String())
 	}
 
 	bodyBytes := recorder.Body.Bytes()
@@ -89,7 +99,7 @@ func UserCanSignIn(t *testing.T) (token string) {
 	return res.JwtToken
 }
 
-func UserCanCreateProject(t *testing.T, token string) {
+func UserCanCreateProject(t *testing.T, token string) (projectID uint) {
 	reqBody := strings.NewReader(`{
 	  	"title": "test project",
   		"description": "this is test project",
@@ -106,7 +116,7 @@ func UserCanCreateProject(t *testing.T, token string) {
 	e.ServeHTTP(recorder, req)
 
 	if http.StatusCreated != recorder.Code {
-		t.Fatalf("status code is not 201: %d", recorder.Code)
+		t.Fatalf("expected status is 201, got: %d, resp: %s", recorder.Code, recorder.Body.String())
 	}
 	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
 	if err != nil {
@@ -114,4 +124,157 @@ func UserCanCreateProject(t *testing.T, token string) {
 	}
 	g := goldie.New(t)
 	g.Assert(t, "create_project_response", body)
+
+	res := domain.Project{}
+	err = json.Unmarshal(recorder.Body.Bytes(), &res)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	return res.ID
+}
+
+func UserCanListProjects(t *testing.T, token string) {
+	req := httptest.NewRequest(http.MethodGet, "/api/v1/projects", nil)
+	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
+	recorder := httptest.NewRecorder()
+
+	e.ServeHTTP(recorder, req)
+
+	if recorder.Code != http.StatusOK {
+		t.Fatalf("expected status 200, got %d, resp: %s", recorder.Code, recorder.Body.String())
+	}
+
+	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
+	if err != nil {
+		t.Fatal(err)
+	}
+	goldie.New(t).Assert(t, "list_projects_response", body)
+}
+
+func UserCanGetProject(t *testing.T, token string, projectID uint) {
+	url := "/api/v1/projects/" + uintToStr(projectID)
+	req := httptest.NewRequest(http.MethodGet, url, nil)
+	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
+	recorder := httptest.NewRecorder()
+
+	e.ServeHTTP(recorder, req)
+
+	if recorder.Code != http.StatusOK {
+		t.Fatalf("expected status 200, got %d, resp: %s", recorder.Code, recorder.Body.String())
+	}
+
+	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
+	if err != nil {
+		t.Fatal(err)
+	}
+	goldie.New(t).Assert(t, "get_project_response", body)
+}
+
+func UserCanUpdateProject(t *testing.T, token string, projectID uint) {
+	updateJSON := `{
+		"title": "updated project",
+		"description": "updated description",
+		"start_date": "2100-04-02T09:00:00+09:00",
+		"sprint_count": 40,
+		"sprint_duration": 2,
+		"total_sp": 800
+	}`
+	url := "/api/v1/projects/" + uintToStr(projectID)
+	reqBody := strings.NewReader(updateJSON)
+	req := httptest.NewRequest(http.MethodPut, url, reqBody)
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
+	recorder := httptest.NewRecorder()
+
+	e.ServeHTTP(recorder, req)
+
+	if recorder.Code != http.StatusOK {
+		t.Fatalf("expected status 200, got %d, resp: %s", recorder.Code, recorder.Body.String())
+	}
+
+	body, err := removeDynamicFields(recorder.Body.Bytes(), "user_id", "project_id")
+	if err != nil {
+		t.Fatal(err)
+	}
+	goldie.New(t).Assert(t, "update_project_response", body)
+}
+
+func UserCanListSprints(t *testing.T, token string, projectID uint) (sprintID uint) {
+	url := "/api/v1/projects/" + uintToStr(projectID) + "/sprints"
+	req := httptest.NewRequest(http.MethodGet, url, nil)
+	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
+	recorder := httptest.NewRecorder()
+
+	e.ServeHTTP(recorder, req)
+
+	if recorder.Code != http.StatusOK {
+		t.Fatalf("expected status 200, got %d, resp: %s", recorder.Code, recorder.Body.String())
+	}
+
+	body, err := removeDynamicFields(recorder.Body.Bytes(), "sprint_id", "project_id")
+	if err != nil {
+		t.Fatal(err)
+	}
+	goldie.New(t).Assert(t, "list_sprints_response", body)
+
+	res := []domain.Sprint{}
+	err = json.Unmarshal(recorder.Body.Bytes(), &res)
+	if err != nil {
+		t.Fatal(err)
+	}
+	return res[0].ID
+}
+
+func UserCanUpdateSprint(t *testing.T, token string, projectID, sprintID uint) {
+	url := "/api/v1/sprints/" + uintToStr(projectID) + "/sprints/" + uintToStr(sprintID)
+	updateJSON := `{
+		"title": "updated sprint",
+		"start_date": "2100-04-03T09:00:00+09:00",
+		"end_date": "2100-04-10T09:00:00+09:00"
+	}`
+	reqBody := strings.NewReader(updateJSON)
+	req := httptest.NewRequest(http.MethodPut, url, reqBody)
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
+	recorder := httptest.NewRecorder()
+
+	e.ServeHTTP(recorder, req)
+
+	if recorder.Code != http.StatusOK {
+		t.Fatalf("expected status 200, got %d, resp: %s", recorder.Code, recorder.Body.String())
+	}
+
+	body, err := removeDynamicFields(recorder.Body.Bytes(), "sprint_id", "project_id")
+	if err != nil {
+		t.Fatal(err)
+	}
+	goldie.New(t).Assert(t, "update_sprint_response", body)
+}
+
+func UserCanDeleteProject(t *testing.T, token string, projectID uint) {
+	url := "/api/v1/projects/" + uintToStr(projectID)
+	req := httptest.NewRequest(http.MethodDelete, url, nil)
+	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
+	recorder := httptest.NewRecorder()
+
+	e.ServeHTTP(recorder, req)
+
+	if recorder.Code != http.StatusOK {
+		t.Fatalf("expected status 200, got %d, resp: %s", recorder.Code, recorder.Body.String())
+	}
+
+	// レスポンス内容がある場合はスナップショット比較
+	if recorder.Body.Len() > 0 {
+		body, err := removeDynamicFields(recorder.Body.Bytes())
+		if err != nil {
+			t.Fatal(err)
+		}
+		goldie.New(t).Assert(t, "delete_project_response", body)
+	}
+}
+
+// 補助関数: uint を文字列に変換
+func uintToStr(id uint) string {
+	return strconv.FormatUint(uint64(id), 10)
 }
