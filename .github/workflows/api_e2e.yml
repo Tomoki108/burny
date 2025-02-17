@@ -34,6 +34,7 @@ jobs:
           key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
 
       - name: Install dependencies
+        working-directory: api
         run: go mod download
 
       - name: Run E2E tests
