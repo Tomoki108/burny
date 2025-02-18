@@ -89,6 +89,7 @@ func UserCanSignIn(t *testing.T) (token string) {
 
 	// Assert
 	if err := assertSatusCode(http.StatusOK, recorder); err != nil {
+		t.Fatal(err)
 	}
 
 	bodyBytes := recorder.Body.Bytes()
