@@ -1,1 +1,2 @@
 export TF_VAR_project_id="your-project-id"
+export TF_VAR_postgres_password="your-password"
