@@ -1,0 +1,21 @@
+apiVersion: skaffold/v4beta2
+kind: Config
+metadata: 
+  name: cloud-run-application
+build:
+  local:
+    push: true
+  platforms:
+    - linux/amd64
+  artifacts:
+    - image: asia-northeast1-docker.pkg.dev/turing-reach-451305-f4/dev-cloud-run/api
+      context: .
+      ko:
+        main: .
+manifests:
+  rawYaml:
+  - ./deployment/dev/cloud-run-service.yaml
+deploy:
+  cloudrun: 
+    projectid: turing-reach-451305-f4
+    region: asia-northeast1

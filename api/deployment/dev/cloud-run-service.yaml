@@ -1,0 +1,9 @@
+apiVersion: serving.knative.dev/v1
+kind: Service
+metadata:
+  name: burny-api-dev
+spec:
+  template:
+    spec:
+      containers:
+      - image: asia-northeast1-docker.pkg.dev/turing-reach-451305-f4/dev-cloud-run/api

@@ -24,13 +24,28 @@ API DOC: http://localhost:1323/swagger/index.html
   brew install goenv
   goenv install 1.23.4
   go install github.com/swaggo/swag/cmd/swag@latest
+
+  # deployment tools
+  brew install skaffold
+  brew install ko
   ```
 
-- Create `.envrc` from `.envrc.sample`. (Don't forget `direnv allow` after adding some env var.)
+- Create `.envrc` from `.envrc.sample` and do `direnv allow`.
 
 ## How to run
 
 ```shell
 docker compose up -d # for postgres container
 go run .
+```
+
+### Commands
+
+```shell
+# update API DOC
+swag init
+# push application image
+skaffold build -p {env}
+# deploy to cloud run
+skaffold run -p {env}
 ```
