@@ -70,12 +70,6 @@ locals {
   }
 }
 
-resource "google_service_account_iam_member" "github_actions_wi" {
-  service_account_id = google_service_account.github_actions_sa.name
-  role               = "roles/iam.workloadIdentityUser"
-  member             = "principalSet://iam.googleapis.com/projects/${var.project_id}/locations/global/workloadIdentityPools/github-pool/*"
-}
-
 
 resource "google_service_account" "cloud_run_sa" {
   account_id   = "cloud-run-service"
@@ -125,4 +119,10 @@ resource "google_secret_manager_secret" "backend-secrets" {
   replication {
     auto {}
   }
+}
+
+resource "google_service_account_iam_member" "github_actions_wi" {
+  service_account_id = google_service_account.github_actions_sa.name
+  role               = "roles/iam.workloadIdentityUser"
+  member             = "principalSet://iam.googleapis.com/projects/${var.project_id}/locations/global/workloadIdentityPools/github-pool/*"
 }
