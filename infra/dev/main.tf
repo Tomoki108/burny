@@ -124,5 +124,5 @@ resource "google_secret_manager_secret" "backend-secrets" {
 resource "google_service_account_iam_member" "github_actions_wi" {
   service_account_id = google_service_account.github_actions_sa.name
   role               = "roles/iam.workloadIdentityUser"
-  member             = "principalSet://iam.googleapis.com/projects/${var.project_id}/locations/global/workloadIdentityPools/github-pool/*"
+  member             = "principalSet://iam.googleapis.com/projects/810897677786/locations/global/workloadIdentityPools/github-pool/*"
 }
