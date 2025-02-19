@@ -54,5 +54,5 @@ jobs:
           DB_PASS: ${{ env.DB_PASS }}
           DB_INSTANCE_CONNECTION_NAME: ${{ env.DB_INSTANCE_CONNECTION_NAME }}
         run: |
-          gcloud auth print-access-token | docker login -u oauth2accesstoken --password-stdin https://asia-northeast1-docker.pkg.dev
+          gcloud auth configure-docker asia-northeast1-docker.pkg.dev
           skaffold run
