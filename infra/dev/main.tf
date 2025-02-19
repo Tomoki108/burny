@@ -46,6 +46,10 @@ locals {
       role   = "roles/iam.workloadIdentityUser"
       member = "serviceAccount:${google_service_account.github_actions_sa.email}"
     },
+    "${google_service_account.github_actions_sa.email}_roles_token_creator"      = {
+      role   = "roles/iam.serviceAccountTokenCreator"
+      member = "serviceAccount:${google_service_account.github_actions_sa.email}"
+    },
     "${google_service_account.github_actions_sa.email}_roles_artifactregistry"      = {
       role   = "roles/artifactregistry.writer"
       member = "serviceAccount:${google_service_account.github_actions_sa.email}"
@@ -65,7 +69,7 @@ locals {
     },
     "${google_service_account.cloud_run_sa.email}_roles_token_creator"        = {
       role   = "roles/iam.serviceAccountTokenCreator"
-      member = "serviceAccount:${google_service_account.github_actions_sa.email}"
+      member = "serviceAccount:${google_service_account.cloud_run_sa.email}"
     },
   }
 }
