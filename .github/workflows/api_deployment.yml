@@ -22,7 +22,7 @@ jobs:
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: projects/810897677786/locations/global/workloadIdentityPools/github-pool/providers/github-provider
-          service_account: github-actions-service@turing-reach-451305-f4.iam.gserviceaccount.com
+          service_account: cloud-run-service@turing-reach-451305-f4.iam.gserviceaccount.com
   
       - name: Set up Cloud SDK
         uses: 'google-github-actions/setup-gcloud@v2'
@@ -54,5 +54,5 @@ jobs:
           DB_PASS: ${{ env.DB_PASS }}
           DB_INSTANCE_CONNECTION_NAME: ${{ env.DB_INSTANCE_CONNECTION_NAME }}
         run: |
-          gcloud auth configure-docker asia-northeast1-docker.pkg.dev --impersonate-service-account=cloud-run-service@turing-reach-451305-f4.iam.gserviceaccount.com
+          gcloud auth configure-docker asia-northeast1-docker.pkg.dev
           skaffold run
