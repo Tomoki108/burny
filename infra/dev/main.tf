@@ -49,6 +49,35 @@ resource "google_project_iam_binding" "cloud_run_sa_iam" {
   ]
 }
 
+resource "google_iam_workload_identity_pool" "github_pool" {
+  project                   = var.project_id
+  workload_identity_pool_id = "github-pool"
+  display_name              = "My Workload Identity Pool"
+  description               = "A pool to federate identities from GitHub Actions"
+}
+
+# For GitHub Actions, set the issuer URI to GitHub's OIDC endpoint.
+resource "google_iam_workload_identity_pool_provider" "github_provider" {
+  project                            = var.project_id
+  workload_identity_pool_id         = google_iam_workload_identity_pool.github_pool.workload_identity_pool_id
+  workload_identity_pool_provider_id = "github-provider"
+  provider = google
+  display_name                       = "GitHub OIDC Provider"
+  description                        = "OIDC provider for GitHub Actions federation"
+  
+  attribute_mapping = {
+    "google.subject"       = "assertion.sub"
+    "attribute.repository" = "assertion.repository"
+    "attribute.repository_owner" = "assertion.repository_owner"
+
+  }
+  attribute_condition = "attribute.repository == assertion.repository && attribute.repository_owner == assertion.repository_owner"
+
+  oidc {
+    issuer_uri = "https://token.actions.githubusercontent.com"
+  }
+}
+
 
 locals {
   backend_secret_ids = ["db_name", "db_user", "db_password", "db_instance_connection_name"]
