@@ -59,6 +59,8 @@ resource "google_project_iam_binding" "github_actions_sa_iam" {
     "roles/secretmanager.secretAccessor",
     "roles/iam.serviceAccountTokenCreator",
     "roles/artifactregistry.createOnPushWriter",
+    "roles/artifactregistry.writer",
+    "roles/artifactregistry.reader",
   ])
 
   project = var.project_id

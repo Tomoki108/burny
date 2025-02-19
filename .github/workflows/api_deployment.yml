@@ -53,4 +53,6 @@ jobs:
           DB_USER: ${{ env.DB_USER }}
           DB_PASS: ${{ env.DB_PASS }}
           DB_INSTANCE_CONNECTION_NAME: ${{ env.DB_INSTANCE_CONNECTION_NAME }}
-        run: skaffold run
+        run: 
+          gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+          skaffold run
