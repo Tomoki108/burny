@@ -46,6 +46,7 @@ jobs:
           chmod +x skaffold
           sudo mv skaffold /usr/local/bin/
 
+          ## kome
       - name: Deploy to Cloud Run via Skaffold
         working-directory: api
         env:
