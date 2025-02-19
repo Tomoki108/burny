@@ -20,6 +20,6 @@
 - Create GCS bucket named "burny-tfstate" mannually for tfstate backend. 
 
 ## each environment setting (dev, prod)
-- Create `.envrc` from `.envrc.sample` and do `direnv allow`.
-
-- Init module by `terraform init`.
+- Create `terraform.tfvars` from `terraform.tfvars.sample`.
+- Init module by `terraform init` and `terraform apply`.
+- Put secret values mannually at Secret Manager console. Values must be the same as defined by terraform.tfvars.

@@ -14,7 +14,14 @@ import (
 var DB *gorm.DB
 
 func ConnectDB() error {
-	db, err := gorm.Open(postgres.Open(config.Conf.DSN), &gorm.Config{})
+	dsn := fmt.Sprintf(
+		"host=/cloudsql/%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Asia/Tokyo",
+		config.Conf.DB_INSTANCE_CONNECTION_NAME,
+		config.Conf.DB_USER,
+		config.Conf.DB_PASS,
+		config.Conf.DB_NAME,
+	)
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 	if err != nil {
 		return fmt.Errorf("could not open DB: %w", err)
 	}
