@@ -30,3 +30,14 @@ resource "google_sql_user" "default" {
   instance = google_sql_database_instance.postgres_instance.name
   password = var.postgres_password
 }
+
+resource "google_service_account" "cloud_run_sa" {
+  account_id   = "cloud-run-service"
+  display_name = "Cloud Run Service Account"
+}
+
+resource "google_project_iam_member" "cloud_run_sa_cloudsql_client" {
+  project = var.project_id
+  role    = "roles/cloudsql.client"
+  member  = "serviceAccount:${google_service_account.cloud_run_sa.email}"
+}
