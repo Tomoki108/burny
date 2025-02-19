@@ -42,10 +42,6 @@ locals {
       role   = "roles/secretmanager.secretAccessor"
       member = "serviceAccount:${google_service_account.github_actions_sa.email}"
     },
-    "${google_service_account.github_actions_sa.email}_roles_workload_identity_user" = {
-      role   = "roles/iam.workloadIdentityUser"
-      member = "serviceAccount:${google_service_account.github_actions_sa.email}"
-    },
     "${google_service_account.github_actions_sa.email}_roles_token_creator"      = {
       role   = "roles/iam.serviceAccountTokenCreator"
       member = "serviceAccount:${google_service_account.github_actions_sa.email}"
@@ -73,6 +69,13 @@ locals {
     },
   }
 }
+
+resource "google_service_account_iam_member" "github_actions_wi" {
+  service_account_id = google_service_account.github_actions_sa.name
+  role               = "roles/iam.workloadIdentityUser"
+  member             = "principalSet://iam.googleapis.com/projects/${var.project_id}/locations/global/workloadIdentityPools/github-pool/*"
+}
+
 
 resource "google_service_account" "cloud_run_sa" {
   account_id   = "cloud-run-service"
