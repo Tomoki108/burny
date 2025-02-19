@@ -8,3 +8,5 @@ secrets = {
   db_instance_connection_name = ""
 }
 
+github_repository = ""
+github_repository_owner = ""
