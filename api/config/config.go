@@ -5,6 +5,8 @@ import "github.com/caarlos0/env/v11"
 type Config struct {
 	JwtSecret string `env:"JWT_SECRET"`
 	Host      string `env:"HOST"`
+	Port      string `env:"PORT"`
+	DSN       string `env:"DSN"`
 }
 
 var Conf Config

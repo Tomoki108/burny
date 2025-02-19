@@ -27,5 +27,5 @@ func main() {
 	server.InitDIContainer()
 	// サーバーの起動
 	e := server.NewEchoServer()
-	e.Logger.Fatal(e.Start(":1323"))
+	e.Logger.Fatal(e.Start(":" + config.Conf.Port))
 }

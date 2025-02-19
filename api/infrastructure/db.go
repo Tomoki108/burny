@@ -3,6 +3,7 @@ package infrastructure
 import (
 	"fmt"
 
+	"github.com/Tomoki108/burny/config"
 	"github.com/Tomoki108/burny/domain"
 	"github.com/Tomoki108/burny/model"
 
@@ -13,8 +14,7 @@ import (
 var DB *gorm.DB
 
 func ConnectDB() error {
-	dsn := "host=localhost user=burny_user password=pass dbname=burny_db port=5432 sslmode=disable TimeZone=Asia/Tokyo"
-	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(config.Conf.DSN), &gorm.Config{})
 	if err != nil {
 		return fmt.Errorf("could not open DB: %w", err)
 	}

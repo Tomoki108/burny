@@ -1,2 +1,4 @@
 export JWT_SECRET= # set random string
 export HOST=localhost
+export PORT=1323
+export DSN="host=localhost user=burny_user password=pass dbname=burny_db port=5432 sslmode=disable TimeZone=Asia/Tokyo"
