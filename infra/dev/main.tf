@@ -3,6 +3,10 @@ provider "google" {
   region  = var.project_region
 }
 
+locals {
+  backend_secret_ids = ["db_name", "db_user", "db_password", "db_instance_connection_name"]
+}
+
 resource "google_artifact_registry_repository" "cloud_run_repo" {
   repository_id = "dev-cloud-run"
   location      = var.project_region
@@ -31,22 +35,44 @@ resource "google_sql_user" "default" {
   password = var.secrets.db_password
 }
 
+locals {
+  iam_assignments = {
+    # GitHub Actions Service Account
+    "${google_service_account.github_actions_sa.email}_roles_secretmanager"        = {
+      role   = "roles/secretmanager.secretAccessor"
+      member = "serviceAccount:${google_service_account.github_actions_sa.email}"
+    },
+    "${google_service_account.github_actions_sa.email}_roles_workload_identity_user" = {
+      role   = "roles/iam.workloadIdentityUser"
+      member = "serviceAccount:${google_service_account.github_actions_sa.email}"
+    },
+    "${google_service_account.github_actions_sa.email}_roles_artifactregistry"      = {
+      role   = "roles/artifactregistry.writer"
+      member = "serviceAccount:${google_service_account.github_actions_sa.email}"
+    },
+    # Cloud Run Service Account
+    "${google_service_account.cloud_run_sa.email}_roles_run_admin"                  = {
+      role   = "roles/run.admin"
+      member = "serviceAccount:${google_service_account.cloud_run_sa.email}"
+    },
+    "${google_service_account.cloud_run_sa.email}_roles_cloudsql"                  = {
+      role   = "roles/cloudsql.client"
+      member = "serviceAccount:${google_service_account.cloud_run_sa.email}"
+    },
+    "${google_service_account.cloud_run_sa.email}_roles_secretmanager"             = {
+      role   = "roles/secretmanager.secretAccessor"
+      member = "serviceAccount:${google_service_account.cloud_run_sa.email}"
+    },
+    "${google_service_account.cloud_run_sa.email}_roles_token_creator"        = {
+      role   = "roles/iam.serviceAccountTokenCreator"
+      member = "serviceAccount:${google_service_account.github_actions_sa.email}"
+    },
+  }
+}
+
 resource "google_service_account" "cloud_run_sa" {
   account_id   = "cloud-run-service"
   display_name = "Cloud Run Service Account"
-}
-
-resource "google_project_iam_binding" "cloud_run_sa_iam" {
-  for_each = toset([
-    "roles/cloudsql.client",
-    "roles/secretmanager.secretAccessor",
-  ])
-
-  project = var.project_id
-  role    = each.value
-  members = [
-    "serviceAccount:${google_service_account.cloud_run_sa.email}"
-  ]
 }
 
 resource "google_service_account" "github_actions_sa" {
@@ -54,20 +80,11 @@ resource "google_service_account" "github_actions_sa" {
   display_name = "GitHub Actions Service Account"
 }
 
-resource "google_project_iam_binding" "github_actions_sa_iam" {
-  for_each = toset([
-    "roles/secretmanager.secretAccessor",
-    "roles/iam.serviceAccountTokenCreator",
-    "roles/artifactregistry.createOnPushWriter",
-    "roles/artifactregistry.writer",
-    "roles/artifactregistry.reader",
-  ])
-
-  project = var.project_id
-  role    = each.value
-  members = [
-    "serviceAccount:${google_service_account.github_actions_sa.email}"
-  ]
+resource "google_project_iam_member" "iam_member" {
+  for_each = local.iam_assignments
+  project  = var.project_id
+  role     = each.value.role
+  member   = each.value.member
 }
 
 resource "google_iam_workload_identity_pool" "github_pool" {
@@ -77,7 +94,6 @@ resource "google_iam_workload_identity_pool" "github_pool" {
   description               = "A pool to federate identities from GitHub Actions"
 }
 
-# For GitHub Actions, set the issuer URI to GitHub's OIDC endpoint.
 resource "google_iam_workload_identity_pool_provider" "github_provider" {
   project                            = var.project_id
   workload_identity_pool_id          = google_iam_workload_identity_pool.github_pool.workload_identity_pool_id
@@ -97,11 +113,6 @@ resource "google_iam_workload_identity_pool_provider" "github_provider" {
   oidc {
     issuer_uri = "https://token.actions.githubusercontent.com"
   }
-}
-
-
-locals {
-  backend_secret_ids = ["db_name", "db_user", "db_password", "db_instance_connection_name"]
 }
 
 resource "google_secret_manager_secret" "backend-secrets" {
