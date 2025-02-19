@@ -58,8 +58,7 @@ resource "google_project_iam_binding" "github_actions_sa_iam" {
   for_each = toset([
     "roles/secretmanager.secretAccessor",
     "roles/iam.serviceAccountTokenCreator",
-    "roles/artifactregistry.reader",
-    "roles/artifactregistry.writer",
+    "roles/artifactregistry.createOnPushWriter",
   ])
 
   project = var.project_id
