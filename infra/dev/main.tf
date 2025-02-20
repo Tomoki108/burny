@@ -38,38 +38,33 @@ resource "google_sql_user" "default" {
 locals {
   iam_assignments = {
     # GitHub Actions Service Account
-    "${google_service_account.github_actions_sa.email}_roles_secretmanager"        = {
+    "${google_service_account.github_actions_sa.email}_roles_secretmanager" = {
       role   = "roles/secretmanager.secretAccessor"
       member = "serviceAccount:${google_service_account.github_actions_sa.email}"
     },
-    "${google_service_account.github_actions_sa.email}_roles_token_creator"      = {
-      role   = "roles/iam.serviceAccountTokenCreator"
-      member = "serviceAccount:${google_service_account.github_actions_sa.email}"
-    },
-    "${google_service_account.github_actions_sa.email}_roles_artifactregistry"      = {
+    "${google_service_account.github_actions_sa.email}_roles_artifactregistry" = {
       role   = "roles/artifactregistry.writer"
       member = "serviceAccount:${google_service_account.github_actions_sa.email}"
     },
-    # Cloud Run Service Account
-    "${google_service_account.cloud_run_sa.email}_roles_run_admin"                  = {
+    "${google_service_account.cloud_run_sa.email}_roles_run_admin" = {
       role   = "roles/run.admin"
       member = "serviceAccount:${google_service_account.cloud_run_sa.email}"
     },
-    "${google_service_account.cloud_run_sa.email}_roles_cloudsql"                  = {
+    # Cloud Run Service Account
+    "${google_service_account.cloud_run_sa.email}_roles_run_admin" = {
+      role   = "roles/run.admin"
+      member = "serviceAccount:${google_service_account.cloud_run_sa.email}"
+    },
+    "${google_service_account.cloud_run_sa.email}_roles_cloudsql" = {
       role   = "roles/cloudsql.client"
       member = "serviceAccount:${google_service_account.cloud_run_sa.email}"
     },
-    "${google_service_account.cloud_run_sa.email}_roles_secretmanager"             = {
+    "${google_service_account.cloud_run_sa.email}_roles_secretmanager" = {
       role   = "roles/secretmanager.secretAccessor"
-      member = "serviceAccount:${google_service_account.cloud_run_sa.email}"
-    },
-    "${google_service_account.cloud_run_sa.email}_roles_token_creator"        = {
-      role   = "roles/iam.serviceAccountTokenCreator"
       member = "serviceAccount:${google_service_account.cloud_run_sa.email}"
     },
   }
 }
-
 
 resource "google_service_account" "cloud_run_sa" {
   account_id   = "cloud-run-service"
@@ -84,9 +79,17 @@ resource "google_service_account" "github_actions_sa" {
 resource "google_project_iam_member" "iam_member" {
   for_each = local.iam_assignments
   project  = var.project_id
-  role     = each.value.role
   member   = each.value.member
+  role     = each.value.role
 }
+
+resource "google_service_account_iam_member" "github_actions_workload_identity" {
+  # workload_identity_poolが、github_actions_saの権限を借用できる権限を付与
+  member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.github_pool.name}/*"
+  service_account_id = google_service_account.github_actions_sa.name
+  role               = "roles/iam.workloadIdentityUser"
+}
+
 
 resource "google_iam_workload_identity_pool" "github_pool" {
   project                   = var.project_id
@@ -99,12 +102,11 @@ resource "google_iam_workload_identity_pool_provider" "github_provider" {
   project                            = var.project_id
   workload_identity_pool_id          = google_iam_workload_identity_pool.github_pool.workload_identity_pool_id
   workload_identity_pool_provider_id = "github-provider"
-  provider                           = google
   display_name                       = "GitHub OIDC Provider"
   description                        = "OIDC provider for GitHub Actions federation"
 
   attribute_mapping = {
-    "google.subject"             = "assertion.sub"
+    "google.subject" = "assertion.sub"
   }
   attribute_condition = "assertion.repository == '${var.github_repository}'"
 
@@ -119,10 +121,4 @@ resource "google_secret_manager_secret" "backend-secrets" {
   replication {
     auto {}
   }
-}
-
-resource "google_service_account_iam_member" "github_actions_wi" {
-  service_account_id = google_service_account.github_actions_sa.name
-  role               = "roles/iam.workloadIdentityUser"
-  member             = "principalSet://iam.googleapis.com/projects/810897677786/locations/global/workloadIdentityPools/github-pool/*"
 }
