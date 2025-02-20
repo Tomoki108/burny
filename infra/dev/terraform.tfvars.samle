@@ -9,4 +9,5 @@ secrets = {
 }
 
 github_repository = ""
-github_repository_owner = ""
+
+cloud_run_domain = "

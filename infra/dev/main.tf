@@ -3,8 +3,20 @@ provider "google" {
   region  = var.project_region
 }
 
-locals {
-  backend_secret_ids = ["db_name", "db_user", "db_password", "db_instance_connection_name"]
+resource "google_cloud_run_domain_mapping" "default" {
+  location      = var.project_region
+  name          = var.cloud_run_domain
+
+  spec {
+    route_name =  var.cloud_run_service_name
+  }
+
+  metadata {
+    namespace = var.project_id
+  }
+
+  # Cloud Runが自動的にLet's Encryptの証明書を作成
+  # Cloud DNSのTXTやCNAMEを確認してドメイン所有権を検証
 }
 
 resource "google_artifact_registry_repository" "cloud_run_repo" {
@@ -120,6 +132,11 @@ resource "google_iam_workload_identity_pool_provider" "github_provider" {
   oidc {
     issuer_uri = "https://token.actions.githubusercontent.com"
   }
+}
+
+
+locals {
+  backend_secret_ids = ["db_name", "db_user", "db_password", "db_instance_connection_name"]
 }
 
 resource "google_secret_manager_secret" "backend-secrets" {

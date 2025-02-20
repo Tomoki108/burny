@@ -24,4 +24,16 @@ variable "secrets" {
 variable "github_repository" {
   description = "GitHub repository name"
   type        = string
+  default     = "Tomoki108/burny"
+}
+
+variable "cloud_run_service_name" {
+  description = "Cloud Run service name"
+  type        = string
+  default     = "burny-api-dev"
+}
+
+variable "cloud_run_domain" {
+  description = "Cloud Run domain"
+  type        = string 
 }

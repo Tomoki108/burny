@@ -3,7 +3,7 @@ variable "project_id" {
   type        = string
 }
 
-variable "region" {
+variable "project_region" {
   description = "Google Cloud region"
   type        = string
   default     = "asia-northeast1"
@@ -12,15 +12,23 @@ variable "region" {
 variable "zone_name" {
   description = "Managed Zone ID (ex, example-com)"
   type        = string
+  default     = "burny-page"
+}
+
+variable "zone_description" {
+  description = "DNS Zone Description"
+  type        = string
+  default     = "DNS zone for burny.page."
 }
 
 variable "dns_name" {
   description = "DNS Zone Name（ex, example.com. suffixed with dot）"
   type        = string
+  default = "burny.page."
 }
 
-variable "description" {
-  description = "DNS Zone Description"
-  type        = string
-  default     = "DNS zone for example.com"
+variable "dns_subdomain_name_dev" {
+    description = "Subdomain for dev environment"
+    type        = string
+    default     = "dev.burny.page."
 }
