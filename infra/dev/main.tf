@@ -46,9 +46,9 @@ locals {
       role   = "roles/artifactregistry.writer"
       member = "serviceAccount:${google_service_account.github_actions_sa.email}"
     },
-    "${google_service_account.cloud_run_sa.email}_roles_run_admin" = {
+    "${google_service_account.github_actions_sa.email}_roles_run_admin" = {
       role   = "roles/run.admin"
-      member = "serviceAccount:${google_service_account.cloud_run_sa.email}"
+      member = "serviceAccount:${google_service_account.github_actions_sa.email}"
     },
     # Cloud Run Service Account
     "${google_service_account.cloud_run_sa.email}_roles_run_admin" = {
@@ -84,10 +84,17 @@ resource "google_project_iam_member" "iam_member" {
 }
 
 resource "google_service_account_iam_member" "github_actions_workload_identity" {
-  # workload_identity_poolが、github_actions_saの権限を借用できる権限を付与
+  # workload_identity_poolに、github_actions_saの権限を借用できる権限を付与
   member             = "principalSet://iam.googleapis.com/${google_iam_workload_identity_pool.github_pool.name}/*"
   service_account_id = google_service_account.github_actions_sa.name
   role               = "roles/iam.workloadIdentityUser"
+}
+
+resource "google_service_account_iam_member" "github_actions_act_as_cloud_run_sa" {
+  # github_actions_saに、cloud_run_saの権限を代理実行できる権限を付与
+  member             = "serviceAccount:${google_service_account.github_actions_sa.email}"
+  service_account_id = google_service_account.cloud_run_sa.name
+  role               = "roles/iam.serviceAccountUser"
 }
 
 
