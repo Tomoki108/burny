@@ -1,0 +1,5 @@
+project_id     = ""
+project_region = ""
+zone_name      = "example-com"
+dns_name       = "example.com."
+description    = "DNS zone for example.com"
