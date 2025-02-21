@@ -1,19 +1,29 @@
 apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
-  name: burny-api-dev
+  name: burny-api
 spec:
   template:
     metadata:
       annotations:
-        run.googleapis.com/cloudsql-instances: "turing-reach-451305-f4:asia-northeast1:dev-postgres-instance"
+        run.googleapis.com/cloudsql-instances: "turing-reach-451305-f4:asia-northeast1:postgres-instance"
     spec:
       serviceAccountName: cloud-run-service@turing-reach-451305-f4.iam.gserviceaccount.com
       containers:
-      - image: asia-northeast1-docker.pkg.dev/turing-reach-451305-f4/dev-cloud-run/api
+      - image: asia-northeast1-docker.pkg.dev/turing-reach-451305-f4/cloud-run/api
         env:
           - name: HOST
             value: "dev.burny.page"
+          - name: DB_HOST
+            valueFrom:            
+              secretKeyRef:
+                key: latest
+                name: db_host
+          - name: DB_NAME
+            valueFrom:
+              secretKeyRef:
+                key: latest
+                name: db_name
           - name: DB_USER
             valueFrom:
               secretKeyRef:
@@ -24,14 +34,4 @@ spec:
               secretKeyRef:
                 key: latest
                 name: db_password
-          - name: DB_NAME
-            valueFrom:
-              secretKeyRef:
-                key: latest
-                name: db_name 
-          - name: DB_INSTANCE_CONNECTION_NAME
-            valueFrom:            
-              secretKeyRef:
-                key: latest
-                name: db_instance_connection_name
 

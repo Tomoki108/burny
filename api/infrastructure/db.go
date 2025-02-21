@@ -15,8 +15,8 @@ var DB *gorm.DB
 
 func ConnectDB() error {
 	dsn := fmt.Sprintf(
-		"host=/cloudsql/%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Asia/Tokyo",
-		config.Conf.DB_INSTANCE_CONNECTION_NAME,
+		"host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Asia/Tokyo",
+		config.Conf.DB_HOST,
 		config.Conf.DB_USER,
 		config.Conf.DB_PASS,
 		config.Conf.DB_NAME,

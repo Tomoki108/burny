@@ -5,7 +5,6 @@ secrets = {
   db_name                     = ""
   db_user                     = ""
   db_password                 = ""
-  db_instance_connection_name = ""
 }
 
 github_repository = ""

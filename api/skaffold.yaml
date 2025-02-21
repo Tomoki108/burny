@@ -8,7 +8,7 @@ build:
   platforms:
     - linux/amd64
   artifacts:
-    - image: asia-northeast1-docker.pkg.dev/turing-reach-451305-f4/dev-cloud-run/api
+    - image: asia-northeast1-docker.pkg.dev/turing-reach-451305-f4/cloud-run/api
       context: .
       ko:
         main: .

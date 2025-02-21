@@ -16,7 +16,6 @@ variable "secrets" {
     db_name                     = string
     db_user                     = string
     db_password                 = string
-    db_instance_connection_name = string
   })
   sensitive = true
 }
@@ -35,5 +34,5 @@ variable "cloud_run_service_name" {
 
 variable "cloud_run_domain" {
   description = "Cloud Run domain"
-  type        = string 
+  type        = string
 }

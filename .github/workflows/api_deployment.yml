@@ -31,14 +31,15 @@ jobs:
 
       - name: Retrieve Secrets from Secret Manager
         run: |
+          export DB_HOST=$(gcloud secrets versions access latest --secret=db_host)
           export DB_NAME=$(gcloud secrets versions access latest --secret=db_name)
           export DB_USER=$(gcloud secrets versions access latest --secret=db_user)
           export DB_PASS=$(gcloud secrets versions access latest --secret=db_password)
-          export DB_INSTANCE_CONNECTION_NAME=$(gcloud secrets versions access latest --secret=db_instance_connection_name)
+          
+          echo "DB_HOST=$DB_HOST" >> $GITHUB_ENV
           echo "DB_NAME=$DB_NAME" >> $GITHUB_ENV
           echo "DB_USER=$DB_USER" >> $GITHUB_ENV
           echo "DB_PASS=$DB_PASS" >> $GITHUB_ENV
-          echo "DB_INSTANCE_CONNECTION_NAME=$DB_INSTANCE_CONNECTION_NAME" >> $GITHUB_ENV
 
       - name: Install Skaffold
         run: |
@@ -50,10 +51,10 @@ jobs:
       - name: Deploy to Cloud Run via Skaffold
         working-directory: api
         env:
+          DB_HOST: ${{ env.DB_HOST }}
           DB_NAME: ${{ env.DB_NAME }}
           DB_USER: ${{ env.DB_USER }}
           DB_PASS: ${{ env.DB_PASS }}
-          DB_INSTANCE_CONNECTION_NAME: ${{ env.DB_INSTANCE_CONNECTION_NAME }}
         run: |
           gcloud auth configure-docker asia-northeast1-docker.pkg.dev
           skaffold run
