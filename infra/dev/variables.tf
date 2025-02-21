@@ -29,7 +29,7 @@ variable "github_repository" {
 variable "cloud_run_service_name" {
   description = "Cloud Run service name"
   type        = string
-  default     = "burny-api-dev"
+  default     = "burny-api"
 }
 
 variable "cloud_run_domain" {
