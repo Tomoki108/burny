@@ -2,7 +2,7 @@
 
 REST API Server for Burny.
 
-API DOC: http://localhost:1323/swagger/index.html
+API DOC: http://dev.burny.page/swagger/index.html
 
 ## Teck Stack
 
