@@ -30,8 +30,6 @@ API DOC: http://localhost:1323/swagger/index.html
   brew install ko
   ```
 
-- Create `.envrc` from `.envrc.sample` and do `direnv allow`.
-
 ## How to run
 
 ```shell
@@ -44,8 +42,9 @@ go run .
 ```shell
 # update API DOC
 swag init
+
 # push application image
-skaffold build -p {env}
-# deploy to cloud run
-skaffold run -p {env}
+skaffold build
+# push application image && deploy to cloud run
+skaffold run
 ```
