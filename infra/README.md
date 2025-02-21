@@ -16,10 +16,6 @@
     gcloud auth application-default login
     ```
 
-## bucket
-- Create GCS bucket named "burny-tfstate" mannually for tfstate backend. 
-
-## each environment setting (dev, prod)
-- Create `terraform.tfvars` from `terraform.tfvars.sample`.
+## each environment setting (currently only dev)
+- Create `terraform.tfvars` from `terraform.tfvars.sample`. Secret values can be referenced at Secret Manager console of burny-{env} project.
 - Init module by `terraform init` and `terraform apply`.
-- Put secret values mannually at Secret Manager console. Values must be the same as defined by terraform.tfvars.
