@@ -1,3 +1,23 @@
 {
-  "go.goroot": "~/.goenv/versions/1.23.4"
+  "go.goroot": "~/.goenv/versions/1.23.4",
+  "workbench.colorCustomizations": {
+    "activityBar.activeBackground": "#b79484",
+    "activityBar.background": "#b79484",
+    "activityBar.foreground": "#15202b",
+    "activityBar.inactiveForeground": "#15202b99",
+    "activityBarBadge.background": "#d7e7dc",
+    "activityBarBadge.foreground": "#15202b",
+    "commandCenter.border": "#15202b99",
+    "sash.hoverBorder": "#b79484",
+    "statusBar.background": "#a47864",
+    "statusBar.foreground": "#15202b",
+    "statusBarItem.hoverBackground": "#86604f",
+    "statusBarItem.remoteBackground": "#a47864",
+    "statusBarItem.remoteForeground": "#15202b",
+    "titleBar.activeBackground": "#a47864",
+    "titleBar.activeForeground": "#15202b",
+    "titleBar.inactiveBackground": "#a4786499",
+    "titleBar.inactiveForeground": "#15202b99"
+  },
+  "peacock.color": "#A47864"
 }
