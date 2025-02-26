@@ -1,26 +1,25 @@
 <template>
-
-  <body>
-    <!-- 背景の円 -->
-    <div class="background-circle"></div>
-
-    <!-- 中央配置用のコンテナ -->
-    <div class="container">
-      <div class="login-box">
-        <h1>Burny</h1>
-        <form>
-          <input type="text" placeholder="youremail@burnyapp.io" />
-          <input type="password" placeholder="Password" />
-          <button type="submit" class="btn-signin">Sign In</button>
-        </form>
-        <div class="or">or</div>
-        <button class="btn-create">Create account</button>
-      </div>
-    </div>
-  </body>
+  <v-container class="fill-height" fluid>
+    <v-row align="center" justify="center">
+      <v-col cols="12" sm="8" md="4">
+        <v-card>
+          <v-card-title class="headline">Login</v-card-title>
+          <v-card-text>
+            <v-form @submit.prevent="onSubmit">
+              <v-text-field v-model="email" label="Email" placeholder="youremail@burnyapp.io" required></v-text-field>
+              <v-text-field v-model="password" label="Password" type="password" placeholder="Password"
+                required></v-text-field>
+              <v-btn type="submit" color="primary" block>Sign In</v-btn>
+              <v-alert v-if="error" type="error" dense text>{{ error }}</v-alert>
+            </v-form>
+          </v-card-text>
+        </v-card>
+      </v-col>
+    </v-row>
+  </v-container>
 </template>
 
-<script lang="ts">
+<!-- <script lang="ts">
 export default {
   layout: 'empty',
   head() {
@@ -28,6 +27,33 @@ export default {
       title: 'Login',
     }
   },
+}
+</script> -->
+
+<script type="setup" lang="ts">
+import AppLayout from '@/Layouts/AppLayout';
+import { ref } from 'vue'
+import { useNuxtApp } from '#app'
+
+defineOptions({ layout: "empty" })
+
+const email = ref('')
+const password = ref('')
+const error = ref('')
+
+const { $axios } = useNuxtApp()
+
+const onSubmit = async () => {
+  error.value = ''
+  try {
+    await $axios.post('/api/login', {
+      email: email.value,
+      password: password.value,
+    })
+    // 成功時の処理（例: リダイレクトなど）
+  } catch (err) {
+    error.value = 'Login failed. Please check your credentials.'
+  }
 }
 </script>
 
