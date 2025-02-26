@@ -19,5 +19,9 @@
     "titleBar.inactiveBackground": "#a4786499",
     "titleBar.inactiveForeground": "#15202b99"
   },
-  "peacock.color": "#A47864"
+  "peacock.color": "#A47864",
+  "editor.formatOnSave": true,
+  "[vue]": {
+    "editor.defaultFormatter": "Vue.volar"
+  }
 }
