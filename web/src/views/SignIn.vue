@@ -22,6 +22,7 @@
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth'
+import { PATH_PROJECTS } from '../router'
 
 const email = ref('')
 const password = ref('')
@@ -33,8 +34,8 @@ const authStore = useAuthStore()
 const onSubmit = async () => {
     error.value = ''
     try {
-        await authStore.login(email.value, password.value)
-        router.push('/home')
+        await authStore.signIn(email.value, password.value)
+        router.push(PATH_PROJECTS)
     } catch (err) {
         error.value = 'Login failed. Please check your credentials.'
     }

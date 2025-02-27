@@ -1,18 +1,23 @@
 import { createRouter, createWebHistory } from "vue-router";
 import type { RouteRecordRaw } from "vue-router";
-import { useAuthStore } from "../stores/auth";
+import { useAuthStore } from "./stores/auth";
+
+export const PATH_SIGN_IN = "/sign_in";
+export const PATH_PROJECTS = "/projects";
 
 const routes: Array<RouteRecordRaw> = [
+  // non auth required routes
   {
-    path: "/projects",
-    name: "Projects",
-    component: () => import("../views/Projects.vue"),
-    meta: { requiresAuth: true },
-  },
-  {
-    path: "/sign_in",
+    path: PATH_SIGN_IN,
     name: "SignIn",
-    component: () => import("../views/SignIn.vue"),
+    component: () => import("./views/SignIn.vue"),
+  },
+  // auth required routes
+  {
+    path: PATH_PROJECTS,
+    name: "Projects",
+    component: () => import("./views/Projects.vue"),
+    meta: { requiresAuth: true },
   },
 ];
 
