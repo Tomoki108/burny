@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import type { RouteRecordRaw } from "vue-router";
-import { useAuthStore } from "./stores/auth";
+import { useAuthStore } from "./stores/auth_store";
 
 export const PATH_SIGN_IN = "/sign_in";
 export const PATH_PROJECTS = "/projects";
