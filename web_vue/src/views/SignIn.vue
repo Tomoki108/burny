@@ -5,11 +5,10 @@
             <h1>Burny</h1>
             <form @submit.prevent="onSubmit">
                 <label for="email">Username</label>
-                <input type="text" id="email" v-model="email" placeholder="yourname@burnuppro.io" />
-
+                <input type="text" id="email" v-model="email" placeholder="yourname@burnuppro.io" minlength="8"
+                    maxlength="20" />
                 <label for="password">Password</label>
                 <input type="password" id="password" v-model="password" placeholder="************" />
-
                 <button type="submit" class="btn-signin">Sign In</button>
                 <div class="or">or</div>
                 <button type="button" class="btn-create">Create account</button>
@@ -22,27 +21,19 @@
 <script lang="ts" setup>
 import { ref } from 'vue'
 import { useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/auth'
 
 const email = ref('')
 const password = ref('')
 const error = ref('')
 
 const router = useRouter()
+const authStore = useAuthStore()
 
 const onSubmit = async () => {
     error.value = ''
     try {
-        const response = await fetch('http://localhost:1323/api/v1/sign_in', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-                email: email.value,
-                password: password.value,
-            }),
-        })
-        if (!response.ok) {
-            throw new Error('Login failed')
-        }
+        await authStore.login(email.value, password.value)
         router.push('/home')
     } catch (err) {
         error.value = 'Login failed. Please check your credentials.'
@@ -60,7 +51,6 @@ const onSubmit = async () => {
 body {
     font-family: sans-serif;
     background-color: #ffffff;
-    /* 背景色を白に変更 */
 }
 
 .background-circle {
@@ -84,7 +74,6 @@ body {
 
 .login-box {
     background-color: #f0f0f0;
-    /* フォームエリアの背景色をグレーに変更 */
     width: 320px;
     padding: 40px 30px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
@@ -96,7 +85,6 @@ body {
     margin-bottom: 24px;
     font-size: 24px;
     color: #000000;
-    /* "Burny" テキストを黒に変更 */
 }
 
 .login-box input[type="text"],
@@ -108,7 +96,6 @@ body {
     border: 1px solid #ccc;
     border-radius: 4px;
     color: #000;
-    /* テキストカラーを黒に設定 */
 }
 
 .login-box button {

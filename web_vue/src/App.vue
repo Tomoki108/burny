@@ -13,7 +13,7 @@ import { useRoute } from 'vue-router'
 import Sidebar from './components/Sidebar.vue'
 
 const route = useRoute()
-const showSidebar = computed(() => route.path !== '/login')
+const showSidebar = computed(() => route.path !== '/sign_in')
 </script>
 
 <style scoped>
