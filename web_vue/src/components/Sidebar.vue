@@ -19,6 +19,10 @@
     background-color: #f0f0f0;
     height: 100vh;
     padding: 20px;
+    position: fixed;
+    /* サイドバーを左側に固定 */
+    top: 0;
+    left: 0;
 }
 
 nav ul {
@@ -38,7 +42,8 @@ nav ul li a {
 }
 
 nav ul li a svg {
-    margin-right: 10px;
+    margin-right: 20px;
+    /* アイコンとテキストの間に隙間を追加 */
 }
 
 .logout {
@@ -55,6 +60,7 @@ nav ul li a svg {
 }
 
 .logout a svg {
-    margin-right: 10px;
+    margin-right: 20px;
+    /* アイコンとテキストの間に隙間を追加 */
 }
 </style>
