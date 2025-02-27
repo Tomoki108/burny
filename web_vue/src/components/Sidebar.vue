@@ -2,13 +2,13 @@
     <div class="sidebar">
         <nav>
             <ul>
-                <li><router-link to="/home"><i class="icon-home"></i> Home</router-link></li>
-                <li><router-link to="/projects"><i class="icon-projects"></i> Projects</router-link></li>
-                <li><router-link to="/settings"><i class="icon-settings"></i> Settings</router-link></li>
+                <li><router-link to="/home"><font-awesome-icon icon="home" /> Home</router-link></li>
+                <li><router-link to="/projects"><font-awesome-icon icon="project-diagram" /> Projects</router-link></li>
+                <li><router-link to="/settings"><font-awesome-icon icon="cog" /> Settings</router-link></li>
             </ul>
         </nav>
         <div class="logout">
-            <router-link to="/login"><i class="icon-logout"></i> Log out</router-link>
+            <router-link to="/login"><font-awesome-icon icon="sign-out-alt" /> Log out</router-link>
         </div>
     </div>
 </template>
@@ -37,7 +37,7 @@ nav ul li a {
     align-items: center;
 }
 
-nav ul li a i {
+nav ul li a svg {
     margin-right: 10px;
 }
 
@@ -54,7 +54,7 @@ nav ul li a i {
     align-items: center;
 }
 
-.logout a i {
+.logout a svg {
     margin-right: 10px;
 }
 </style>

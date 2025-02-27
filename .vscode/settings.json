@@ -23,5 +23,8 @@
   "editor.formatOnSave": true,
   "[vue]": {
     "editor.defaultFormatter": "Vue.volar"
-  }
+  },
+  "[ts]": {
+    "editor.defaultFormatter": "dbaeumer.vscode-eslint"
+  },
 }
