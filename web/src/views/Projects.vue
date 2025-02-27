@@ -40,21 +40,10 @@ onMounted(() => {
 </script>
 
 <style scoped>
+/* 画面レイアウト・コンテナ、カードの配置など、コンポーネント固有のスタイルのみを記述 */
+/* 色やフォント、ボタン、入力フォームは全てglobal.cssを参照 */
 .projects-container {
     padding: 20px;
-}
-
-h1 {
-    font-size: 24px;
-    margin-bottom: 20px;
-}
-
-.create-project-btn {
-    background-color: #f0f0f0;
-    border: none;
-    padding: 10px 20px;
-    cursor: pointer;
-    margin-bottom: 20px;
 }
 
 .projects-list {
@@ -63,15 +52,15 @@ h1 {
 }
 
 .project-card {
-    background-color: #ffffff;
+    background-color: var(--color-background);
     padding: 20px;
-    border: 1px solid #e0e0e0;
+    border: 1px solid var(--color-muted);
     border-radius: 8px;
     width: 300px;
 }
 
 .project-card h2 {
-    font-size: 20px;
+    font-size: var(--font-size-large);
     margin-bottom: 10px;
 }
 
@@ -82,12 +71,5 @@ h1 {
 .project-actions {
     display: flex;
     gap: 10px;
-}
-
-.project-actions button {
-    background-color: #f0f0f0;
-    border: none;
-    padding: 10px;
-    cursor: pointer;
 }
 </style>
