@@ -21,10 +21,13 @@
 
 <script lang="ts" setup>
 import { ref } from 'vue'
+import { useRouter } from 'vue-router'
 
 const email = ref('')
 const password = ref('')
 const error = ref('')
+
+const router = useRouter()
 
 const onSubmit = async () => {
     error.value = ''
@@ -40,7 +43,7 @@ const onSubmit = async () => {
         if (!response.ok) {
             throw new Error('Login failed')
         }
-        // 成功時の処理（例: リダイレクトなど）
+        router.push('/home')
     } catch (err) {
         error.value = 'Login failed. Please check your credentials.'
     }
