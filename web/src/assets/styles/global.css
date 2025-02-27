@@ -3,7 +3,7 @@
 
 :root {
   /* カラーパレット */
-  --color-primary: #d8b8c4;
+  --color-primary: #f0c6e1;
   --color-secondary: #5a5a5a;
   --color-error: #ff5252;
   --color-info: #2196f3;
@@ -11,7 +11,7 @@
   --color-warning: #ffc107;
   --color-background: #ffffff;
   --color-background-grey: #f9f9f9;
-  --color-text: #0000006b;
+  --color-text: #000000;
   --color-text-light: #ffffff;
   --color-muted: #666666;
 
@@ -33,6 +33,7 @@
 }
 
 body {
+  color: var(--color-text);
   font-family: var(--font-family-base);
   background-color: var(--color-background);
   font-size: var(--font-size-base);
@@ -79,7 +80,7 @@ a {
 button {
   font-family: var(--font-family-base);
   background-color: var(--color-primary);
-  color: var(--color-text-light);
+  color: var(--color-text-light) !important;
   border: none;
   padding: 12px;
   font-size: 16px;
