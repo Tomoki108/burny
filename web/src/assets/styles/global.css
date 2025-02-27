@@ -10,6 +10,7 @@
   --color-success: #4caf50;
   --color-warning: #ffc107;
   --color-background: #ffffff;
+  --color-background-grey: #f9f9f9;
   --color-text: #0000006b;
   --color-text-light: #ffffff;
   --color-muted: #666666;
@@ -34,7 +35,6 @@
 body {
   font-family: var(--font-family-base);
   background-color: var(--color-background);
-  color: var(--color-text);
   font-size: var(--font-size-base);
 }
 
@@ -96,7 +96,7 @@ button:hover {
 input,
 textarea {
   font-family: var(--font-family-base);
-  border: 1px solid var(--color-muted);
+  border: 1px solid var(--color-text);
   padding: 10px;
   border-radius: 4px;
   font-size: var(--font-size-base);
@@ -105,7 +105,19 @@ textarea {
   margin-bottom: 16px;
 }
 
-/* Generic label style */
+/* オートフィルのスタイルをデフォルトから上書き */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #fff inset !important; /* WebKit専用 */
+  box-shadow: 0 0 0 1000px #fff inset !important; /* 通常のbox-shadow */
+  -webkit-text-fill-color: #000 !important; /* テキスト色の上書き */
+  transition: background-color 9999s ease-in-out 0s !important; /* 背景色を長い時間でトランジション */
+}
+
 label {
   display: block;
   margin-bottom: 8px;

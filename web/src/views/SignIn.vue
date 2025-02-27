@@ -7,13 +7,13 @@
             <h1>Burny</h1>
             <form @submit.prevent="onSubmit">
                 <label for="email">Username</label>
-                <input type="text" id="email" v-model="email" placeholder="yourname@burnuppro.io" minlength="8"
+                <input type="text" id="email" v-model="email" placeholder="yourname@burnuppro.io" required minlength="8"
                     maxlength="20" />
                 <label for="password">Password</label>
-                <input type="password" id="password" v-model="password" placeholder="************" />
-                <button type="submit" class="btn">Sign In</button>
+                <input type="password" id="password" v-model="password" placeholder="************" required />
+                <button type="submit">Sign In</button>
                 <div class="or">or</div>
-                <button type="button" class="btn">Create account</button>
+                <button type="button">Create account</button>
             </form>
             <p v-if="error" class="error">{{ error }}</p>
         </div>
@@ -81,7 +81,7 @@ const onSubmit = async () => {
 .login-box {
     position: relative;
     z-index: 1;
-    background-color: #ffffff;
+    background-color: var(--color-background-grey);
     padding: 40px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
