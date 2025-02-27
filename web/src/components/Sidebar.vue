@@ -2,7 +2,6 @@
     <div class="sidebar">
         <nav>
             <ul>
-                <li><router-link to="/home"><font-awesome-icon icon="home" /> Home</router-link></li>
                 <li><router-link to="/projects"><font-awesome-icon icon="project-diagram" /> Projects</router-link></li>
                 <li><router-link to="/settings"><font-awesome-icon icon="cog" /> Settings</router-link></li>
             </ul>
