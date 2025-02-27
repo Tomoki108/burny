@@ -1,0 +1,121 @@
+/* フォント定義 */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+
+:root {
+  /* カラーパレット */
+  --color-primary: #d8b8c4;
+  --color-secondary: #5a5a5a;
+  --color-error: #ff5252;
+  --color-info: #2196f3;
+  --color-success: #4caf50;
+  --color-warning: #ffc107;
+  --color-background: #ffffff;
+  --color-text: #0000006b;
+  --color-text-light: #ffffff;
+  --color-muted: #666666;
+
+  /* フォントファミリー */
+  --font-family-base: "Roboto", sans-serif;
+
+  /* フォントサイズ */
+  --font-size-small: 12px;
+  --font-size-base: 16px;
+  --font-size-large: 20px;
+  --font-size-xlarge: 32px;
+}
+
+/* Reset/Box sizing */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: var(--font-family-base);
+  background-color: var(--color-background);
+  color: var(--color-text);
+  font-size: var(--font-size-base);
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  color: var(--color-primary);
+}
+
+h1 {
+  font-size: var(--font-size-xlarge);
+}
+
+h2 {
+  font-size: var(--font-size-large);
+}
+
+h3 {
+  font-size: var(--font-size-large);
+}
+
+h4 {
+  font-size: var(--font-size-base);
+}
+
+h5 {
+  font-size: var(--font-size-base);
+}
+
+h6 {
+  font-size: var(--font-size-small);
+}
+
+a {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+button {
+  font-family: var(--font-family-base);
+  background-color: var(--color-primary);
+  color: var(--color-text-light);
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  width: 100%;
+  margin-bottom: 16px;
+}
+
+button:hover {
+  background-color: var(--color-secondary);
+}
+
+input,
+textarea {
+  font-family: var(--font-family-base);
+  border: 1px solid var(--color-muted);
+  padding: 10px;
+  border-radius: 4px;
+  font-size: var(--font-size-base);
+  width: 100%;
+  color: var(--color-text);
+  margin-bottom: 16px;
+}
+
+/* Generic label style */
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--color-secondary);
+  text-align: left;
+  font-size: var(--font-size-base);
+}
+
+.error {
+  color: var(--color-error);
+  margin-top: 16px;
+  font-size: var(--font-size-small);
+}

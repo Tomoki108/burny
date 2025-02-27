@@ -1,6 +1,8 @@
+<!-- filepath: /Users/nagatatomoki/Dev/burny/web/src/views/SignIn.vue -->
 <template>
     <div class="container">
-        <div class="background-circle"></div>
+        <div class="background-circle-left"></div>
+        <div class="background-circle-right"></div>
         <div class="login-box">
             <h1>Burny</h1>
             <form @submit.prevent="onSubmit">
@@ -9,9 +11,9 @@
                     maxlength="20" />
                 <label for="password">Password</label>
                 <input type="password" id="password" v-model="password" placeholder="************" />
-                <button type="submit" class="btn-signin">Sign In</button>
+                <button type="submit" class="btn">Sign In</button>
                 <div class="or">or</div>
-                <button type="button" class="btn-create">Create account</button>
+                <button type="button" class="btn">Create account</button>
             </form>
             <p v-if="error" class="error">{{ error }}</p>
         </div>
@@ -43,29 +45,32 @@ const onSubmit = async () => {
 </script>
 
 <style scoped>
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-body {
-    font-family: sans-serif;
-    background-color: #ffffff;
-}
-
-.background-circle {
+/* Background circles */
+.background-circle-left {
     position: absolute;
     top: -200px;
-    left: -200px;
+    left: -700px;
     width: 600px;
     height: 600px;
     background-color: #efefef;
     border-radius: 50%;
-    z-index: -1;
+    z-index: 0;
 }
 
+.background-circle-right {
+    position: absolute;
+    bottom: 0;
+    right: -600px;
+    width: 400px;
+    height: 400px;
+    background-color: #efefef;
+    border-radius: 50%;
+    z-index: 0;
+}
+
+/* Container and login-box are specific to the SignIn view */
 .container {
+    position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -74,58 +79,17 @@ body {
 }
 
 .login-box {
-    background-color: #f0f0f0;
-    width: 320px;
-    padding: 40px 30px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
+    z-index: 1;
+    background-color: #ffffff;
+    padding: 40px;
     border-radius: 8px;
-    text-align: center;
-}
-
-.login-box h1 {
-    margin-bottom: 24px;
-    font-size: 24px;
-    color: #000000;
-}
-
-.login-box input[type="text"],
-.login-box input[type="password"] {
-    width: 100%;
-    padding: 12px;
-    margin-bottom: 16px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    color: #000;
-}
-
-.login-box button {
-    width: 100%;
-    padding: 12px;
-    font-size: 16px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-}
-
-.btn-signin {
-    background-color: #d8b8c4;
-    color: #fff;
-    margin-bottom: 16px;
-}
-
-.btn-create {
-    background-color: #f2d5df;
-    color: #fff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 400px;
 }
 
 .or {
     margin: 16px 0;
-    color: #666;
-}
-
-.error {
-    color: red;
-    margin-top: 16px;
+    color: var(--color-muted);
 }
 </style>
