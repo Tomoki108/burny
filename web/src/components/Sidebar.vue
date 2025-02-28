@@ -89,7 +89,7 @@ nav ul li a svg {
 }
 
 .signout a {
-    font-weight: 1rem;
+    font-weight: 0 !important;
     display: flex;
     align-items: center;
     color: inherit;

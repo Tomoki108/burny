@@ -98,10 +98,10 @@ h6 {
   font-size: var(--font-size-small);
 }
 
-a {
+/* a {
   color: var(--color-primary);
   text-decoration: none;
-}
+} */
 
 .button {
   font-family: var(--font-family-base);
