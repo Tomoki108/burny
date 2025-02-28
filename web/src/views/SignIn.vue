@@ -42,9 +42,14 @@ const onSubmit = async () => {
 </script>
 
 <style scoped>
-#app {
-    margin: 0 auto !important;
-    padding: 0 auto !important;
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.or {
+    margin: 16px 0;
+    text-align: center;
 }
 
 .background-circle-left {

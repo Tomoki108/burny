@@ -2,11 +2,6 @@
 <template>
     <ContentsContainer title="Projects">
         <v-container>
-            <v-row justify="end">
-                <v-col cols="12">
-                    <button class="button-small" @click="createProject()">+ New</button>
-                </v-col>
-            </v-row>
             <v-row class="projects-list" dense>
                 <v-col v-for="project in projectsStore.getProjects()" :key="project.id" cols="3" sm="6" md="4"
                     class="project-card">
@@ -68,7 +63,7 @@ onMounted(() => {
     height: 200px;
     text-align: left;
     position: relative;
-    box-shadow: 0.1rem 0.1rem var(--color-shadow);
+    box-shadow: var(--shadow)
 }
 
 .project-card-new {

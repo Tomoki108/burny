@@ -24,6 +24,8 @@
   --font-size-base: 16px;
   --font-size-large: 20px;
   --font-size-xlarge: 32px;
+
+  --shadow: 0.1rem 0.1rem var(--color-shadow);
 }
 
 * {

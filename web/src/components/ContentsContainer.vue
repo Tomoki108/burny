@@ -1,9 +1,11 @@
 <template>
     <Sidebar />
-    <header class="app-header">
-        <h1>{{ title }}</h1>
-    </header>
+
     <main class="main-content">
+        <header class="app-header">
+            <h1>{{ title }}</h1>
+        </header>
+        <hr />
         <slot></slot>
     </main>
 </template>
@@ -18,27 +20,19 @@ defineProps<{
 </script>
 
 <style scoped>
-.app-header {
-    position: fixed;
-    top: 0;
-    left: 200px;
-    /* サイドバーの幅を考慮 */
-    width: calc(100% - 200px);
-    /* サイドバーの幅を考慮 */
-    padding: 20px;
-    background-color: var(--color-background);
-    z-index: 1;
-    /* サイドバーより上に表示 */
-}
-
 .app-header h1 {
-    margin: 0;
+    margin-bottom: 20px;
     text-align: left;
     color: var(--color-primary);
 }
 
 .main-content {
-    padding: 80px 20px 20px;
+    padding: 40px 40px 40px;
     /* ヘッダーが被らないように上部に余白を追加 */
+}
+
+hr {
+    border-top: 2px solid var(--color-muted);
+    margin-bottom: 60px;
 }
 </style>

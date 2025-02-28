@@ -17,7 +17,7 @@
     width: 200px;
     background-color: #f0f0f0;
     height: 100vh;
-    padding: 20px;
+    padding: 40px;
     position: flex;
     /* サイドバーを左側に固定 */
     top: 0;
@@ -35,7 +35,8 @@ nav ul li {
 
 nav ul li a {
     text-decoration: none;
-    color: #000;
+    color: var(--color-text);
+    font-size: var(--font-size-large);
     display: flex;
     align-items: center;
 }
