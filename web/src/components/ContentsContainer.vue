@@ -28,8 +28,8 @@ defineProps<{
 }
 
 .main-content {
+    width: 90%;
     padding: 40px 40px 40px;
-    /* ヘッダーが被らないように上部に余白を追加 */
 }
 
 hr {

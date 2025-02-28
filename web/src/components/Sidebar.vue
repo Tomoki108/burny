@@ -36,7 +36,8 @@ const signOut = () => {
 
 <style scoped>
 .sidebar {
-    width: 200px;
+    width: 10%;
+    min-width: 200px;
     background-color: var(--color-secondary);
     height: 100vh;
     position: flex;
@@ -100,6 +101,7 @@ nav ul li a svg {
     padding-left: 40px;
     padding-bottom: 20px;
     width: inherit;
+    min-width: inherit;
 }
 
 .signout a {
