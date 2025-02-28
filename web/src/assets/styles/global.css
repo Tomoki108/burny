@@ -142,6 +142,7 @@ textarea {
   width: 100%;
   color: var(--color-text);
   margin-bottom: 16px;
+  background-color: var(--color-background) !important;
 }
 
 /* オートフィルのスタイルをデフォルトから上書き */
@@ -154,7 +155,6 @@ textarea:-webkit-autofill:focus {
   -webkit-box-shadow: 0 0 0 1000px #fff inset !important; /* WebKit専用 */
   box-shadow: 0 0 0 1000px #fff inset !important; /* 通常のbox-shadow */
   -webkit-text-fill-color: #000 !important; /* テキスト色の上書き */
-  transition: background-color 9999s ease-in-out 0s !important; /* 背景色を長い時間でトランジション */
 }
 
 label {
