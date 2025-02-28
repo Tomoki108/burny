@@ -41,6 +41,7 @@
   padding: 0px 0px 0px 0px !important;
   max-width: 100%;
   max-height: 100%;
+  text-align: left !important;
 }
 
 body {
@@ -50,13 +51,16 @@ body {
   font-size: var(--font-size-base);
 }
 
-h1,
+h1 {
+  color: var(--color-primary);
+}
+
 h2,
 h3,
 h4,
 h5,
 h6 {
-  color: var(--color-primary);
+  color: var(--color-secondary);
 }
 
 h1 {
@@ -99,6 +103,7 @@ a {
   cursor: pointer;
   width: 100%;
   margin: 5 5;
+  box-shadow: 0.1rem 0.1rem var(--color-shadow);
 }
 
 .button-small {
@@ -110,7 +115,7 @@ a {
   font-size: 12px;
   border-radius: 4px;
   cursor: pointer;
-  width: 100%;
+  box-shadow: 0.1rem 0.1rem var(--color-shadow);
 }
 
 button:hover {
@@ -154,4 +159,8 @@ label {
   color: var(--color-error);
   margin-top: 16px;
   font-size: var(--font-size-small);
+}
+
+.fr {
+  float: right;
 }

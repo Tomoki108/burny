@@ -1,21 +1,30 @@
 <!-- filepath: /Users/nagatatomoki/Dev/burny/web/src/views/Projects.vue -->
 <template>
     <ContentsContainer title="Projects">
-        <button class="button-small" @click="createProject()">Delete</button>
-
-        <div class="projects-list">
-            <div class="project-card" v-for="project in projectsStore.getProjects()" :key="project.id">
-                <div>
-                    <h2>{{ project.title }}</h2>
-                    <p>Sprint: {{ project.sprint_count }}</p>
-                    <p>{{ project.description }}</p>
-                </div>
-                <div class="project-actions">
-                    <button class="button-small" @click="updateProject(project.id)">Update</button>
-                    <button class="button-small" @click="deleteProject(project.id)">Delete</button>
-                </div>
-            </div>
-        </div>
+        <v-container>
+            <v-row justify="end">
+                <v-col cols="12">
+                    <button class="button-small" @click="createProject()">+ New</button>
+                </v-col>
+            </v-row>
+            <v-row class="projects-list" dense>
+                <v-col v-for="project in projectsStore.getProjects()" :key="project.id" cols="3" sm="6" md="4"
+                    class="project-card">
+                    <div>
+                        <h2>{{ project.title }}</h2>
+                        <p>Sprint: {{ project.sprint_count }}</p>
+                        <p>{{ project.description }}</p>
+                    </div>
+                    <div class="project-actions">
+                        <button class="button-small" @click="updateProject(project.id)">Update</button>
+                        <button class="button-small" @click="deleteProject(project.id)">Delete</button>
+                    </div>
+                </v-col>
+                <v-col class="project-card-new" cols="3" sm="6" md="4">
+                    <h2>+ New Project</h2>
+                </v-col>
+            </v-row>
+        </v-container>
     </ContentsContainer>
 </template>
 
@@ -49,16 +58,24 @@ onMounted(() => {
     gap: 20px;
 }
 
-.project-card {
+.project-card,
+.project-card-new {
     background-color: var(--color-background);
     padding: 20px;
     border: 1.5px solid var(--color-muted);
-    border-radius: 18px;
-    width: 300px;
+    border-radius: 4px;
+    width: 350px;
+    height: 200px;
     text-align: left;
     position: relative;
-    padding-bottom: 60px;
-    box-shadow: 0.2rem 0.2rem var(--color-shadow);
+    box-shadow: 0.1rem 0.1rem var(--color-shadow);
+}
+
+.project-card-new {
+    /* margin-bottom: 10px; */
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .project-actions {

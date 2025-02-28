@@ -1,13 +1,11 @@
 <template>
-    <div class="layout-container">
-        <Sidebar />
-        <header class="app-header">
-            <h1>{{ title }}</h1>
-        </header>
-        <main class="main-content">
-            <slot></slot>
-        </main>
-    </div>
+    <Sidebar />
+    <header class="app-header">
+        <h1>{{ title }}</h1>
+    </header>
+    <main class="main-content">
+        <slot></slot>
+    </main>
 </template>
 
 <script setup lang="ts">
@@ -20,10 +18,6 @@ defineProps<{
 </script>
 
 <style scoped>
-.layout-container {
-    display: flex;
-}
-
 .app-header {
     position: fixed;
     top: 0;
