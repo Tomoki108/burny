@@ -1,14 +1,18 @@
 <!-- filepath: /Users/nagatatomoki/Dev/burny/web/src/views/Projects.vue -->
 <template>
     <ContentsContainer title="Projects">
+        <button class="button-small" @click="createProject()">Delete</button>
+
         <div class="projects-list">
             <div class="project-card" v-for="project in projectsStore.getProjects()" :key="project.id">
-                <h2>{{ project.title }}</h2>
-                <p>Sprint: {{ project.sprint_count }}</p>
-                <p>{{ project.description }}</p>
+                <div>
+                    <h2>{{ project.title }}</h2>
+                    <p>Sprint: {{ project.sprint_count }}</p>
+                    <p>{{ project.description }}</p>
+                </div>
                 <div class="project-actions">
-                    <button @click="updateProject(project.id)">Update</button>
-                    <button @click="deleteProject(project.id)">Delete</button>
+                    <button class="button-small" @click="updateProject(project.id)">Update</button>
+                    <button class="button-small" @click="deleteProject(project.id)">Delete</button>
                 </div>
             </div>
         </div>
@@ -48,9 +52,23 @@ onMounted(() => {
 .project-card {
     background-color: var(--color-background);
     padding: 20px;
-    border: 1px solid var(--color-muted);
-    border-radius: 8px;
+    border: 1.5px solid var(--color-muted);
+    border-radius: 18px;
     width: 300px;
+    text-align: left;
+    position: relative;
+    padding-bottom: 60px;
+    box-shadow: 0.2rem 0.2rem var(--color-shadow);
+}
+
+.project-actions {
+    position: absolute;
+    bottom: 20px;
+    /* 下部に配置 */
+    right: 20px;
+    /* 右端に配置 */
+    display: flex;
+    gap: 10px;
 }
 
 .project-card h2 {

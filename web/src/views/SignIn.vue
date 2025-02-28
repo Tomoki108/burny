@@ -1,7 +1,5 @@
 <template>
     <div class="container">
-        <div class="background-circle-left"></div>
-        <div class="background-circle-right"></div>
         <div class="login-box">
             <h1>Burny</h1>
             <form @submit.prevent="onSubmit">
@@ -10,9 +8,9 @@
                     maxlength="20" />
                 <label for="password">Password</label>
                 <input type="password" id="password" v-model="password" placeholder="************" required />
-                <button type="submit">Sign In</button>
+                <button type="submit" class="button">Sign In</button>
                 <div class="or">or</div>
-                <button type="button">Create account</button>
+                <button type="button" class="button">Create account</button>
             </form>
             <p v-if="error" class="error">{{ error }}</p>
         </div>
@@ -44,9 +42,13 @@ const onSubmit = async () => {
 </script>
 
 <style scoped>
-/* Background circles */
+#app {
+    margin: 0 auto !important;
+    padding: 0 auto !important;
+}
+
 .background-circle-left {
-    position: absolute;
+    /* position: absolute; */
     top: -200px;
     left: -700px;
     width: 600px;
@@ -57,7 +59,7 @@ const onSubmit = async () => {
 }
 
 .background-circle-right {
-    position: absolute;
+    /* position: absolute; */
     bottom: 0;
     right: -600px;
     width: 400px;
@@ -69,12 +71,14 @@ const onSubmit = async () => {
 
 /* Container and login-box are specific to the SignIn view */
 .container {
+    margin: 0 auto;
     position: relative;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
     width: 100%;
+    z-index: 1;
 }
 
 .login-box {
