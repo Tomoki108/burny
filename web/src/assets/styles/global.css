@@ -20,6 +20,10 @@
     var(--color-primary),
     var(--color-secondary)
   );
+  --color-primary-tertiary: linear-gradient(
+    var(--color-primary),
+    var(--color-tertiary)
+  );
   --color-tertiary-secondary: linear-gradient(
     var(--color-tertiary),
     var(--color-secondary)
@@ -97,11 +101,6 @@ h5 {
 h6 {
   font-size: var(--font-size-small);
 }
-
-/* a {
-  color: var(--color-primary);
-  text-decoration: none;
-} */
 
 .button {
   font-family: var(--font-family-base);
