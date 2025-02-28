@@ -15,7 +15,7 @@
             </ul>
         </nav>
         <div class="signout" @click="signOut">
-            <font-awesome-icon icon="sign-out-alt" /> Sign out
+            <font-awesome-icon icon="sign-out-alt" /> Sign Out
         </div>
     </div>
 </template>
