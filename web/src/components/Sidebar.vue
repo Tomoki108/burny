@@ -14,11 +14,25 @@
                 </router-link>
             </ul>
         </nav>
-        <div class="signout">
-            <router-link to="/sign_in"><font-awesome-icon icon="sign-out-alt" /> Sign out</router-link>
+        <div class="signout" @click="signOut">
+            <font-awesome-icon icon="sign-out-alt" /> Sign out
         </div>
     </div>
 </template>
+
+<script setup lang="ts">
+import { useRouter } from 'vue-router'
+import { useAuthStore } from '../stores/auth_store'
+
+const router = useRouter()
+const authStore = useAuthStore()
+
+const signOut = () => {
+    authStore.signOut()
+    router.push('/sign_in')
+}
+</script>
+
 
 <style scoped>
 .sidebar {
