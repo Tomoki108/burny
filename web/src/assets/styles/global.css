@@ -3,14 +3,14 @@
 
 :root {
   /* カラーパレット */
-  --color-primary: #d19abe;
-  --color-secondary: #5a5a5a;
+  --color-primary: #f4acb7;
+  --color-secondary: #d8e2dc;
+  --color-tertiary: #9d8189;
   --color-error: #ff5252;
   --color-info: #2196f3;
   --color-success: #4caf50;
   --color-warning: #ffc107;
   --color-background: #ffffff;
-  --color-background-grey: #f9f9f9;
   --color-text: #000000;
   --color-text-light: #ffffff;
   --color-muted: #9f9a9a;
@@ -121,7 +121,7 @@ a {
 }
 
 button:hover {
-  background-color: var(--color-secondary);
+  background-color: var(--color-tertiary);
 }
 
 input,

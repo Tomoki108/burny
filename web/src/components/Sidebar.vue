@@ -15,13 +15,23 @@
 <style scoped>
 .sidebar {
     width: 200px;
-    background-color: #f0f0f0;
+    background-color: var(--color-secondary);
     height: 100vh;
-    padding: 40px;
+    /* padding: 40px; */
     position: flex;
-    /* サイドバーを左側に固定 */
     top: 0;
     left: 0;
+}
+
+.router-link-active,
+.router-link-exact-active {
+    color: var(--color-primary);
+    font-weight: bold;
+    /* Alternatively, add background color or any other styling */
+}
+
+nav {
+    margin-top: 40px;
 }
 
 nav ul {
@@ -30,6 +40,8 @@ nav ul {
 }
 
 nav ul li {
+    margin-left: 40px;
+    margin-right: 40px;
     margin-bottom: 20px;
 }
 
@@ -43,24 +55,23 @@ nav ul li a {
 
 nav ul li a svg {
     margin-right: 20px;
-    /* アイコンとテキストの間に隙間を追加 */
 }
 
 .logout {
     position: absolute;
-    bottom: 20px;
+    margin-left: 40px;
+    bottom: 40px;
     width: 100%;
 }
 
 .logout a {
     text-decoration: none;
-    color: #000;
+    color: var(--color-text);
     display: flex;
     align-items: center;
 }
 
 .logout a svg {
     margin-right: 20px;
-    /* アイコンとテキストの間に隙間を追加 */
 }
 </style>

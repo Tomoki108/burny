@@ -55,19 +55,19 @@ onMounted(() => {
 
 .project-card,
 .project-card-new {
-    background-color: var(--color-background);
+    background: linear-gradient(var(--color-tertiary), var(--color-secondary));
     padding: 20px;
-    border: 1.5px solid var(--color-muted);
     border-radius: 4px;
     width: 350px;
     height: 200px;
     text-align: left;
     position: relative;
-    box-shadow: var(--shadow)
+    color: var(--color-text-light);
 }
 
 .project-card-new {
-    /* margin-bottom: 10px; */
+    background: linear-gradient(var(--color-primary), var(--color-secondary));
+
     display: flex;
     align-items: center;
     justify-content: center;

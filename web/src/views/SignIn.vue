@@ -45,6 +45,7 @@ const onSubmit = async () => {
 h1 {
     text-align: center;
     margin-bottom: 20px;
+    color: var(--color-text-light);
 }
 
 .or {
@@ -52,30 +53,10 @@ h1 {
     text-align: center;
 }
 
-.background-circle-left {
-    /* position: absolute; */
-    top: -200px;
-    left: -700px;
-    width: 600px;
-    height: 600px;
-    background-color: #efefef;
-    border-radius: 50%;
-    z-index: 0;
-}
-
-.background-circle-right {
-    /* position: absolute; */
-    bottom: 0;
-    right: -600px;
-    width: 400px;
-    height: 400px;
-    background-color: #efefef;
-    border-radius: 50%;
-    z-index: 0;
-}
 
 /* Container and login-box are specific to the SignIn view */
 .container {
+    background-color: var(--color-secondary);
     margin: 0 auto;
     position: relative;
     display: flex;
@@ -89,7 +70,7 @@ h1 {
 .login-box {
     position: relative;
     z-index: 1;
-    background-color: var(--color-background-grey);
+    background: linear-gradient(var(--color-tertiary), var(--color-secondary));
     padding: 40px;
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
