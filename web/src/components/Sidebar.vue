@@ -2,12 +2,20 @@
     <div class="sidebar">
         <nav>
             <ul>
-                <li><router-link to="/projects"><font-awesome-icon icon="project-diagram" /> Projects</router-link></li>
-                <li><router-link to="/settings"><font-awesome-icon icon="cog" /> Settings</router-link></li>
+                <router-link to="/projects" custom v-slot="{ navigate, isActive }">
+                    <li :class="{ 'active-li': isActive }" @click="navigate">
+                        <font-awesome-icon icon="project-diagram" /> Projects
+                    </li>
+                </router-link>
+                <router-link to="/settings" custom v-slot="{ navigate, isActive }">
+                    <li :class="{ 'active-li': isActive }" @click="navigate">
+                        <font-awesome-icon icon="cog" /> Settings
+                    </li>
+                </router-link>
             </ul>
         </nav>
-        <div class="logout">
-            <router-link to="/login"><font-awesome-icon icon="sign-out-alt" /> Log out</router-link>
+        <div class="signout">
+            <router-link to="/sign_in"><font-awesome-icon icon="sign-out-alt" /> Sign out</router-link>
         </div>
     </div>
 </template>
@@ -17,32 +25,45 @@
     width: 200px;
     background-color: var(--color-secondary);
     height: 100vh;
-    /* padding: 40px; */
     position: flex;
     top: 0;
     left: 0;
 }
 
-.router-link-active,
-.router-link-exact-active {
-    color: var(--color-primary);
+li {
+    cursor: pointer;
+    font-size: var(--font-size-large);
+}
+
+li:hover,
+div.signout:hover {
+    color: var(--color-text-light);
     font-weight: bold;
-    /* Alternatively, add background color or any other styling */
+    background-color: var(--color-tertiary);
+}
+
+
+.active-li {
+    color: var(--color-text-light);
+    font-weight: bold;
+    background-color: var(--color-tertiary);
+    border-top: 1px solid var(--color-text-light);
+    border-bottom: 1px solid var(--color-text-light);
 }
 
 nav {
-    margin-top: 40px;
+    margin-top: 20px;
 }
 
 nav ul {
     list-style: none;
-    padding: 0;
 }
 
 nav ul li {
-    margin-left: 40px;
-    margin-right: 40px;
-    margin-bottom: 20px;
+    padding-top: 20px;
+    padding-right: 40px;
+    padding-left: 40px;
+    padding-bottom: 20px;
 }
 
 nav ul li a {
@@ -57,21 +78,31 @@ nav ul li a svg {
     margin-right: 20px;
 }
 
-.logout {
+.signout {
     position: absolute;
-    margin-left: 40px;
-    bottom: 40px;
-    width: 100%;
+    bottom: 20px;
+    padding-top: 20px;
+    padding-right: 40px;
+    padding-left: 40px;
+    padding-bottom: 20px;
+    width: inherit;
 }
 
-.logout a {
-    text-decoration: none;
-    color: var(--color-text);
+.signout a {
+    font-weight: 1rem;
     display: flex;
     align-items: center;
+    color: inherit;
+    font-size: var(--font-size-large);
 }
 
-.logout a svg {
-    margin-right: 20px;
+.signout a:hover {
+    color: var(--color-text-light);
+    font-weight: bold;
+}
+
+.signout a svg,
+li svg {
+    margin-right: 8px;
 }
 </style>

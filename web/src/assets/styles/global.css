@@ -16,6 +16,15 @@
   --color-muted: #9f9a9a;
   --color-shadow: #706d6d;
 
+  --coloer-primary-secondary: linear-gradient(
+    var(--color-primary),
+    var(--color-secondary)
+  );
+  --color-tertiary-secondary: linear-gradient(
+    var(--color-tertiary),
+    var(--color-secondary)
+  );
+
   /* フォントファミリー */
   --font-family-base: "Roboto", sans-serif;
 

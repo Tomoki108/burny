@@ -23,7 +23,8 @@ defineProps<{
 .app-header h1 {
     margin-bottom: 20px;
     text-align: left;
-    color: var(--color-primary);
+    color: var(--color-tertiary);
+    font-weight: bold;
 }
 
 .main-content {

@@ -55,7 +55,7 @@ onMounted(() => {
 
 .project-card,
 .project-card-new {
-    background: linear-gradient(var(--color-tertiary), var(--color-secondary));
+    background: var(--color-tertiary-secondary);
     padding: 20px;
     border-radius: 4px;
     width: 350px;
@@ -66,8 +66,7 @@ onMounted(() => {
 }
 
 .project-card-new {
-    background: linear-gradient(var(--color-primary), var(--color-secondary));
-
+    background: var(--coloer-primary-secondary);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -85,6 +84,7 @@ onMounted(() => {
 
 .project-card h2 {
     font-size: var(--font-size-large);
+    font-weight: bold;
     margin-bottom: 10px;
 }
 
