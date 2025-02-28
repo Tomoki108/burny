@@ -18,7 +18,7 @@
     background-color: #f0f0f0;
     height: 100vh;
     padding: 20px;
-    position: fixed;
+    position: flex;
     /* サイドバーを左側に固定 */
     top: 0;
     left: 0;

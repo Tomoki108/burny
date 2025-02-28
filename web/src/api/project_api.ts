@@ -23,3 +23,46 @@ export async function fetchProjects(): Promise<Project[]> {
   }
   return await response.json();
 }
+
+export async function createProjects(): Promise<Project> {
+  const response = await fetch(`${API_HOST}/projects`, {
+    method: "POST",
+    headers: getAuthHeader(),
+  });
+  if (!response.ok) {
+    throw new Error("Failed to create project");
+  }
+  return await response.json();
+}
+
+export async function fetchProject(id: number): Promise<Project> {
+  const response = await fetch(`${API_HOST}/projects/${id}`, {
+    headers: getAuthHeader(),
+  });
+  if (!response.ok) {
+    throw new Error("Failed to fetch project");
+  }
+  return await response.json();
+}
+
+export async function updateProjects(project: Project): Promise<Project> {
+  const response = await fetch(`${API_HOST}/projects/${project.id}`, {
+    method: "PUT",
+    headers: getAuthHeader(),
+    body: JSON.stringify(project),
+  });
+  if (!response.ok) {
+    throw new Error("Failed to update project");
+  }
+  return await response.json();
+}
+
+export async function deleteProjects(project: Project): Promise<void> {
+  const response = await fetch(`${API_HOST}/projects/${project.id}`, {
+    method: "DELETE",
+    headers: getAuthHeader(),
+  });
+  if (!response.ok) {
+    throw new Error("Failed to delete project");
+  }
+}

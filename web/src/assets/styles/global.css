@@ -3,7 +3,7 @@
 
 :root {
   /* カラーパレット */
-  --color-primary: #f0c6e1;
+  --color-primary: #d19abe;
   --color-secondary: #5a5a5a;
   --color-error: #ff5252;
   --color-info: #2196f3;
@@ -25,11 +25,17 @@
   --font-size-xlarge: 32px;
 }
 
-/* Reset/Box sizing */
 * {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+}
+
+/* Vue.jsが自動で作る一番外側の<div id="app">要素のスタイル */
+#app {
+  display: flex;
+  margin: 0px 0px 0px 0px !important;
+  padding: 0px 0px 0px 0px !important;
 }
 
 body {

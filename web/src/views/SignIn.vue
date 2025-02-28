@@ -1,4 +1,3 @@
-<!-- filepath: /Users/nagatatomoki/Dev/burny/web/src/views/SignIn.vue -->
 <template>
     <div class="container">
         <div class="background-circle-left"></div>

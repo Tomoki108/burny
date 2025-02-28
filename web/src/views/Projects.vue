@@ -1,7 +1,6 @@
+<!-- filepath: /Users/nagatatomoki/Dev/burny/web/src/views/Projects.vue -->
 <template>
-    <div class="projects-container">
-        <h1>Projects</h1>
-        <button class="create-project-btn" @click="createProject">Create Project</button>
+    <ContentsContainer title="Projects">
         <div class="projects-list">
             <div class="project-card" v-for="project in projectsStore.getProjects()" :key="project.id">
                 <h2>{{ project.title }}</h2>
@@ -13,26 +12,19 @@
                 </div>
             </div>
         </div>
-    </div>
+    </ContentsContainer>
 </template>
 
 <script setup lang="ts">
 import { onMounted } from 'vue'
+import ContentsContainer from '../components/ContentsContainer.vue'
 import { useProjectsStore } from '../stores/projects_store.ts'
 
 const projectsStore = useProjectsStore()
 
-const createProject = () => {
-    // プロジェクト作成のロジックを追加
-}
-
-const updateProject = (id: number) => {
-    // プロジェクト更新のロジックを追加
-}
-
-const deleteProject = (id: number) => {
-    // プロジェクト削除のロジックを追加
-}
+const createProject = () => { /* ... */ }
+const updateProject = (id: number) => { /* ... */ }
+const deleteProject = (id: number) => { /* ... */ }
 
 onMounted(() => {
     projectsStore.fetchProjects()
@@ -42,8 +34,10 @@ onMounted(() => {
 <style scoped>
 /* 画面レイアウト・コンテナ、カードの配置など、コンポーネント固有のスタイルのみを記述 */
 /* 色やフォント、ボタン、入力フォームは全てglobal.cssを参照 */
+
 .projects-container {
-    padding: 20px;
+    /* 左パディングを 0 にしてヘッダータイトルと左をそろえる */
+    padding: 20px 20px 20px 0;
 }
 
 .projects-list {
