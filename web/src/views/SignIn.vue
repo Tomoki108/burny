@@ -1,7 +1,7 @@
 <template>
     <div class="container">
         <div class="login-box">
-            <h1>Burny</h1>
+            <h1 class="color-white">Burny</h1>
             <form @submit.prevent="onSubmit">
                 <label for="email">Email</label>
                 <input type="text" id="email" v-model="email" placeholder="yourname@burnuppro.io" required />

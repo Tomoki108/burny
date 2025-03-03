@@ -1,5 +1,6 @@
 /* フォント定義 */
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
+@import "tailwindcss";
 
 :root {
   /* カラーパレット */
@@ -68,18 +69,6 @@ body {
 }
 
 h1 {
-  color: var(--color-primary);
-}
-
-h2,
-h3,
-h4,
-h5,
-h6 {
-  color: var(--color-secondary);
-}
-
-h1 {
   font-size: var(--font-size-xlarge);
 }
 
@@ -101,6 +90,19 @@ h5 {
 
 h6 {
   font-size: var(--font-size-small);
+}
+
+.color-primary {
+  color: var(--color-primary);
+}
+
+.color-white {
+  color: var(--color-text-light);
+}
+
+.ph-24 {
+  padding-left: 24px;
+  padding-right: 24px;
 }
 
 .button {

@@ -1,8 +1,8 @@
 <template>
     <v-dialog v-model="isOpen" max-width="600px">
-        <v-card>
-            <v-card-title>
-                <span class="text-h5">{{ modalTitle }}</span>
+        <v-card class="project-modal">
+            <v-card-title class="px-24">
+                <h2>&nbsp{{ modalTitle }}</h2>
             </v-card-title>
             <v-card-text>
                 <v-form ref="projectForm">
@@ -18,9 +18,8 @@
             </v-card-text>
 
             <v-card-actions>
-                <v-spacer></v-spacer>
-                <v-btn @click="onCancel">Cancel</v-btn>
-                <v-btn color="primary" @click="onSubmit">Save</v-btn>
+                <button class="button-small" @click="onCancel">Cancel</button>
+                <button class="button-small" color="primary" @click="onSubmit">Save</button>
             </v-card-actions>
         </v-card>
     </v-dialog>
@@ -74,3 +73,9 @@ const onSubmit = () => {
     isOpen.value = false
 }
 </script>
+
+<style scoped>
+.project-modal {
+    padding: 15px;
+}
+</style>
