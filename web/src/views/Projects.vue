@@ -1,4 +1,3 @@
-<!-- filepath: /Users/nagatatomoki/Dev/burny/web/src/views/Projects.vue -->
 <template>
     <ContentsContainer title="Projects">
         <v-container>
@@ -15,22 +14,51 @@
                         <button class="button-small" @click="deleteProject(project.id)">Delete</button>
                     </div>
                 </v-col>
-                <v-col class="project-card-new" cols="3" sm="6" md="4">
+                <v-col class="project-card-new" cols="3" sm="6" md="4" @click="openNewProjectModal">
                     <h2>+ New Project</h2>
                 </v-col>
             </v-row>
         </v-container>
+
+        <!-- Use the generic ProjectModal for creating a new project -->
+        <ProjectModal :show="newProjectModal" modalTitle="New Project" :project="defaultProject"
+            @update:show="newProjectModal = $event" @submit="submitNewProject" />
     </ContentsContainer>
 </template>
 
 <script setup lang="ts">
-import { onMounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import ContentsContainer from '../components/ContentsContainer.vue'
+import ProjectModal from '../components/ProjectModal.vue'
 import { useProjectsStore } from '../stores/projects_store.ts'
 
 const projectsStore = useProjectsStore()
+const newProjectModal = ref(false)
 
-const createProject = () => { /* ... */ }
+// Default project object for a new project.
+const defaultProject = ref({
+    title: '',
+    description: '',
+    total_sp: 0,
+    sprint_count: 1,
+    sprint_duration: 1,
+    start_date: '',
+})
+
+const openNewProjectModal = () => {
+    newProjectModal.value = true
+}
+
+const submitNewProject = async (projectData: typeof defaultProject.value) => {
+    try {
+        // Here, you would call your API to create the project.
+        // For example: await createProject(projectData)
+        await projectsStore.fetchProjects()
+    } catch (error) {
+        console.error("New project creation failed:", error)
+    }
+}
+
 const updateProject = (id: number) => { /* ... */ }
 const deleteProject = (id: number) => { /* ... */ }
 
@@ -40,14 +68,6 @@ onMounted(() => {
 </script>
 
 <style scoped>
-/* 画面レイアウト・コンテナ、カードの配置など、コンポーネント固有のスタイルのみを記述 */
-/* 色やフォント、ボタン、入力フォームは全てglobal.cssを参照 */
-
-.projects-container {
-    /* 左パディングを 0 にしてヘッダータイトルと左をそろえる */
-    padding: 20px 20px 20px 0;
-}
-
 .projects-list {
     display: flex;
     gap: 20px;
@@ -63,6 +83,7 @@ onMounted(() => {
     text-align: left;
     position: relative;
     color: var(--color-text-light);
+    cursor: pointer;
 }
 
 .project-card-new {
@@ -75,24 +96,7 @@ onMounted(() => {
 .project-actions {
     position: absolute;
     bottom: 20px;
-    /* 下部に配置 */
     right: 20px;
-    /* 右端に配置 */
-    display: flex;
-    gap: 10px;
-}
-
-.project-card h2 {
-    font-size: var(--font-size-large);
-    font-weight: bold;
-    margin-bottom: 10px;
-}
-
-.project-card p {
-    margin-bottom: 10px;
-}
-
-.project-actions {
     display: flex;
     gap: 10px;
 }
