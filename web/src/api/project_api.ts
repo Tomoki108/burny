@@ -3,6 +3,7 @@ import { getAuthHeader } from "./helper";
 
 export interface Project {
   id: number;
+  user_id: number;
   title: string;
   sprint_count: number;
   description: string;
@@ -11,8 +12,20 @@ export interface Project {
   total_sp: number;
   created_at: string;
   updated_at: string;
-  user_id: number;
 }
+
+export const defaultProject: Project = {
+  id: 0,
+  user_id: 0,
+  title: "",
+  sprint_count: 1,
+  description: "",
+  sprint_duration: 1,
+  start_date: "",
+  total_sp: 0,
+  created_at: "",
+  updated_at: "",
+};
 
 export async function fetchProjects(): Promise<Project[]> {
   const response = await fetch(`${API_HOST}/projects`, {

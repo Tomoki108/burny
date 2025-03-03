@@ -18,24 +18,16 @@
             </v-card-text>
 
             <v-card-actions>
-                <button class="button-small" @click="onCancel">Cancel</button>
                 <button class="button-small" color="primary" @click="onSubmit">Save</button>
+                <button class="button-small" @click="onCancel">Cancel</button>
             </v-card-actions>
         </v-card>
     </v-dialog>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, defineProps, defineEmits } from 'vue'
-
-interface Project {
-    title: string;
-    description: string;
-    total_sp: number;
-    sprint_count: number;
-    sprint_duration: number;
-    start_date: string;
-}
+import { ref, watch } from 'vue'
+import type { Project } from '../api/project_api';
 
 const props = defineProps<{
     show: boolean,

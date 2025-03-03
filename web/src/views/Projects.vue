@@ -1,4 +1,3 @@
-// Language: Vue
 <template>
     <ContentsContainer title="Projects">
         <v-row>
@@ -31,24 +30,17 @@ import { ref, onMounted } from 'vue'
 import ContentsContainer from '../components/ContentsContainer.vue'
 import ProjectModal from '../components/ProjectModal.vue'
 import { useProjectsStore } from '../stores/projects_store.ts'
+import { defaultProject, type Project } from '../api/project_api'
 
 const projectsStore = useProjectsStore()
 const newProjectModal = ref(false)
 
-const defaultProject = ref({
-    title: '',
-    description: '',
-    total_sp: 0,
-    sprint_count: 1,
-    sprint_duration: 1,
-    start_date: '',
-})
 
 const openNewProjectModal = () => {
     newProjectModal.value = true
 }
 
-const submitNewProject = async (projectData: typeof defaultProject.value) => {
+const submitNewProject = async (projec: Project) => {
     try {
         // API call to create the project should be placed here.
         await projectsStore.fetchProjects()
@@ -85,6 +77,10 @@ onMounted(() => {
     display: flex;
     align-items: center;
     justify-content: center;
+}
+
+.project-card-new:hover {
+    background: var(--color-tertiary);
 }
 
 .project-actions {
