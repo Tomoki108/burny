@@ -16,7 +16,14 @@ API DOC: http://dev.burny.page/swagger/index.html
 | **E2E Test**     | https://github.com/sebdah/goldie           |
 | **Swagger**      | https://github.com/swaggo/swag             |
 
-## Prerequisites
+## How to run
+
+```shell
+docker compose up -d # for postgres container
+go run .
+```
+
+### Prerequisites
 
 Install [goenv](https://github.com/go-nv/goenv), specified go version and tools.
 
@@ -30,14 +37,7 @@ brew install skaffold
 brew install ko
 ```
 
-## How to run
-
-```shell
-docker compose up -d # for postgres container
-go run .
-```
-
-### Commands
+### Other Commands
 
 ```shell
 # update API DOC

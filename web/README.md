@@ -14,3 +14,14 @@ SPA for Burny.
 | **State Management** | [Pinia](https://pinia.vuejs.org/)                                    |
 
 ## How to run
+
+```shell
+npm run dev
+```
+
+### Prerequisites
+
+```
+cp .env.sample .env
+npm install
+```
