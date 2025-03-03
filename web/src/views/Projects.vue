@@ -1,26 +1,26 @@
+// Language: Vue
 <template>
     <ContentsContainer title="Projects">
-        <v-container>
-            <v-row class="projects-list" dense>
-                <v-col v-for="project in projectsStore.getProjects()" :key="project.id" cols="3" sm="6" md="4"
-                    class="project-card">
-                    <div>
-                        <h2>{{ project.title }}</h2>
-                        <p>Sprint: {{ project.sprint_count }}</p>
-                        <p>{{ project.description }}</p>
-                    </div>
+        <v-row>
+            <v-col v-for="project in projectsStore.getProjects()" :key="project.id" lg="3" md="6" sm="12">
+                <div class="project-card">
+                    <h2>{{ project.title }}</h2>
+                    <p>Sprint: {{ project.sprint_count }}</p>
+                    <p>{{ project.description }}</p>
                     <div class="project-actions">
                         <button class="button-small" @click="updateProject(project.id)">Update</button>
                         <button class="button-small" @click="deleteProject(project.id)">Delete</button>
                     </div>
-                </v-col>
-                <v-col class="project-card-new" cols="3" sm="6" md="4" @click="openNewProjectModal">
-                    <h2>+ New Project</h2>
-                </v-col>
-            </v-row>
-        </v-container>
+                </div>
 
-        <!-- Use the generic ProjectModal for creating a new project -->
+            </v-col>
+            <v-col lg="3" md="6" sm="12" @click="openNewProjectModal">
+                <div class="project-card-new">
+                    <h2>+ New Project</h2>
+                </div>
+            </v-col>
+        </v-row>
+
         <ProjectModal :show="newProjectModal" modalTitle="New Project" :project="defaultProject"
             @update:show="newProjectModal = $event" @submit="submitNewProject" />
     </ContentsContainer>
@@ -35,7 +35,6 @@ import { useProjectsStore } from '../stores/projects_store.ts'
 const projectsStore = useProjectsStore()
 const newProjectModal = ref(false)
 
-// Default project object for a new project.
 const defaultProject = ref({
     title: '',
     description: '',
@@ -51,8 +50,7 @@ const openNewProjectModal = () => {
 
 const submitNewProject = async (projectData: typeof defaultProject.value) => {
     try {
-        // Here, you would call your API to create the project.
-        // For example: await createProject(projectData)
+        // API call to create the project should be placed here.
         await projectsStore.fetchProjects()
     } catch (error) {
         console.error("New project creation failed:", error)
@@ -68,17 +66,13 @@ onMounted(() => {
 </script>
 
 <style scoped>
-.projects-list {
-    display: flex;
-    gap: 20px;
-}
-
 .project-card,
 .project-card-new {
     background: var(--color-tertiary-secondary);
     padding: 20px;
     border-radius: 4px;
-    width: 350px;
+    min-width: 220px;
+    width: auto;
     height: 200px;
     text-align: left;
     position: relative;
