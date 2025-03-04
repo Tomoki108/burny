@@ -79,7 +79,7 @@ export class Rule {
 }
 
 export interface vForm {
-  validate(): vFormValidateResult;
+  validate(): Promise<vFormValidateResult>;
 }
 
 export interface vFormValidateResult {

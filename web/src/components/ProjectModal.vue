@@ -19,8 +19,6 @@
                     <br>
                     <v-select :items="[1, 2, 3]" label="Sprint Wweeks"
                         v-model.number="localProject.sprint_duration"></v-select>
-                    <!-- <v-text-field label="Sprint Duration (weeks)" v-model.number="localProject.sprint_duration"
-                        type="se" :rules="newRule('Sprint Duration').required().oneOf([1, 2, 3]).rules" /> -->
                     <br>
                     <v-text-field label="Start Date" v-model="localProject.start_date" type="date"
                         :rules="newRule('Start Date').required().rules" />
@@ -73,8 +71,8 @@ const onCancel = () => {
     isOpen.value = false
 }
 
-const onSubmit = () => {
-    const result = projectForm.value.validate()
+const onSubmit = async () => {
+    const result = await projectForm.value.validate()
     if (result.valid) {
         emits('submit', localProject.value)
         isOpen.value = false

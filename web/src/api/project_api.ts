@@ -37,10 +37,11 @@ export async function fetchProjects(): Promise<Project[]> {
   return await response.json();
 }
 
-export async function createProjects(): Promise<Project> {
+export async function createProject(project: Project): Promise<Project> {
   const response = await fetch(`${API_HOST}/projects`, {
     method: "POST",
     headers: getAuthHeader(),
+    body: JSON.stringify(project),
   });
   if (!response.ok) {
     throw new Error("Failed to create project");

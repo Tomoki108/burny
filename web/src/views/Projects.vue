@@ -40,10 +40,10 @@ const openNewProjectModal = () => {
     newProjectModal.value = true
 }
 
-const submitNewProject = async (projec: Project) => {
+const submitNewProject = async (project: Project) => {
     try {
-        // API call to create the project should be placed here.
-        await projectsStore.fetchProjects()
+        console.log("Creating new project:", project)
+        await projectsStore.createProject(project)
     } catch (error) {
         console.error("New project creation failed:", error)
     }
