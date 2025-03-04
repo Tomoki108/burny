@@ -6,21 +6,23 @@
             </v-card-title>
             <v-card-text>
                 <v-form ref="projectForm">
-                    <v-text-field label="Title" v-model="localProject.title" :rules="[required('Title')]" />
-                    <br>
+                    <v-text-field label="Title" v-model="localProject.title"
+                        :rules="newRule('title').required().rules" /> <br>
                     <v-textarea label="Description" v-model="localProject.description" />
                     <br>
                     <v-text-field label="Total SP" v-model.number="localProject.total_sp" type="number"
-                        :rules="[v => !!v || 'Total SP is required']" />
+                        :rules="newRule('Total SP').required().lte(1000).gt(0).rules" />
                     <br>
                     <v-text-field label="Sprint Count" v-model.number="localProject.sprint_count" type="number"
-                        :rules="[v => !!v || 'Sprint Count is required']" />
+                        :rules="newRule('Sprint Count').required().gt(0).lte(100).rules" />
                     <br>
-                    <v-text-field label="Sprint Duration (weeks)" v-model.number="localProject.sprint_duration"
-                        type="number" :rules="[v => !!v || 'Sprint Duration is required']" />
+                    <v-select :items="[1, 2, 3]" label="Sprint Wweeks"
+                        v-model.number="localProject.sprint_duration"></v-select>
+                    <!-- <v-text-field label="Sprint Duration (weeks)" v-model.number="localProject.sprint_duration"
+                        type="se" :rules="newRule('Sprint Duration').required().oneOf([1, 2, 3]).rules" /> -->
                     <br>
                     <v-text-field label="Start Date" v-model="localProject.start_date" type="date"
-                        :rules="[v => !!v || 'Start Date is required']" />
+                        :rules="newRule('Start Date').required().rules" />
                 </v-form>
             </v-card-text>
 
@@ -36,7 +38,7 @@
 <script setup lang="ts">
 import { ref, watch } from 'vue'
 import type { Project } from '../api/project_api';
-import { required } from '../utils/validation_rules';
+import { newRule, type vForm } from '../utils/validation';
 
 const props = defineProps<{
     show: boolean,
@@ -49,8 +51,7 @@ const emits = defineEmits<{
     (e: 'submit', project: Project): void;
 }>()
 
-// フォームの参照を取得
-const projectForm = ref()
+const projectForm = ref<vForm>({} as vForm)
 
 // Local copy to allow editing without modifying parent data immediately.
 const localProject = ref<Project>({ ...props.project })
@@ -60,7 +61,6 @@ const isOpen = ref(props.show)
 watch(() => props.show, (newVal) => {
     isOpen.value = newVal
     if (newVal) {
-        // reset localProject when opening modal
         localProject.value = { ...props.project }
     }
 })
@@ -73,8 +73,8 @@ const onCancel = () => {
 }
 
 const onSubmit = () => {
-    // Vue/Vuetify のバリデーションを実行
-    if (projectForm.value.validate()) {
+    const result = projectForm.value.validate()
+    if (result.valid) {
         emits('submit', localProject.value)
         isOpen.value = false
     }

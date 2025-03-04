@@ -18,7 +18,7 @@ export const defaultProject: Project = {
   id: 0,
   user_id: 0,
   title: "",
-  sprint_count: 1,
+  sprint_count: 0,
   description: "",
   sprint_duration: 1,
   start_date: "",
