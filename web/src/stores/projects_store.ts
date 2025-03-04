@@ -1,5 +1,10 @@
 import { defineStore } from "pinia";
-import { fetchProjects, createProject, type Project } from "../api/project_api";
+import {
+  fetchProjects,
+  createProject,
+  deleteProject,
+  type Project,
+} from "../api/project_api";
 
 export const useProjectsStore = defineStore("projects", {
   state: () => ({
@@ -20,6 +25,15 @@ export const useProjectsStore = defineStore("projects", {
         console.error("Error creating project:", error);
       }
     },
+    async deleteProject(id: number) {
+      try {
+        this.projects = this.projects.filter((p) => p.id !== id);
+        await deleteProject(id);
+      } catch (error) {
+        console.error("Error deleting project:", error);
+      }
+    },
+
     getProjects(): Project[] {
       return this.projects;
     },

@@ -394,7 +394,7 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
-                "project_id": {
+                "id": {
                     "type": "integer"
                 },
                 "sprint_count": {

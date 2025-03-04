@@ -50,7 +50,9 @@ const submitNewProject = async (project: Project) => {
 }
 
 const updateProject = (id: number) => { /* ... */ }
-const deleteProject = (id: number) => { /* ... */ }
+const deleteProject = (id: number) => {
+    projectsStore.deleteProject(id)
+}
 
 onMounted(() => {
     projectsStore.fetchProjects()

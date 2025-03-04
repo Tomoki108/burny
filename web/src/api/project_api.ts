@@ -59,7 +59,7 @@ export async function fetchProject(id: number): Promise<Project> {
   return await response.json();
 }
 
-export async function updateProjects(project: Project): Promise<Project> {
+export async function updateProject(project: Project): Promise<Project> {
   const response = await fetch(`${API_HOST}/projects/${project.id}`, {
     method: "PUT",
     headers: getAuthHeader(),
@@ -71,8 +71,8 @@ export async function updateProjects(project: Project): Promise<Project> {
   return await response.json();
 }
 
-export async function deleteProjects(project: Project): Promise<void> {
-  const response = await fetch(`${API_HOST}/projects/${project.id}`, {
+export async function deleteProject(id: number): Promise<void> {
+  const response = await fetch(`${API_HOST}/projects/${id}`, {
     method: "DELETE",
     headers: getAuthHeader(),
   });

@@ -3,7 +3,7 @@ package domain
 import "time"
 
 type Project struct {
-	ID             uint      `json:"project_id"`
+	ID             uint      `json:"id"`
 	UserID         uint      `json:"user_id"`
 	Title          string    `json:"title"`
 	Description    string    `json:"description"`
