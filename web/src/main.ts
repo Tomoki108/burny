@@ -13,6 +13,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { createPinia } from "pinia";
 import "./assets/styles/global.css";
+import "@mdi/font/css/materialdesignicons.css";
 
 library.add(faHome, faProjectDiagram, faCog, faSignOutAlt);
 
