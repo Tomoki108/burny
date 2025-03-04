@@ -7,8 +7,9 @@
             <v-card-text>
                 <v-form ref="projectForm">
                     <v-text-field label="Title" v-model="localProject.title"
-                        :rules="newRule('title').required().rules" /> <br>
-                    <v-textarea label="Description" v-model="localProject.description" />
+                        :rules="newRule('title').required().lte(50).rules" /> <br>
+                    <v-textarea label="Description" v-model="localProject.description"
+                        :rules="newRule('Description').lte(500).rules" />
                     <br>
                     <v-text-field label="Total SP" v-model.number="localProject.total_sp" type="number"
                         :rules="newRule('Total SP').required().lte(1000).gt(0).rules" />

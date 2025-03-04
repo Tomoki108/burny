@@ -34,20 +34,45 @@ export class Rule {
 
   lte(max: number): this {
     this.rules.push((val: any) => {
-      if (val > max) {
-        return `${this.label} must be less than or equal to ${max}`;
+      switch (typeof val) {
+        case "string":
+          val as string;
+          if (val.length > max) {
+            return `${this.label} must be less than or equal to ${max} characters`;
+          }
+          return true;
+        case "number":
+          val as number;
+          if (val > max) {
+            return `${this.label} must be less than or equal to ${max}`;
+          }
+          return true;
+        default:
+          throw new Error("Invalid type");
       }
-      return true;
     });
+
     return this;
   }
 
   gt(min: number): this {
     this.rules.push((val: any) => {
-      if (val <= min) {
-        return `${this.label} must be greater than ${min}`;
+      switch (typeof val) {
+        case "string":
+          val as string;
+          if (val.length <= min) {
+            return `${this.label} must be greater than ${min} characters`;
+          }
+          return true;
+        case "number":
+          val as number;
+          if (val <= min) {
+            return `${this.label} must be greater than ${min}`;
+          }
+          return true;
+        default:
+          throw new Error("Invalid type");
       }
-      return true;
     });
     return this;
   }
