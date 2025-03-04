@@ -178,3 +178,9 @@ label {
 .fr {
   float: right;
 }
+
+.alert-dialog {
+  margin-top: -15px;
+  margin-bottom: 15px;
+  opacity: 90%;
+}

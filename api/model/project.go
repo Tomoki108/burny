@@ -43,6 +43,7 @@ func FromDomainProject(project *domain.Project) *Project {
 		SprintCount:    project.SprintCount,
 		SprintDuration: project.SprintDuration,
 		Model: gorm.Model{
+			ID:        project.ID,
 			CreatedAt: project.CreatedAt,
 			UpdatedAt: project.UpdatedAt,
 		},

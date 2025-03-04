@@ -7,7 +7,7 @@
                     <p>Sprint: {{ project.sprint_count }}</p>
                     <p>{{ project.description }}</p>
                     <div class="project-actions">
-                        <button class="button-small" @click="updateProject(project.id)">Update</button>
+                        <button class="button-small" @click="openUpdateProjectModal(project)">Update</button>
                         <button class="button-small" @click="deleteProject(project.id)">Delete</button>
                     </div>
                 </div>
@@ -22,6 +22,8 @@
 
         <ProjectModal :show="newProjectModal" modalTitle="New Project" :project="defaultProject"
             @update:show="newProjectModal = $event" @submit="submitNewProject" />
+        <ProjectModal :show="updateProjectModal" modalTitle="Update Project" :project="updateProject"
+            @update:show="updateProjectModal = $event" @submit="submitUpdateProject" />
     </ContentsContainer>
 </template>
 
@@ -33,8 +35,9 @@ import { useProjectsStore } from '../stores/projects_store.ts'
 import { defaultProject, type Project } from '../api/project_api'
 
 const projectsStore = useProjectsStore()
-const newProjectModal = ref(false)
 
+// Create Modal
+const newProjectModal = ref(false)
 
 const openNewProjectModal = () => {
     newProjectModal.value = true
@@ -42,16 +45,35 @@ const openNewProjectModal = () => {
 
 const submitNewProject = async (project: Project) => {
     try {
-        console.log("Creating new project:", project)
         await projectsStore.createProject(project)
     } catch (error) {
         console.error("New project creation failed:", error)
     }
 }
 
-const updateProject = (id: number) => { /* ... */ }
+// Update Modal
+const updateProject = ref<Project>({} as Project)
+const updateProjectModal = ref(false)
+
+const openUpdateProjectModal = (project: Project) => {
+    updateProject.value = project
+    updateProjectModal.value = true
+}
+
+const submitUpdateProject = async (project: Project) => {
+    try {
+        await projectsStore.updateProject(project)
+    } catch (error) {
+        console.error("New project creation failed:", error)
+    }
+}
+
 const deleteProject = (id: number) => {
-    projectsStore.deleteProject(id)
+    try {
+        projectsStore.deleteProject(id)
+    } catch (error) {
+        console.error("Project deletion failed:", error)
+    }
 }
 
 onMounted(() => {
