@@ -16,12 +16,13 @@
                     <br>
                     <v-text-field label="Sprint Count" v-model.number="localProject.sprint_count" type="number"
                         :rules="newRule('Sprint Count').required().gt(0).lte(100).rules" />
+                    <v-alert type="info" text="Sprint Weeks and Start Date can't be updated after creation."></v-alert>
                     <br>
-                    <v-select :items="[1, 2, 3]" label="Sprint Wweeks"
-                        v-model.number="localProject.sprint_duration"></v-select>
+                    <v-select :items="[1, 2, 3]" label="Sprint Weeks" v-model.number="localProject.sprint_duration"
+                        :disabled="project.id !== 0"></v-select>
                     <br>
                     <v-text-field label="Start Date" v-model="localProject.start_date" type="date"
-                        :rules="newRule('Start Date').required().rules" />
+                        :rules="newRule('Start Date').required().rules" :disabled="project.id !== 0" />
                 </v-form>
             </v-card-text>
 

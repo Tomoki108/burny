@@ -149,5 +149,17 @@ func (u ProjectUseCase) Update(userID uint, req io.UpdateProjectRequest) (*domai
 }
 
 func (u ProjectUseCase) Delete(userID uint, req io.DeleteProjectRequest) error {
-	return u.ProjectRepo.Delete(u.Transactioner.Default(), userID, req.ProjectID)
+	return u.Transactioner.Transaction(func(tx domain.Transaction) (err error) {
+		sprints, err := u.SprintRepo.List(tx, req.ProjectID)
+		if err != nil {
+			return err
+		}
+		for _, sprint := range sprints {
+			u.SprintRepo.Delete(tx, sprint.ProjectID, sprint.ID)
+			if err != nil {
+				return
+			}
+		}
+		return u.ProjectRepo.Delete(u.Transactioner.Default(), userID, req.ProjectID)
+	})
 }

@@ -1,5 +1,5 @@
 import { API_HOST } from "../config";
-import { getAuthHeader } from "./helper";
+import { getAuthHeader, replaceDateWithISOString } from "./helper";
 
 export interface Project {
   id: number;
@@ -41,7 +41,7 @@ export async function createProject(project: Project): Promise<Project> {
   const response = await fetch(`${API_HOST}/projects`, {
     method: "POST",
     headers: getAuthHeader(),
-    body: JSON.stringify(project),
+    body: JSON.stringify(project, replaceDateWithISOString),
   });
   if (!response.ok) {
     throw new Error("Failed to create project");
@@ -59,11 +59,23 @@ export async function fetchProject(id: number): Promise<Project> {
   return await response.json();
 }
 
+type updateProjectRequest = {
+  title: string;
+  sprint_count: number;
+  description: string;
+};
+
 export async function updateProject(project: Project): Promise<Project> {
+  const req: updateProjectRequest = {
+    title: project.title,
+    sprint_count: project.sprint_count,
+    description: project.description,
+  };
+
   const response = await fetch(`${API_HOST}/projects/${project.id}`, {
     method: "PUT",
     headers: getAuthHeader(),
-    body: JSON.stringify(project),
+    body: JSON.stringify(req),
   });
   if (!response.ok) {
     throw new Error("Failed to update project");
