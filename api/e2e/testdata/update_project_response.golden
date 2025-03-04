@@ -2,7 +2,7 @@
   "description": "updated description",
   "sprint_count": 40,
   "sprint_duration": 1,
-  "start_date": "2100-04-01T09:00:00+09:00",
+  "start_date": "2100-04-01",
   "title": "updated project",
   "total_sp": 800
 }

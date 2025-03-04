@@ -2,7 +2,7 @@
   "description": "this is test project",
   "sprint_count": 100,
   "sprint_duration": 1,
-  "start_date": "2100-04-01T09:00:00+09:00",
+  "start_date": "2100-04-01",
   "title": "test project",
   "total_sp": 1000
 }
