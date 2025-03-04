@@ -40,7 +40,7 @@ const signOut = () => {
     min-width: 200px;
     background-color: var(--color-secondary);
     height: 100vh;
-    position: flex;
+    position: sticky;
     top: 0;
     left: 0;
 }
