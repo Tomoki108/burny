@@ -38,4 +38,9 @@ hr {
     border-top: 2px solid var(--color-muted);
     margin-bottom: 60px;
 }
+
+.alert-dialog {
+    margin-top: -15px;
+    margin-bottom: 15px;
+}
 </style>

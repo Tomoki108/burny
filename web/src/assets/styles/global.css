@@ -3,15 +3,19 @@
 @import "tailwindcss";
 
 :root {
-  /* カラーパレット */
+  /* 独自のカラーパレット */
   /* https://coolors.co/d8e2dc-ffe5d9-ffcad4-f4acb7-9d8189 */
   --color-primary: #f4acb7;
   --color-secondary: #d8e2dc;
   --color-tertiary: #9d8189;
+
+  /* vuetifyで使われているものと同じ色のカラーパレット */
   --color-error: #ff5252;
+  --color-danger: #ff5252;
   --color-info: #2196f3;
   --color-success: #4caf50;
   --color-warning: #ffc107;
+
   --color-background: #ffffff;
   --color-text: #000000;
   --color-text-light: #ffffff;
@@ -119,17 +123,22 @@ h6 {
   box-shadow: 0.1rem 0.1rem var(--color-shadow);
 }
 
-.button-small {
+.button-small,
+.button-small-danger {
   font-family: var(--font-family-base);
   background-color: var(--color-primary);
   color: var(--color-text-light) !important;
   border: none;
   padding: 8px;
-  width: 56px;
+  width: 62px;
   font-size: 12px;
   border-radius: 4px;
   cursor: pointer;
   box-shadow: 0.1rem 0.1rem var(--color-shadow);
+}
+
+.button-small-danger {
+  background-color: var(--color-error);
 }
 
 button:hover {
@@ -177,10 +186,4 @@ label {
 
 .fr {
   float: right;
-}
-
-.alert-dialog {
-  margin-top: -15px;
-  margin-bottom: 15px;
-  opacity: 90%;
 }

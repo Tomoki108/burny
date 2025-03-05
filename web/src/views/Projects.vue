@@ -7,8 +7,12 @@
                     <p>Sprint: {{ project.sprint_count }}</p>
                     <p>{{ project.description }}</p>
                     <div class="project-actions">
-                        <button class="button-small" @click="openUpdateProjectModal(project)">Update</button>
-                        <button class="button-small" @click="deleteProject(project.id)">Delete</button>
+                        <button class="button-small" @click="openUpdateProjectModal(project)">Update
+                        </button>
+                        <button class="button-small-danger"
+                            @click="dialog(`Are you shure to delete project ${project.title}?`)">Delete
+                            <Dialog :ctx="dialogCtx" :callback="() => submitDeleteProject(project.id)"> </Dialog>
+                        </button>
                     </div>
                 </div>
 
@@ -34,12 +38,14 @@ import ProjectModal from '../components/ProjectModal.vue'
 import { useProjectsStore } from '../stores/projects_store.ts'
 import { defaultProject, type Project } from '../api/project_api'
 import { useAlertComposable } from '../composables/alert_composable.ts'
+import Dialog from '../components/Dialog.vue'
+import { useDialogComposable } from '../composables/dialog_composable'
 
 const projectsStore = useProjectsStore()
 
 const { alertCtx, alert } = useAlertComposable()
+const { dialogCtx, dialog } = useDialogComposable()
 
-// Create Modal
 const newProjectModal = ref(false)
 
 const openNewProjectModal = () => {
@@ -73,7 +79,7 @@ const submitUpdateProject = async (project: Project) => {
     }
 }
 
-const deleteProject = (id: number) => {
+const submitDeleteProject = (id: number) => {
     try {
         projectsStore.deleteProject(id)
         alert("Project deleted successfully", "success")
@@ -119,5 +125,16 @@ onMounted(() => {
     right: 20px;
     display: flex;
     gap: 10px;
+}
+
+.dialog {
+    /* align-self: flex-end; */
+    /* align-content: center; */
+    /* position: fixed; */
+
+    /* width: 300px%; */
+    top: -80%;
+    left: 45%;
+
 }
 </style>

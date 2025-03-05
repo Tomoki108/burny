@@ -14,10 +14,6 @@ const alertCtx = reactive<AlertContext>({
   type: undefined,
 });
 
-const alertShow = ref(false);
-const alertText = ref("");
-const alertType = ref<AlertType>("info");
-
 export const useAlertComposable = () => {
   const alert = (msg: string, type: AlertType) => {
     alertCtx.show = true;
