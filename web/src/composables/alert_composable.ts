@@ -1,6 +1,18 @@
-import { ref } from "vue";
+import { reactive, ref } from "vue";
 
-export type AlertType = "info" | "success" | "error" | "warning";
+export type AlertType = "info" | "success" | "error" | "warning" | undefined;
+
+export interface AlertContext {
+  show: boolean;
+  text: string;
+  type: AlertType;
+}
+
+const alertCtx = reactive<AlertContext>({
+  show: false,
+  text: "",
+  type: undefined,
+});
 
 const alertShow = ref(false);
 const alertText = ref("");
@@ -8,23 +20,21 @@ const alertType = ref<AlertType>("info");
 
 export const useAlertComposable = () => {
   const alert = (msg: string, type: AlertType) => {
-    alertText.value = msg;
-    alertType.value = type;
-    alertShow.value = true;
+    alertCtx.show = true;
+    alertCtx.text = msg;
+    alertCtx.type = type;
 
     if (type === "success") {
       setTimeout(() => {
-        alertShow.value = false;
-        alertText.value = "";
-        alertType.value = "info";
+        alertCtx.show = false;
+        alertCtx.text = "";
+        alertCtx.type = undefined;
       }, 2000);
     }
   };
 
   return {
-    alertShow,
-    alertText,
-    alertType,
+    alertCtx,
     alert,
   };
 };

@@ -1,5 +1,5 @@
 <template>
-    <ContentsContainer title="Projects" :alertShow="alertShow" :alertText="alertText" :alertType="alertType">
+    <ContentsContainer title="Projects" :alertCtx="alertCtx">
         <v-row>
             <v-col v-for="project in projectsStore.getProjects()" :key="project.id" lg="3" md="6" sm="12">
                 <div class="project-card">
@@ -37,7 +37,7 @@ import { useAlertComposable } from '../composables/alert_composable.ts'
 
 const projectsStore = useProjectsStore()
 
-const { alertShow, alertText, alertType, alert } = useAlertComposable()
+const { alertCtx, alert } = useAlertComposable()
 
 // Create Modal
 const newProjectModal = ref(false)

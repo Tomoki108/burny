@@ -1,7 +1,7 @@
 <template>
     <Sidebar />
     <main class="main-content">
-        <v-alert v-if="alertShow" :type="alertType" :text="alertText" closable class="alert-dialog" />
+        <v-alert v-if="alertCtx.show" :type="alertCtx.type" :text="alertCtx.text" closable class="alert-dialog" />
         <header class="app-header">
             <h1>{{ title }}</h1>
         </header>
@@ -13,13 +13,11 @@
 <script setup lang="ts">
 import { defineProps } from 'vue'
 import Sidebar from './Sidebar.vue'
-import type { AlertType } from '../composables/alert_composable'
+import type { AlertContext } from '../composables/alert_composable'
 
 defineProps<{
     title: string
-    alertShow: boolean
-    alertText: string
-    alertType: AlertType
+    alertCtx: AlertContext,
 }>()
 </script>
 
