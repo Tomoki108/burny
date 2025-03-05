@@ -100,7 +100,7 @@ nav ul li a svg {
     padding-right: 40px;
     padding-left: 40px;
     padding-bottom: 20px;
-    width: inherit;
+    width: 100%;
     min-width: inherit;
 }
 
