@@ -29,7 +29,7 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <button class="button-small" @click.prevent="onSubmit">Save</button>
-                <button class="button-small" @click="onCancel">Cancel</button>
+                <button class="button-small-cancel" @click="onCancel">Cancel</button>
             </v-card-actions>
         </v-card>
     </v-dialog>

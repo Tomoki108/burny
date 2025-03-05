@@ -124,7 +124,8 @@ h6 {
 }
 
 .button-small,
-.button-small-danger {
+.button-small-danger,
+.button-small-cancel {
   font-family: var(--font-family-base);
   background-color: var(--color-primary);
   color: var(--color-text-light) !important;
@@ -139,6 +140,10 @@ h6 {
 
 .button-small-danger {
   background-color: var(--color-error);
+}
+
+.button-small-cancel {
+  background-color: var(--color-shadow);
 }
 
 button:hover {

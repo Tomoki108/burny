@@ -8,7 +8,7 @@
 
             <div class="flex justify-end">
                 <button class="button-small-danger ml-20" @click="callback(); ctx.show = false">Proceed</button>
-                <button class="button-small ml-2" @click="ctx.show = false">Close</button>
+                <button class="button-small-cancel ml-2" @click="ctx.show = false">Cancel</button>
             </div>
         </v-sheet>
     </v-dialog>
