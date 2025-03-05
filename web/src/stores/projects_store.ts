@@ -6,7 +6,7 @@ import {
   type Project,
   updateProject,
 } from "../api/project_api";
-import { ErrorResponse, isErrorResponse } from "../api/helper";
+import { ErrorResponse } from "../api/helper";
 
 export const useProjectsStore = defineStore("projects", {
   state: () => ({
@@ -14,37 +14,31 @@ export const useProjectsStore = defineStore("projects", {
   }),
   actions: {
     async fetchProjects() {
-      try {
-        this.projects = await fetchProjects();
-      } catch (error) {
-        console.error("Error fetching projects:", error);
-      }
+      const res = await fetchProjects();
+      this.projects = res;
     },
     async createProject(project: Project) {
-      try {
-        this.projects.push(await createProject(project));
-      } catch (error) {
-        console.error("Error creating project:", error);
+      const res = await createProject(project);
+      if (res instanceof ErrorResponse) {
+        throw new Error(res.getMessage());
       }
+      this.projects.push(res);
     },
     async updateProject(project: Project) {
       const res = await updateProject(project);
       if (res instanceof ErrorResponse) {
         throw new Error(res.getMessage());
       }
-
       const index = this.projects.findIndex((p) => p.id === res.id);
       this.projects[index] = res;
     },
     async deleteProject(id: number) {
-      try {
-        this.projects = this.projects.filter((p) => p.id !== id);
-        await deleteProject(id);
-      } catch (error) {
-        console.error("Error deleting project:", error);
+      const res = await deleteProject(id);
+      if (res instanceof ErrorResponse) {
+        throw new Error(res.getMessage());
       }
+      this.projects = this.projects.filter((p) => p.id !== id);
     },
-
     getProjects(): Project[] {
       return this.projects;
     },

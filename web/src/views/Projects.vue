@@ -49,8 +49,9 @@ const openNewProjectModal = () => {
 const submitNewProject = async (project: Project) => {
     try {
         await projectsStore.createProject(project)
-    } catch (error) {
-        console.error("New project creation failed:", error)
+        alert("Project created successfully", "success")
+    } catch (error: any) {
+        alert(`Project creation failed: ${error.message}`, "error")
     }
 }
 
@@ -67,20 +68,17 @@ const submitUpdateProject = async (project: Project) => {
     try {
         await projectsStore.updateProject(project)
         alert("Project updated successfully", "success")
-    } catch (error) {
-        if (error instanceof Error) {
-            alert(`${error.message}`, 'error')
-        } else {
-            alert("Project update failed. Please retry", 'error')
-        }
+    } catch (error: any) {
+        alert(`Project update failed: ${error.message}`, 'error')
     }
 }
 
 const deleteProject = (id: number) => {
     try {
         projectsStore.deleteProject(id)
+        alert("Project deleted successfully", "success")
     } catch (error) {
-        console.error("Project deletion failed:", error)
+        alert(`Project deletion failed. Please retry`, 'error')
     }
 }
 

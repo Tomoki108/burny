@@ -1,7 +1,7 @@
 <template>
     <Sidebar />
     <main class="main-content">
-        <v-alert v-if="alertShow" :type="alertType" :text="alertText" dismissible class="alert-dialog" />
+        <v-alert v-if="alertShow" :type="alertType" :text="alertText" closable class="alert-dialog" />
         <header class="app-header">
             <h1>{{ title }}</h1>
         </header>

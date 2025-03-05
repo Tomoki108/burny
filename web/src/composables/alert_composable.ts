@@ -12,11 +12,13 @@ export const useAlertComposable = () => {
     alertType.value = type;
     alertShow.value = true;
 
-    // setTimeout(() => {
-    //   alertShow.value = false;
-    //   alertText.value = "";
-    //   alertType.value = "info";
-    // }, 5000);
+    if (type === "success") {
+      setTimeout(() => {
+        alertShow.value = false;
+        alertText.value = "";
+        alertType.value = "info";
+      }, 2000);
+    }
   };
 
   return {
