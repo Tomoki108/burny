@@ -18,3 +18,25 @@ export function replaceDateWithISOString(key: string, value: any): any {
   }
   return value;
 }
+
+export class ErrorResponse {
+  message: string = "";
+  details?: {
+    field: string;
+    message: string;
+  }[];
+
+  getMessage(): string {
+    // messageとdetailsを結合して返す
+    if (this.details) {
+      return `${this.message}: ${this.details
+        .map((d) => `${d.field} ${d.message}`)
+        .join(", ")}`;
+    }
+    return this.message;
+  }
+}
+
+export function isErrorResponse(val: any): val is ErrorResponse {
+  return (val as ErrorResponse).message !== undefined;
+}

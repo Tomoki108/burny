@@ -70,7 +70,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/io.ValidationErrorResponse"
+                            "$ref": "#/definitions/io.ErrorResponse"
                         }
                     }
                 }
@@ -153,7 +153,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/io.ValidationErrorResponse"
+                            "$ref": "#/definitions/io.ErrorResponse"
                         }
                     },
                     "404": {
@@ -330,7 +330,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/io.ValidationErrorResponse"
+                            "$ref": "#/definitions/io.ErrorResponse"
                         }
                     }
                 }
@@ -370,7 +370,7 @@
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/io.ValidationErrorResponse"
+                            "$ref": "#/definitions/io.ErrorResponse"
                         }
                     }
                 }
@@ -520,6 +520,12 @@
         "io.ErrorResponse": {
             "type": "object",
             "properties": {
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/io.ErrorDetail"
+                    }
+                },
                 "message": {
                     "type": "string"
                 }
@@ -604,20 +610,6 @@
                 "actual_sp": {
                     "type": "integer",
                     "maximum": 100
-                }
-            }
-        },
-        "io.ValidationErrorResponse": {
-            "type": "object",
-            "properties": {
-                "details": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/io.ErrorDetail"
-                    }
-                },
-                "message": {
-                    "type": "string"
                 }
             }
         }

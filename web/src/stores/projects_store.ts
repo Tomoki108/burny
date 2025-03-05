@@ -6,6 +6,7 @@ import {
   type Project,
   updateProject,
 } from "../api/project_api";
+import { ErrorResponse, isErrorResponse } from "../api/helper";
 
 export const useProjectsStore = defineStore("projects", {
   state: () => ({
@@ -27,15 +28,13 @@ export const useProjectsStore = defineStore("projects", {
       }
     },
     async updateProject(project: Project) {
-      try {
-        const updatedProject = await updateProject(project);
-        const index = this.projects.findIndex(
-          (p) => p.id === updatedProject.id
-        );
-        this.projects[index] = updatedProject;
-      } catch (error) {
-        console.error("Error updating project:", error);
+      const res = await updateProject(project);
+      if (res instanceof ErrorResponse) {
+        throw new Error(res.getMessage());
       }
+
+      const index = this.projects.findIndex((p) => p.id === res.id);
+      this.projects[index] = res;
     },
     async deleteProject(id: number) {
       try {

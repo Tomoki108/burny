@@ -1,5 +1,9 @@
 import { API_HOST } from "../config";
-import { getAuthHeader, replaceDateWithISOString } from "./helper";
+import {
+  getAuthHeader,
+  replaceDateWithISOString,
+  type ErrorResponse,
+} from "./helper";
 
 export interface Project {
   id: number;
@@ -65,7 +69,9 @@ type updateProjectRequest = {
   description: string;
 };
 
-export async function updateProject(project: Project): Promise<Project> {
+export async function updateProject(
+  project: Project
+): Promise<Project | ErrorResponse> {
   const req: updateProjectRequest = {
     title: project.title,
     sprint_count: project.sprint_count,
@@ -77,9 +83,6 @@ export async function updateProject(project: Project): Promise<Project> {
     headers: getAuthHeader(),
     body: JSON.stringify(req),
   });
-  if (!response.ok) {
-    throw new Error("Failed to update project");
-  }
   return await response.json();
 }
 

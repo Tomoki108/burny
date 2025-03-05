@@ -1,5 +1,5 @@
 <template>
-    <ContentsContainer title="Projects">
+    <ContentsContainer title="Projects" :alertShow="alertShow" :alertText="alertText" :alertType="alertType">
         <v-row>
             <v-col v-for="project in projectsStore.getProjects()" :key="project.id" lg="3" md="6" sm="12">
                 <div class="project-card">
@@ -33,8 +33,11 @@ import ContentsContainer from '../components/ContentsContainer.vue'
 import ProjectModal from '../components/ProjectModal.vue'
 import { useProjectsStore } from '../stores/projects_store.ts'
 import { defaultProject, type Project } from '../api/project_api'
+import { useAlertComposable } from '../composables/alert_composable.ts'
 
 const projectsStore = useProjectsStore()
+
+const { alertShow, alertText, alertType, alert } = useAlertComposable()
 
 // Create Modal
 const newProjectModal = ref(false)
@@ -63,8 +66,13 @@ const openUpdateProjectModal = (project: Project) => {
 const submitUpdateProject = async (project: Project) => {
     try {
         await projectsStore.updateProject(project)
+        alert("Project updated successfully", "success")
     } catch (error) {
-        console.error("New project creation failed:", error)
+        if (error instanceof Error) {
+            alert(`${error.message}`, 'error')
+        } else {
+            alert("Project update failed. Please retry", 'error')
+        }
     }
 }
 

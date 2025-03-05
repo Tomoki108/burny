@@ -2,7 +2,6 @@ package handler
 
 import (
 	"fmt"
-	"net/http"
 	"reflect"
 
 	"github.com/Tomoki108/burny/handler/io"
@@ -17,7 +16,6 @@ var Validator *validator.Validate
 var Trans ut.Translator
 
 func init() {
-
 	en := en.New()
 	uni := ut.New(en, en)
 
@@ -34,26 +32,25 @@ func init() {
 }
 
 // handleReq binds and validates request
-func handleReq[T any](c echo.Context, req *T) error {
+func handleReq[T any](c echo.Context, req *T) *io.ErrorResponse {
 	// bind
 	if err := c.Bind(req); err != nil {
-		return c.JSON(
-			http.StatusBadRequest,
-			io.NewErrResp(fmt.Sprintf("Failed to bind request: %s", err.Error())),
-		)
+		resp := io.NewErrResp(fmt.Sprintf("Failed to bind request: %s", err.Error()))
+		return &resp
 	}
 
 	// validate
 	if err := Validator.Struct(req); err != nil {
-		er := io.NewValidationErrResp("Validation error")
+		resp := io.NewErrResp("Validation error")
 		validationErrors := err.(validator.ValidationErrors)
 		for _, e := range validationErrors {
-			er.Details = append(er.Details, io.ErrorDetail{
+			resp.Details = append(resp.Details, io.ErrorDetail{
 				Field:   e.Field(),
 				Message: e.Translate(Trans),
 			})
 		}
-		return c.JSON(http.StatusBadRequest, er)
+
+		return &resp
 	}
 	return nil
 }

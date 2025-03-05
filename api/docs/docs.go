@@ -77,7 +77,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/io.ValidationErrorResponse"
+                            "$ref": "#/definitions/io.ErrorResponse"
                         }
                     }
                 }
@@ -160,7 +160,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/io.ValidationErrorResponse"
+                            "$ref": "#/definitions/io.ErrorResponse"
                         }
                     },
                     "404": {
@@ -337,7 +337,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/io.ValidationErrorResponse"
+                            "$ref": "#/definitions/io.ErrorResponse"
                         }
                     }
                 }
@@ -377,7 +377,7 @@ const docTemplate = `{
                     "400": {
                         "description": "Bad Request",
                         "schema": {
-                            "$ref": "#/definitions/io.ValidationErrorResponse"
+                            "$ref": "#/definitions/io.ErrorResponse"
                         }
                     }
                 }
@@ -527,6 +527,12 @@ const docTemplate = `{
         "io.ErrorResponse": {
             "type": "object",
             "properties": {
+                "details": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/io.ErrorDetail"
+                    }
+                },
                 "message": {
                     "type": "string"
                 }
@@ -611,20 +617,6 @@ const docTemplate = `{
                 "actual_sp": {
                     "type": "integer",
                     "maximum": 100
-                }
-            }
-        },
-        "io.ValidationErrorResponse": {
-            "type": "object",
-            "properties": {
-                "details": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/io.ErrorDetail"
-                    }
-                },
-                "message": {
-                    "type": "string"
                 }
             }
         }

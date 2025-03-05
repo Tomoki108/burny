@@ -97,6 +97,10 @@ definitions:
     type: object
   io.ErrorResponse:
     properties:
+      details:
+        items:
+          $ref: '#/definitions/io.ErrorDetail'
+        type: array
       message:
         type: string
     type: object
@@ -157,15 +161,6 @@ definitions:
     required:
     - actual_sp
     type: object
-  io.ValidationErrorResponse:
-    properties:
-      details:
-        items:
-          $ref: '#/definitions/io.ErrorDetail'
-        type: array
-      message:
-        type: string
-    type: object
 info:
   contact: {}
   description: API Doc of Burny Backend
@@ -213,7 +208,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/io.ValidationErrorResponse'
+            $ref: '#/definitions/io.ErrorResponse'
       summary: Create a project
       tags:
       - projects
@@ -290,7 +285,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/io.ValidationErrorResponse'
+            $ref: '#/definitions/io.ErrorResponse'
         "404":
           description: Not Found
           schema:
@@ -385,7 +380,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/io.ValidationErrorResponse'
+            $ref: '#/definitions/io.ErrorResponse'
       summary: Sign in
       tags:
       - auth
@@ -411,7 +406,7 @@ paths:
         "400":
           description: Bad Request
           schema:
-            $ref: '#/definitions/io.ValidationErrorResponse'
+            $ref: '#/definitions/io.ErrorResponse'
       summary: Sign up
       tags:
       - auth

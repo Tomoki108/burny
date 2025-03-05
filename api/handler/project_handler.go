@@ -45,12 +45,12 @@ func (h ProjectHandler) List(c echo.Context) error {
 // @Produce      json
 // @Param 	 	 request body io.CreateProjectRequest true "request"
 // @Success      201 {object} domain.Project
-// @Failure      400 {object} io.ValidationErrorResponse
+// @Failure      400 {object} io.ErrorResponse
 // @Router       /projects [post]
 func (h ProjectHandler) Create(c echo.Context) error {
 	req := new(io.CreateProjectRequest)
 	if err := handleReq(c, req); err != nil {
-		return err
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	userID := c.Get("user_id").(uint)
@@ -74,7 +74,7 @@ func (h ProjectHandler) Create(c echo.Context) error {
 func (h ProjectHandler) Get(c echo.Context) error {
 	req := new(io.GetProjectRequest)
 	if err := handleReq(c, req); err != nil {
-		return err
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	userID := c.Get("user_id").(uint)
@@ -96,13 +96,13 @@ func (h ProjectHandler) Get(c echo.Context) error {
 // @Param 	 	 project_id path int true "project_id"
 // @Param 	 	 request body io.UpdateProjectRequest true "request"
 // @Success      200 {object} domain.Project
-// @Failure      400 {object} io.ValidationErrorResponse
+// @Failure      400 {object} io.ErrorResponse
 // @Failure      404 {object} io.ErrorResponse
 // @Router       /projects/{project_id} [put]
 func (h ProjectHandler) Update(c echo.Context) error {
 	req := new(io.UpdateProjectRequest)
 	if err := handleReq(c, req); err != nil {
-		return err
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	userID := c.Get("user_id").(uint)
@@ -130,7 +130,7 @@ func (h ProjectHandler) Update(c echo.Context) error {
 func (h ProjectHandler) Delete(c echo.Context) error {
 	req := new(io.DeleteProjectRequest)
 	if err := handleReq(c, req); err != nil {
-		return err
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	userID := c.Get("user_id").(uint)

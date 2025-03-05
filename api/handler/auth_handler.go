@@ -26,12 +26,12 @@ func NewAuthHandler(usecase usecase.AuthUseCase) AuthHandler {
 // @Produce      json
 // @Param        request body io.SignUpRequest true "sign up request"
 // @Success      201 {object} domain.User
-// @Failure      400 {object} io.ValidationErrorResponse
+// @Failure      400 {object} io.ErrorResponse
 // @Router       /sign_up [post]
 func (h AuthHandler) SignUp(c echo.Context) error {
 	req := new(io.SignUpRequest)
 	if err := handleReq(c, req); err != nil {
-		return err
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	user, err := h.Usecase.SignUp(*req)
@@ -52,12 +52,12 @@ func (h AuthHandler) SignUp(c echo.Context) error {
 // @Produce      json
 // @Param        request body io.SignInRequest true "sign in request"
 // @Success      200 {object} io.SignInResponse
-// @Failure      400 {object} io.ValidationErrorResponse
+// @Failure      400 {object} io.ErrorResponse
 // @Router       /sign_in [post]
 func (h AuthHandler) SignIn(c echo.Context) error {
 	req := new(io.SignInRequest)
 	if err := handleReq(c, req); err != nil {
-		return err
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	jwtToken, err := h.Usecase.SignIn(*req)

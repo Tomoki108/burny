@@ -32,7 +32,7 @@ func NewSprintHandler(usecase usecase.SprintUseCase) SprintHandler {
 func (h SprintHandler) List(c echo.Context) error {
 	req := new(io.ListSprintRequest)
 	if err := handleReq(c, req); err != nil {
-		return err
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	sprints, err := h.UseCase.List(req.ProjectID)
@@ -57,7 +57,7 @@ func (h SprintHandler) List(c echo.Context) error {
 func (h SprintHandler) Update(c echo.Context) error {
 	req := new(io.UpdateSprintRequest)
 	if err := handleReq(c, req); err != nil {
-		return err
+		return c.JSON(http.StatusBadRequest, err)
 	}
 
 	updated, err := h.UseCase.Update(req.ProjectID, req.ID, req.ActualSP)
