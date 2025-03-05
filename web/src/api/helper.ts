@@ -36,7 +36,3 @@ export class ErrorResponse {
     return this.message;
   }
 }
-
-export function isErrorResponse(val: any): val is ErrorResponse {
-  return (val as ErrorResponse).message !== undefined;
-}

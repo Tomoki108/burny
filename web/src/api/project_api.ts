@@ -47,7 +47,8 @@ export async function createProject(
     body: JSON.stringify(project, replaceDateWithISOString),
   });
   if (!response.ok) {
-    return Object.assign(new ErrorResponse(), response.json());
+    const errorData = await response.json();
+    return Object.assign(new ErrorResponse(), errorData);
   }
   return await response.json();
 }
@@ -59,7 +60,8 @@ export async function fetchProject(
     headers: getAuthHeader(),
   });
   if (!response.ok) {
-    return Object.assign(new ErrorResponse(), response.json());
+    const errorData = await response.json();
+    return Object.assign(new ErrorResponse(), errorData);
   }
   return await response.json();
 }
@@ -86,7 +88,8 @@ export async function updateProject(
     body: JSON.stringify(req),
   });
   if (!response.ok) {
-    return Object.assign(new ErrorResponse(), response.json());
+    const errorData = await response.json();
+    return Object.assign(new ErrorResponse(), errorData);
   }
 
   return await response.json();
@@ -98,6 +101,7 @@ export async function deleteProject(id: number): Promise<void | ErrorResponse> {
     headers: getAuthHeader(),
   });
   if (!response.ok) {
-    return Object.assign(new ErrorResponse(), response.json());
+    const errorData = await response.json();
+    return Object.assign(new ErrorResponse(), errorData);
   }
 }
