@@ -2,7 +2,7 @@
     <ContentsContainer title="Projects" :alertCtx="alertCtx">
         <v-row>
             <v-col v-for="project in projectsStore.getProjects()" :key="project.id" lg="3" md="6" sm="12">
-                <router-link :to="'/projects/' + project.id">
+                <router-link :to="'/projects/' + project.id" :props="project">
                     <div class="project-card">
                         <h2>{{ project.title }}</h2>
                         <p>Sprint: {{ project.sprint_count }}</p>

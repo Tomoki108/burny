@@ -24,6 +24,13 @@ export const useProjectsStore = defineStore("projects", {
       }
       this.projects.push(res);
     },
+    getProject(id: number): Project {
+      const project = this.projects.find((p) => p.id === id);
+      if (project === undefined) {
+        throw new Error("Project not found");
+      }
+      return project;
+    },
     async updateProject(project: Project) {
       const res = await updateProject(project);
       if (res instanceof ErrorResponse) {

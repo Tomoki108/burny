@@ -1,7 +1,7 @@
 <template>
     <Sidebar />
     <main class="main-content">
-        <v-alert v-if="alertCtx.show" :type="alertCtx.type" :text="alertCtx.text" closable class="alert-dialog" />
+        <v-alert v-if="alertCtx?.show" :type="alertCtx?.type" :text="alertCtx?.text" closable class="alert-dialog" />
         <header class="app-header">
             <h1>{{ title }}</h1>
         </header>
@@ -17,7 +17,7 @@ import type { AlertContext } from '../composables/alert_composable'
 
 defineProps<{
     title: string
-    alertCtx: AlertContext,
+    alertCtx?: AlertContext,
 }>()
 </script>
 
