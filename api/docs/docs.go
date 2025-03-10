@@ -288,10 +288,7 @@ const docTemplate = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/domain.Sprint"
-                            }
+                            "$ref": "#/definitions/domain.Sprint"
                         }
                     },
                     "404": {

@@ -348,9 +348,7 @@ paths:
         "200":
           description: OK
           schema:
-            items:
-              $ref: '#/definitions/domain.Sprint'
-            type: array
+            $ref: '#/definitions/domain.Sprint'
         "404":
           description: Not Found
           schema:
