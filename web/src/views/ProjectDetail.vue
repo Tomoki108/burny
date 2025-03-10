@@ -1,6 +1,6 @@
 <template>
     <ContentsContainer :title="'Projects > ' + project.title">
-        <h2 class="my-2">Term</h2>
+        <h2 class="mb-2">Term</h2>
         <p>{{ project.start_date }} to {{ projectEndDate }}, {{ project.sprint_count }} sprints</p>
         <h2 class="my-2">Description</h2>
         <p>{{ project.description }}</p>
