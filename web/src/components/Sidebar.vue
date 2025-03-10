@@ -2,8 +2,8 @@
     <div class="sidebar">
         <nav>
             <ul>
-                <router-link to="/projects" custom v-slot="{ navigate, isActive }">
-                    <li :class="{ 'active-li': isActive }" @click="navigate">
+                <router-link to="/projects" custom v-slot="{ navigate }">
+                    <li :class="{ 'active-li': isProjectsRouteActive }" @click="navigate">
                         <font-awesome-icon icon="project-diagram" /> Projects
                     </li>
                 </router-link>
@@ -21,11 +21,15 @@
 </template>
 
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth_store'
 
+const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
+
+const isProjectsRouteActive = computed(() => route.path.startsWith("/projects"))
 
 const signOut = () => {
     authStore.signOut()
