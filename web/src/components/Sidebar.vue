@@ -62,8 +62,6 @@ div.signout:hover {
     color: var(--color-text-light);
     font-weight: bold;
     background-color: var(--color-tertiary);
-    border-top: 1px solid var(--color-text-light);
-    border-bottom: 1px solid var(--color-text-light);
 }
 
 nav {
