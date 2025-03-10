@@ -3,7 +3,7 @@ import {
   getAuthHeader,
   replaceDateWithISOString,
   ErrorResponse,
-} from "./helper";
+} from "./api_helper";
 
 export interface Project {
   id: number;

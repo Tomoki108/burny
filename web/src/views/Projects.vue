@@ -4,15 +4,17 @@
             <v-col v-for="project in projectsStore.getProjects()" :key="project.id" lg="3" md="6" sm="12">
                 <router-link :to="'/projects/' + project.id" :props="project">
                     <div class="project-card">
-                        <h2>{{ project.title }}</h2>
-                        <p>Sprint: {{ project.sprint_count }}</p>
+                        <h2 class="mb-2">{{ project.title }}</h2>
+                        <p>{{ project.start_date }} to {{ getEndDate(project) }}, {{ project.sprint_count }} sprints</p>
+                        <p class="mb-2"></p>
                         <p>{{ project.description }}</p>
                         <div class="project-actions">
                             <button class="button-small" @click.prevent="openUpdateProjectModal(project)">Update
                             </button>
                             <button class="button-small-danger"
                                 @click.prevent="dialog(`Are you shure to delete project ${project.title}?`)">Delete
-                                <Dialog :ctx="dialogCtx" :callback="() => submitDeleteProject(project.id)"></Dialog>
+                                <Dialog :ctx="dialogCtx" :callback="() => submitDeleteProject(project.id)">
+                                </Dialog>
                             </button>
                         </div>
                     </div>
@@ -42,6 +44,7 @@ import { defaultProject, type Project } from '../api/project_api'
 import { useAlertComposable } from '../composables/alert_composable.ts'
 import Dialog from '../components/Dialog.vue'
 import { useDialogComposable } from '../composables/dialog_composable'
+import { getEndDate } from '../utils/project_helper'
 
 const projectsStore = useProjectsStore()
 

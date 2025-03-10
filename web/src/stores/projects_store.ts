@@ -6,7 +6,7 @@ import {
   type Project,
   updateProject,
 } from "../api/project_api";
-import { ErrorResponse } from "../api/helper";
+import { ErrorResponse } from "../api/api_helper";
 
 export const useProjectsStore = defineStore("projects", {
   state: () => ({

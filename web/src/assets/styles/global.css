@@ -38,6 +38,7 @@
   --font-family-base: "Roboto", sans-serif;
 
   /* フォントサイズ */
+  --font-size-tiny: 10px;
   --font-size-small: 12px;
   --font-size-base: 16px;
   --font-size-large: 20px;
@@ -79,19 +80,15 @@ h2 {
 }
 
 h3 {
-  font-size: var(--font-size-large);
+  font-size: var(--font-size-base);
 }
 
 h4 {
-  font-size: var(--font-size-base);
+  font-size: var(--font-size-small);
 }
 
 h5 {
-  font-size: var(--font-size-base);
-}
-
-h6 {
-  font-size: var(--font-size-small);
+  font-size: var(--font-size-tiny);
 }
 
 .color-primary {
@@ -100,11 +97,6 @@ h6 {
 
 .color-white {
   color: var(--color-text-light);
-}
-
-.ph-24 {
-  padding-left: 24px;
-  padding-right: 24px;
 }
 
 .button {
