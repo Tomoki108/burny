@@ -7,14 +7,17 @@
 <script setup lang="ts">
 import ContentsContainer from '../components/ContentsContainer.vue';
 import { useProjectsStore } from '../stores/projects_store';
-import { computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
+import { type Project } from '../api/project_api';
+
 const route = useRoute();
+const projectsStore = useProjectsStore();
+const project = ref({} as Project);
 
-const projectsStore = useProjectsStore()
-const project = computed(() => {
-    const projectID = route.params.id as string
-    return projectsStore.getProject(Number(projectID))
-})
-
+onMounted(async () => {
+    await projectsStore.fetchProjects();
+    const projectID = Number(route.params.id as string);
+    project.value = projectsStore.getProject(projectID);
+});
 </script>
