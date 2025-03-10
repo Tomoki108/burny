@@ -12,7 +12,7 @@
                             </button>
                             <button class="button-small-danger"
                                 @click.prevent="dialog(`Are you shure to delete project ${project.title}?`)">Delete
-                                <Dialog :ctx="dialogCtx" :callback="() => submitDeleteProject(project.id)"> </Dialog>
+                                <Dialog :ctx="dialogCtx" :callback="() => submitDeleteProject(project.id)"></Dialog>
                             </button>
                         </div>
                     </div>

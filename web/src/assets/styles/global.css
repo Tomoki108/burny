@@ -1,6 +1,5 @@
 /* フォント定義 */
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
-@import "tailwindcss";
 
 :root {
   /* 独自のカラーパレット */
@@ -47,13 +46,6 @@
   --shadow: 0.1rem 0.1rem var(--color-shadow);
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-}
-
-/* Vue.jsが自動で作る一番外側の<div id="app">要素のスタイル */
 #app {
   display: flex;
   width: 100%;
@@ -70,6 +62,12 @@ body {
   font-family: var(--font-family-base);
   background-color: var(--color-background);
   font-size: var(--font-size-base);
+}
+
+a {
+  font-weight: 500;
+  color: #646cff;
+  text-decoration: inherit;
 }
 
 h1 {

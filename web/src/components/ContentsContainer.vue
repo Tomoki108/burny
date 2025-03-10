@@ -31,12 +31,12 @@ defineProps<{
 
 .main-content {
     width: 90%;
-    padding: 40px 40px 40px;
+    padding: 25px 40px 40px 40px;
 }
 
 hr {
     border-top: 2px solid var(--color-muted);
-    margin-bottom: 60px;
+    margin-bottom: 30px;
 }
 
 .alert-dialog {

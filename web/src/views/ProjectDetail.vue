@@ -1,6 +1,8 @@
 <template>
     <ContentsContainer :title="'Projects > ' + project.title">
-        hoge
+        <div>
+            hoge
+        </div>
     </ContentsContainer>
 </template>
 

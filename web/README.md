@@ -9,7 +9,6 @@ SPA for Burny.
 | **FW**               | [Vue.js (Compostion API)](https://vuejs.org/guide/introduction.html) |
 | **Build**            | [Vite](https://ja.vite.dev/)                                         |
 | **UI Component**     | [Vuetify](https://vuetifyjs.com/ja/)                                 |
-| **CSS**              | [Tailwind CSS](https://tailwindcss.com/)                             |
 | **Routing**          | [Vue Router](https://router.vuejs.org/)                              |
 | **State Management** | [Pinia](https://pinia.vuejs.org/)                                    |
 
