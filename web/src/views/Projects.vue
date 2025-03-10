@@ -2,19 +2,21 @@
     <ContentsContainer title="Projects" :alertCtx="alertCtx">
         <v-row>
             <v-col v-for="project in projectsStore.getProjects()" :key="project.id" lg="3" md="6" sm="12">
-                <div class="project-card">
-                    <h2>{{ project.title }}</h2>
-                    <p>Sprint: {{ project.sprint_count }}</p>
-                    <p>{{ project.description }}</p>
-                    <div class="project-actions">
-                        <button class="button-small" @click="openUpdateProjectModal(project)">Update
-                        </button>
-                        <button class="button-small-danger"
-                            @click="dialog(`Are you shure to delete project ${project.title}?`)">Delete
-                            <Dialog :ctx="dialogCtx" :callback="() => submitDeleteProject(project.id)"> </Dialog>
-                        </button>
+                <router-link :to="'/projects/' + project.id">
+                    <div class="project-card">
+                        <h2>{{ project.title }}</h2>
+                        <p>Sprint: {{ project.sprint_count }}</p>
+                        <p>{{ project.description }}</p>
+                        <div class="project-actions">
+                            <button class="button-small" @click.prevent="openUpdateProjectModal(project)">Update
+                            </button>
+                            <button class="button-small-danger"
+                                @click.prevent="dialog(`Are you shure to delete project ${project.title}?`)">Delete
+                                <Dialog :ctx="dialogCtx" :callback="() => submitDeleteProject(project.id)"> </Dialog>
+                            </button>
+                        </div>
                     </div>
-                </div>
+                </router-link>
 
             </v-col>
             <v-col lg="3" md="6" sm="12" @click="openNewProjectModal">
@@ -128,13 +130,7 @@ onMounted(() => {
 }
 
 .dialog {
-    /* align-self: flex-end; */
-    /* align-content: center; */
-    /* position: fixed; */
-
-    /* width: 300px%; */
     top: -80%;
     left: 45%;
-
 }
 </style>
