@@ -4,7 +4,7 @@
         <p>{{ project.start_date }} to {{ projectEndDate }}, {{ project.sprint_count }} sprints</p>
         <h2 class="my-2">Description</h2>
         <p>{{ project.description }}</p>
-
+        <h2 class="my-2">Sprint Stats</h2>
         <v-table>
             <thead>
                 <tr>
@@ -14,12 +14,26 @@
                     <th class="text-left">
                         end_date
                     </th>
+                    <th class="text-left">
+                        ideal_sp
+                    </th>
+                    <th class="text-left">
+                        actual_sp
+                    </th>
+                    <th class="text-left">
+                        update
+                    </th>
                 </tr>
             </thead>
             <tbody>
                 <tr v-for="sprint in sprints" :key="sprint.id">
                     <td>{{ sprint.start_date }}</td>
                     <td>{{ sprint.end_date }}</td>
+                    <td>{{ sprint.ideal_sp }}</td>
+                    <td>{{ sprint.actual_sp }}</td>
+                    <td>
+                        <button class="button-small" @click="openUpdateSprintModal(sprint)">Update</button>
+                    </td>
                 </tr>
             </tbody>
         </v-table>
@@ -51,4 +65,8 @@ onMounted(async () => {
 
     sprints.value = await fetchSprints(projectID);
 });
+
+const openUpdateSprintModal = (sprint: Sprint) => {
+    console.log('openUpdateSprintModal', sprint);
+};
 </script>
