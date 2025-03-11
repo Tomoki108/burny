@@ -1,10 +1,10 @@
 <template>
     <ContentsContainer :title="'Projects > ' + project.title">
-        <h2 class="mb-2">Term</h2>
+        <h2 class="mb-1">Term</h2>
         <p>{{ project.start_date }} to {{ projectEndDate }}, {{ project.sprint_count }} sprints</p>
-        <h2 class="my-2">Description</h2>
+        <h2 class="mt-3 mb-1">Description</h2>
         <p>{{ project.description }}</p>
-        <h2 class="my-2">Sprint Stats</h2>
+        <h2 class="mt-3">Sprint Stats</h2>
         <v-table>
             <thead>
                 <tr>
@@ -31,10 +31,12 @@
                     <td>{{ sprint.end_date }}</td>
                     <td>{{ sprint.ideal_sp }}</td>
                     <td>{{ sprint.actual_sp }}</td>
-                    <button class="button-small" :disabled="isSprintStarted(sprint)"
-                        @click="openUpdateSprintModal(sprint)">
-                        Update
-                    </button>
+                    <td>
+                        <button class="button-small" :disabled="isSprintStarted(sprint)"
+                            @click="openUpdateSprintModal(sprint)">
+                            Update
+                        </button>
+                    </td>
                 </tr>
             </tbody>
         </v-table>
