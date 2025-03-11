@@ -1,14 +1,17 @@
 <template>
     <ContentsContainer :title="'Projects > ' + project.title" :alertCtx="alertCtx">
-        <h2 class="mb-1">Term</h2>
+        <h2>Basic Info</h2>
         <p>{{ project.start_date }} to {{ projectEndDate }}, {{ project.sprint_count }} sprints, {{
             project.total_sp }} sp</p>
-        <h2 class="mt-3 mb-1">Description</h2>
+        <h2 class="mt-3">Description</h2>
         <p>{{ project.description }}</p>
         <h2 class="mt-3">Sprint Stats</h2>
         <v-table>
             <thead>
                 <tr>
+                    <th class="text-left">
+                        sprint_no
+                    </th>
                     <th class="text-left">
                         start_date
                     </th>
@@ -27,7 +30,8 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="sprint in sprintsStore.getSprints()" :key="sprint.id">
+                <tr v-for="sprint, idx in sprintsStore.getSprints()" :key="sprint.id">
+                    <td>Sprint {{ idx + 1 }}</td>
                     <td>{{ sprint.start_date }}</td>
                     <td>{{ sprint.end_date }}</td>
                     <td>{{ sprint.ideal_sp }}</td>
@@ -42,8 +46,8 @@
             </tbody>
         </v-table>
 
-        <h2 class="mt-3">Cumulative Actual SP</h2>
-        <v-sparkline :model-value="prefSumActualSp" color="blue" smooth autoDraw line-width="0.5" />
+        <h2 class="mt-3">Burn Up Chart</h2>
+        <Line class="chart" :data="chartData" :options="chartOptions" />
 
         <SprintModal :show="updateSprintModal" modalTitle="Update Sprint" :sprint="updateSprint"
             @update:show="updateSprintModal = $event" @submit="submitUpdateSprint" />
@@ -62,6 +66,10 @@ import { isSprintStarted, getPrefSumActualSP } from '../utils/sprint_helper';
 import SprintModal from '../components/SprintModal.vue';
 import { useSprintsStore } from '../stores/sprints_store';
 import { useAlertComposable } from '../composables/alert_composable';
+import { Line } from 'vue-chartjs';
+import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale } from 'chart.js';
+
+ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale);
 
 const route = useRoute();
 
@@ -113,6 +121,49 @@ const cumulativeActualSp = computed(() => {
     });
 });
 
+// Calculate cumulative ideal_sp
+const cumulativeIdealSp = computed(() => {
+    const sprints = sprintsStore.getSprints();
+    let cumulative = 0;
+    return sprints.map(sprint => {
+        cumulative += sprint.ideal_sp;
+        return cumulative;
+    });
+});
+
+const chartData = computed(() => ({
+    labels: sprintsStore.getSprints().map((_, index) => `Sprint ${index + 1}`),
+    datasets: [
+        {
+            label: 'accumulated actual_sp',
+            borderColor: '#2196f3',
+            data: cumulativeActualSp.value,
+            fill: true,
+        },
+        {
+            label: 'accumulated ideal_sp',
+            borderColor: '#4caf50',
+            data: cumulativeIdealSp.value,
+            fill: false,
+        },
+    ],
+}));
+
+const chartOptions = {
+    responsive: true,
+    plugins: {
+        legend: {
+            position: 'top' as const,
+        },
+    },
+};
+
 console.log(prefSumActualSp.value)
 
 </script>
+
+<style scoped>
+.chart {
+    max-width: 1330px;
+}
+</style>
