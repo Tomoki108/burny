@@ -5,7 +5,8 @@
                 <router-link :to="'/projects/' + project.id" :props="project">
                     <div class="project-card">
                         <h2 class="mb-2">{{ project.title }}</h2>
-                        <p>{{ project.start_date }} to {{ getEndDate(project) }}, {{ project.sprint_count }} sprints</p>
+                        <p>{{ project.start_date }} to {{ getEndDate(project) }}, {{ project.sprint_count }} sprints, {{
+                            project.total_sp }} sp</p>
                         <p class="mb-2"></p>
                         <p>{{ project.description }}</p>
                         <div class="project-actions">

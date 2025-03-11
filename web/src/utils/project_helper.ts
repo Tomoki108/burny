@@ -2,9 +2,6 @@ import { type Project } from "../api/project_api";
 
 export function getEndDate(project: Project): string {
   const endDate = new Date(project.start_date);
-
-  console.log(endDate);
-
   endDate.setDate(
     endDate.getDate() + project.sprint_count * 7 * project.sprint_duration
   );
