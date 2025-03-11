@@ -51,6 +51,11 @@ const projectsStore = useProjectsStore()
 const { alertCtx, alert } = useAlertComposable()
 const { dialogCtx, dialog } = useDialogComposable()
 
+onMounted(() => {
+    projectsStore.fetchProjects()
+})
+
+// Create Project
 const newProjectModal = ref(false)
 
 const openNewProjectModal = () => {
@@ -66,7 +71,7 @@ const submitNewProject = async (project: Project) => {
     }
 }
 
-// Update Modal
+// Update Project
 const updateProject = ref<Project>({} as Project)
 const updateProjectModal = ref(false)
 
@@ -84,6 +89,7 @@ const submitUpdateProject = async (project: Project) => {
     }
 }
 
+// Delete Project
 const submitDeleteProject = (id: number) => {
     try {
         projectsStore.deleteProject(id)
@@ -92,10 +98,6 @@ const submitDeleteProject = (id: number) => {
         alert(`Project deletion failed. Please retry`, 'error')
     }
 }
-
-onMounted(() => {
-    projectsStore.fetchProjects()
-})
 </script>
 
 <style scoped>

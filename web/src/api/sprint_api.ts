@@ -21,7 +21,7 @@ export async function fetchSprints(projectID: number): Promise<Sprint[]> {
 }
 
 export interface UpdateSprintRequest {
-  actual_sp: string;
+  actual_sp: number;
 }
 
 export async function updateSprint(

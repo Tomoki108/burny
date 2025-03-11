@@ -26,20 +26,23 @@
                 </tr>
             </thead>
             <tbody>
-                <tr v-for="sprint in sprints" :key="sprint.id">
+                <tr v-for="sprint in sprintsStore.getSprints()" :key="sprint.id">
                     <td>{{ sprint.start_date }}</td>
                     <td>{{ sprint.end_date }}</td>
                     <td>{{ sprint.ideal_sp }}</td>
                     <td>{{ sprint.actual_sp }}</td>
                     <td>
-                        <button class="button-small" :disabled="isSprintStarted(sprint)"
-                            @click="openUpdateSprintModal(sprint)">
+                        <button class="button-small" v-if="isSprintStarted(sprint)"
+                            @click.prevent="openUpdateSprintModal(sprint)">
                             Update
                         </button>
                     </td>
                 </tr>
             </tbody>
         </v-table>
+
+        <SprintModal :show="updateSprintModal" modalTitle="Update Sprint" :sprint="updateSprint"
+            @update:show="updateSprintModal = $event" @submit="submitUpdateSprint" />
     </ContentsContainer>
 </template>
 
@@ -50,8 +53,10 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { type Project } from '../api/project_api';
 import { getEndDate } from '../utils/project_helper';
-import { type Sprint, fetchSprints } from '../api/sprint_api';
+import { type Sprint } from '../api/sprint_api';
 import { isSprintStarted } from '../utils/sprint_helper';
+import SprintModal from '../components/SprintModal.vue';
+import { useSprintsStore } from '../stores/sprints_store';
 
 const route = useRoute();
 
@@ -59,6 +64,7 @@ const projectsStore = useProjectsStore();
 const project = ref({} as Project);
 const projectEndDate = ref('');
 
+const sprintsStore = useSprintsStore();
 const sprints = ref([] as Sprint[]);
 
 onMounted(async () => {
@@ -67,10 +73,21 @@ onMounted(async () => {
     project.value = projectsStore.getProject(projectID);
     projectEndDate.value = getEndDate(project.value);
 
-    sprints.value = await fetchSprints(projectID);
+    sprintsStore.fetchSprints(projectID);
 });
 
+// Update Sprint
+const updateSprintModal = ref(false);
+const updateSprint = ref({} as Sprint);
+
 const openUpdateSprintModal = (sprint: Sprint) => {
-    console.log('openUpdateSprintModal', sprint);
+    console.log(sprint);
+    updateSprintModal.value = true;
+    updateSprint.value = sprint;
+};
+
+const submitUpdateSprint = async (sprint: Sprint) => {
+    await sprintsStore.updateSprint(sprint);
+    updateSprintModal.value = false;
 };
 </script>
