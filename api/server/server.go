@@ -52,7 +52,7 @@ func NewEchoServer() *echo.Echo {
 	ug.PUT("/projects/:project_id", projectH.Update)
 	ug.DELETE("/projects/:project_id", projectH.Delete)
 	ug.GET("/projects/:project_id/sprints", sprintH.List)
-	ug.PUT("/sprints/:project_id/sprints/:sprint_id", sprintH.Update)
+	ug.PATCH("/projects/:project_id/sprints/:sprint_id", sprintH.Update)
 
 	return e
 }

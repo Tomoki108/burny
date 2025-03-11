@@ -65,7 +65,6 @@ const project = ref({} as Project);
 const projectEndDate = ref('');
 
 const sprintsStore = useSprintsStore();
-const sprints = ref([] as Sprint[]);
 
 onMounted(async () => {
     await projectsStore.fetchProjects();

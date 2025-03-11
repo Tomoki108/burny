@@ -6,8 +6,8 @@
             </v-card-title>
             <v-card-text>
                 <v-form ref="sprintForm">
-                    <v-text-field label="Actual SP" v-model.number="localSprint.actual_sp" type="number"
-                        :rules="newRule('Actual SP').required().gt(0).lte(1000).rules" />
+                    <v-text-field label="actual_sp" v-model.number="localSprint.actual_sp" type="number"
+                        :rules="newRule('actual_sp').required().gte(0).lte(1000).rules" />
                 </v-form>
             </v-card-text>
             <v-card-actions>

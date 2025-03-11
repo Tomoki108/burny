@@ -76,6 +76,28 @@ export class Rule {
     });
     return this;
   }
+
+  gte(min: number): this {
+    this.rules.push((val: any) => {
+      switch (typeof val) {
+        case "string":
+          val as string;
+          if (val.length < min) {
+            return `${this.label} must be greater than or equal to ${min} characters`;
+          }
+          return true;
+        case "number":
+          val as number;
+          if (val < min) {
+            return `${this.label} must be greater than or equal to ${min}`;
+          }
+          return true;
+        default:
+          throw new Error("Invalid type");
+      }
+    });
+    return this;
+  }
 }
 
 export interface vForm {

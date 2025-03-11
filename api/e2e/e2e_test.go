@@ -241,12 +241,12 @@ func UserCanListSprints(t *testing.T, token string, projectID uint) (sprintID ui
 
 func UserCanUpdateSprint(t *testing.T, token string, projectID, sprintID uint) {
 	// Arrange
-	url := "/api/v1/sprints/" + uintToStr(projectID) + "/sprints/" + uintToStr(sprintID)
+	url := "/api/v1/projects/" + uintToStr(projectID) + "/sprints/" + uintToStr(sprintID)
 	updateJSON := `{
 		"actual_sp": 100
 	}`
 	reqBody := strings.NewReader(updateJSON)
-	req := httptest.NewRequest(http.MethodPut, url, reqBody)
+	req := httptest.NewRequest(http.MethodPatch, url, reqBody)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
 	recorder := httptest.NewRecorder()
