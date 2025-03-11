@@ -1,5 +1,5 @@
 <template>
-    <ContentsContainer :title="'Projects > ' + project.title">
+    <ContentsContainer :title="'Projects > ' + project.title" :alertCtx="alertCtx">
         <h2 class="mb-1">Term</h2>
         <p>{{ project.start_date }} to {{ projectEndDate }}, {{ project.sprint_count }} sprints</p>
         <h2 class="mt-3 mb-1">Description</h2>
@@ -57,6 +57,7 @@ import { type Sprint } from '../api/sprint_api';
 import { isSprintStarted } from '../utils/sprint_helper';
 import SprintModal from '../components/SprintModal.vue';
 import { useSprintsStore } from '../stores/sprints_store';
+import { useAlertComposable } from '../composables/alert_composable';
 
 const route = useRoute();
 
@@ -65,6 +66,8 @@ const project = ref({} as Project);
 const projectEndDate = ref('');
 
 const sprintsStore = useSprintsStore();
+
+const { alertCtx, alert } = useAlertComposable()
 
 onMounted(async () => {
     await projectsStore.fetchProjects();
@@ -86,7 +89,12 @@ const openUpdateSprintModal = (sprint: Sprint) => {
 };
 
 const submitUpdateSprint = async (sprint: Sprint) => {
-    await sprintsStore.updateSprint(sprint);
-    updateSprintModal.value = false;
+    try {
+        await sprintsStore.updateSprint(sprint);
+        updateSprintModal.value = false;
+        alert("Sprint updated successfully", "success");
+    } catch (error: any) {
+        alert(`Sprint update failed: ${error.message}`, 'error');
+    }
 };
 </script>

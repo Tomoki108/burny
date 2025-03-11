@@ -11,8 +11,8 @@
                         <div class="project-actions">
                             <button class="button-small" @click.prevent="openUpdateProjectModal(project)">Update
                             </button>
-                            <button class="button-small-danger"
-                                @click.prevent="dialog(`Are you shure to delete project ${project.title}?`)">Delete
+                            <button class="button-small-danger" @click.prevent="dialog(`Delete Project`, `Are you shure
+                                to delete project ${project.title}?`)">Delete
                                 <Dialog :ctx="dialogCtx" :callback="() => submitDeleteProject(project.id)">
                                 </Dialog>
                             </button>
@@ -47,7 +47,6 @@ import { useDialogComposable } from '../composables/dialog_composable'
 import { getEndDate } from '../utils/project_helper'
 
 const projectsStore = useProjectsStore()
-
 const { alertCtx, alert } = useAlertComposable()
 const { dialogCtx, dialog } = useDialogComposable()
 

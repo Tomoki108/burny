@@ -1,7 +1,7 @@
 <template>
     <v-dialog v-model="ctx.show" class="dialog" closable>
         <v-sheet class="px-5 py-5">
-            <h2>Dialog</h2>
+            <h2>{{ ctx.text }}</h2>
             <p class="my-4">
                 {{ ctx.text }}
             </p>
