@@ -1,6 +1,9 @@
 package domain
 
-import "time"
+import (
+	"encoding/json"
+	"time"
+)
 
 type Sprint struct {
 	ID        uint      `json:"id"`
@@ -12,6 +15,40 @@ type Sprint struct {
 	IdealSP   int       `json:"ideal_sp"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdatedAt time.Time `json:"updated_at"`
+}
+
+func (s Sprint) MarshalJSON() ([]byte, error) {
+	type Alias Sprint // 再帰呼び出しを避けるためのエイリアス
+	aux := &struct {
+		StartDate string `json:"start_date"`
+		EndDate   string `json:"end_date"`
+		*Alias
+	}{
+		Alias:     (*Alias)(&s),
+		StartDate: s.StartDate.Format("2006-01-02"),
+		EndDate:   s.EndDate.Format("2006-01-02"),
+	}
+	return json.Marshal(aux)
+}
+
+func (s *Sprint) UnmarshalJSON(data []byte) error {
+	type Alias Sprint
+	aux := &struct {
+		StartDate string `json:"start_date"`
+		EndDate   string `json:"end_date"`
+		*Alias
+	}{
+		Alias: (*Alias)(s),
+	}
+	if err := json.Unmarshal(data, aux); err != nil {
+		return err
+	}
+	t, err := time.Parse("2006-01-02", aux.StartDate)
+	if err != nil {
+		return err
+	}
+	s.StartDate = t
+	return nil
 }
 
 type SprintRepository interface {

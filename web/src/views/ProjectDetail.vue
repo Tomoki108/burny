@@ -4,6 +4,25 @@
         <p>{{ project.start_date }} to {{ projectEndDate }}, {{ project.sprint_count }} sprints</p>
         <h2 class="my-2">Description</h2>
         <p>{{ project.description }}</p>
+
+        <v-table>
+            <thead>
+                <tr>
+                    <th class="text-left">
+                        start_date
+                    </th>
+                    <th class="text-left">
+                        end_date
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="sprint in sprints" :key="sprint.id">
+                    <td>{{ sprint.start_date }}</td>
+                    <td>{{ sprint.end_date }}</td>
+                </tr>
+            </tbody>
+        </v-table>
     </ContentsContainer>
 </template>
 
@@ -14,17 +33,22 @@ import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { type Project } from '../api/project_api';
 import { getEndDate } from '../utils/project_helper';
+import { type Sprint, fetchSprints } from '../api/sprint_api';
 
 const route = useRoute();
+
 const projectsStore = useProjectsStore();
 const project = ref({} as Project);
 const projectEndDate = ref('');
 
+const sprints = ref([] as Sprint[]);
 
 onMounted(async () => {
     await projectsStore.fetchProjects();
     const projectID = Number(route.params.id as string);
     project.value = projectsStore.getProject(projectID);
     projectEndDate.value = getEndDate(project.value);
+
+    sprints.value = await fetchSprints(projectID);
 });
 </script>

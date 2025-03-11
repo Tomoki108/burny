@@ -53,7 +53,7 @@ func (u ProjectUseCase) Create(userID uint, req io.CreateProjectRequest) (*domai
 		sprints := make([]*domain.Sprint, 0, project.SprintCount)
 		idealSP := project.TotalSP / project.SprintCount
 		startDate := project.StartDate
-		endDate := startDate.AddDate(0, 0, 7*project.SprintDuration)
+		endDate := startDate.AddDate(0, 0, 7*project.SprintDuration-1)
 		for i := 0; i < project.SprintCount; i++ {
 			sprint := &domain.Sprint{
 				UserID:    userID,
@@ -64,8 +64,8 @@ func (u ProjectUseCase) Create(userID uint, req io.CreateProjectRequest) (*domai
 			}
 			sprints = append(sprints, sprint)
 
-			startDate = endDate
-			endDate = startDate.AddDate(0, 0, 7*project.SprintDuration)
+			startDate = endDate.AddDate(0, 0, 1)
+			endDate = startDate.AddDate(0, 0, 7*project.SprintDuration-1)
 		}
 
 		for _, sprint := range sprints {
@@ -105,7 +105,7 @@ func (u ProjectUseCase) Update(userID uint, req io.UpdateProjectRequest) (*domai
 
 		if countDiff > 0 {
 			startDate := sprints[len(sprints)-1].EndDate
-			endDate := startDate.AddDate(0, 0, 7*project.SprintDuration)
+			endDate := startDate.AddDate(0, 0, 7*project.SprintDuration-1)
 			for i := 0; i < countDiff; i++ {
 				sprint := &domain.Sprint{
 					UserID:    project.UserID,
@@ -115,8 +115,8 @@ func (u ProjectUseCase) Update(userID uint, req io.UpdateProjectRequest) (*domai
 				}
 				sprints = append(sprints, sprint)
 
-				startDate = endDate
-				endDate = startDate.AddDate(0, 0, 7*project.SprintDuration)
+				startDate = endDate.AddDate(0, 0, 1)
+				endDate = startDate.AddDate(0, 0, 7*project.SprintDuration-1)
 			}
 		} else if countDiff < 0 {
 			sprints = sprints[:req.SprintCount]
