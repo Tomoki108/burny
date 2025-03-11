@@ -47,7 +47,7 @@
         </v-table>
 
         <h2 class="mt-3">Burn Up Chart</h2>
-        <Line class="chart" :data="chartData" :options="chartOptions" />
+        <Line class="pr-16" :data="chartData" :options="chartOptions" />
 
         <SprintModal :show="updateSprintModal" modalTitle="Update Sprint" :sprint="updateSprint"
             @update:show="updateSprintModal = $event" @submit="submitUpdateSprint" />
@@ -136,34 +136,39 @@ const chartData = computed(() => ({
     datasets: [
         {
             label: 'accumulated actual_sp',
-            borderColor: '#2196f3',
+            borderColor: '#2196f3',// var(--color-info)
             data: cumulativeActualSp.value,
             fill: true,
         },
         {
             label: 'accumulated ideal_sp',
-            borderColor: '#4caf50',
+            borderColor: '#ffc107', // var(--color-warning)
             data: cumulativeIdealSp.value,
             fill: false,
+        },
+        {
+            label: 'total_sp',
+            borderColor: '#4caf50', // var(--color-success)
+            data: Array(sprintsStore.getSprints().length).fill(project.value.total_sp),
+            fill: false,
+            borderDash: [10, 5],
         },
     ],
 }));
 
-const chartOptions = {
-    responsive: true,
-    plugins: {
-        legend: {
-            position: 'top' as const,
-        },
-    },
-};
+const chartOptions = computed(() => {
+    return {
+        responsive: true,
+        scales: {
+            y: {
+                max: project.value.total_sp + 10,
+                ticks: {
+                    stepSize: 10,
+                },
+            }
+        }
+    }
+});
 
-console.log(prefSumActualSp.value)
 
 </script>
-
-<style scoped>
-.chart {
-    max-width: 1330px;
-}
-</style>
