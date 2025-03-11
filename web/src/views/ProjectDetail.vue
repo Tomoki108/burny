@@ -47,7 +47,7 @@
         </v-table>
 
         <h2 class="mt-3">Burn Up Chart</h2>
-        <Line class="pr-16" :data="chartData" :options="chartOptions" />
+        <BurnUpChart :sprints="sprintsStore.getSprints()" :total_sp="project.total_sp" />
 
         <SprintModal :show="updateSprintModal" modalTitle="Update Sprint" :sprint="updateSprint"
             @update:show="updateSprintModal = $event" @submit="submitUpdateSprint" />
@@ -57,7 +57,7 @@
 <script setup lang="ts">
 import ContentsContainer from '../components/ContentsContainer.vue';
 import { useProjectsStore } from '../stores/projects_store';
-import { ref, onMounted, computed } from 'vue';
+import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
 import { type Project } from '../api/project_api';
 import { getEndDate } from '../utils/project_helper';
@@ -66,8 +66,8 @@ import { isSprintStarted, getPrefSumActualSP } from '../utils/sprint_helper';
 import SprintModal from '../components/SprintModal.vue';
 import { useSprintsStore } from '../stores/sprints_store';
 import { useAlertComposable } from '../composables/alert_composable';
-import { Line } from 'vue-chartjs';
 import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale } from 'chart.js';
+import BurnUpChart from '../components/BurnUpChart.vue';
 
 ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale);
 
@@ -78,7 +78,6 @@ const project = ref({} as Project);
 const projectEndDate = ref('');
 
 const sprintsStore = useSprintsStore();
-const prefSumActualSp = ref([] as number[]);
 
 const { alertCtx, alert } = useAlertComposable()
 
@@ -89,7 +88,6 @@ onMounted(async () => {
     projectEndDate.value = getEndDate(project.value);
 
     await sprintsStore.fetchSprints(projectID);
-    prefSumActualSp.value = getPrefSumActualSP(sprintsStore.getSprints());
 });
 
 // Update Sprint
@@ -110,65 +108,4 @@ const submitUpdateSprint = async (sprint: Sprint) => {
         alert(`Sprint update failed: ${error.message}`, 'error');
     }
 };
-
-// Calculate cumulative actual_sp
-const cumulativeActualSp = computed(() => {
-    const sprints = sprintsStore.getSprints();
-    let cumulative = 0;
-    return sprints.map(sprint => {
-        cumulative += sprint.actual_sp;
-        return cumulative;
-    });
-});
-
-// Calculate cumulative ideal_sp
-const cumulativeIdealSp = computed(() => {
-    const sprints = sprintsStore.getSprints();
-    let cumulative = 0;
-    return sprints.map(sprint => {
-        cumulative += sprint.ideal_sp;
-        return cumulative;
-    });
-});
-
-const chartData = computed(() => ({
-    labels: sprintsStore.getSprints().map((_, index) => `Sprint ${index + 1}`),
-    datasets: [
-        {
-            label: 'accumulated actual_sp',
-            borderColor: '#2196f3',// var(--color-info)
-            data: cumulativeActualSp.value,
-            fill: true,
-        },
-        {
-            label: 'accumulated ideal_sp',
-            borderColor: '#ffc107', // var(--color-warning)
-            data: cumulativeIdealSp.value,
-            fill: false,
-        },
-        {
-            label: 'total_sp',
-            borderColor: '#4caf50', // var(--color-success)
-            data: Array(sprintsStore.getSprints().length).fill(project.value.total_sp),
-            fill: false,
-            borderDash: [10, 5],
-        },
-    ],
-}));
-
-const chartOptions = computed(() => {
-    return {
-        responsive: true,
-        scales: {
-            y: {
-                max: project.value.total_sp + 10,
-                ticks: {
-                    stepSize: 10,
-                },
-            }
-        }
-    }
-});
-
-
 </script>
