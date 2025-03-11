@@ -26,7 +26,7 @@ defineProps<{
 
 <style scoped>
 .dialog {
-    top: -65%;
+    top: -67.5%;
     width: 20%;
 }
 </style>

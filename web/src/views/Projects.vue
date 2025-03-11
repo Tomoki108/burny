@@ -133,9 +133,4 @@ const submitDeleteProject = (id: number) => {
     display: flex;
     gap: 10px;
 }
-
-.dialog {
-    top: -80%;
-    left: 45%;
-}
 </style>
