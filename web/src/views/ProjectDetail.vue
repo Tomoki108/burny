@@ -31,9 +31,10 @@
                     <td>{{ sprint.end_date }}</td>
                     <td>{{ sprint.ideal_sp }}</td>
                     <td>{{ sprint.actual_sp }}</td>
-                    <td>
-                        <button class="button-small" @click="openUpdateSprintModal(sprint)">Update</button>
-                    </td>
+                    <button class="button-small" :disabled="isSprintStarted(sprint)"
+                        @click="openUpdateSprintModal(sprint)">
+                        Update
+                    </button>
                 </tr>
             </tbody>
         </v-table>
@@ -48,6 +49,7 @@ import { useRoute } from 'vue-router';
 import { type Project } from '../api/project_api';
 import { getEndDate } from '../utils/project_helper';
 import { type Sprint, fetchSprints } from '../api/sprint_api';
+import { isSprintStarted } from '../utils/sprint_helper';
 
 const route = useRoute();
 
