@@ -1,7 +1,7 @@
 <template>
     <div class="modal-overlay" v-if="isVisible" @click.self="close">
         <div class="login-box">
-            <h1 class="color-white">Burny</h1>
+            <h1 class="color-white">Burny 🐶</h1>
             <div class="tabs">
                 <button @click="isSignUp = false" :class="{ active: !isSignUp }">Sign In</button>
                 <button @click="isSignUp = true" :class="{ active: isSignUp }">Sign Up</button>
