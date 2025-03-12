@@ -8,7 +8,7 @@
             </div>
             <form @submit.prevent="onSubmit">
                 <label for="email">Email</label>
-                <input type="text" id="email" v-model="email" placeholder="yourname@burnuppro.io" required />
+                <input type="text" id="email" v-model="email" placeholder="yourname@burny.page" required />
                 <label for="password">Password</label>
                 <input type="password" id="password" v-model="password" placeholder="************" required
                     minlength="8" maxlength="20" />
@@ -26,6 +26,7 @@ import { useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth_store'
 import { PATH_PROJECTS } from '../router'
 import { signUp } from '../api/auth_api'
+import { ErrorResponse } from '../api/api_helper'
 
 const props = defineProps({
     isVisible: {
@@ -57,9 +58,13 @@ const onSubmit = async () => {
 
     try {
         if (isSignUp.value) {
-            await signUp(email.value, password.value)
-            alert('Registration successful. Please sign in.')
-            isSignUp.value = false
+            const response = await signUp(email.value, password.value)
+            if (response instanceof ErrorResponse) {
+                error.value = response.getMessage()
+            } else {
+                alert('Registration successful. Please sign in.')
+                isSignUp.value = false
+            }
         } else {
             await authStore.signIn(email.value, password.value)
             emit('auth-success')
@@ -136,7 +141,8 @@ h1 {
 }
 
 .error {
-    color: #ff6b6b;
+    color: var(--color-error);
+    font-size: var(--font-size-base);
     margin-top: 15px;
     text-align: center;
 }

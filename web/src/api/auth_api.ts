@@ -1,4 +1,5 @@
 import { API_HOST } from "../config";
+import { ErrorResponse } from "./api_helper";
 
 export interface SignInResponse {
   token: string;
@@ -31,7 +32,7 @@ export async function signIn(
 export async function signUp(
   email: string,
   password: string
-): Promise<SignUpResponse> {
+): Promise<SignUpResponse | ErrorResponse> {
   const response = await fetch(`${API_HOST}/sign_up`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -39,7 +40,8 @@ export async function signUp(
   });
 
   if (!response.ok) {
-    throw new Error("Sign up failed");
+    const errorData = await response.json();
+    return Object.assign(new ErrorResponse(), errorData);
   }
 
   return await response.json();
