@@ -1,21 +1,34 @@
 <template>
-    <Line class="pr-16" :data="chartData" :options="chartOptions" />
+    <v-tabs v-model="activeTab">
+        <v-tab value="burn">Burn Up Chart</v-tab>
+        <v-tab value="velocity">Velocity Chart</v-tab>
+    </v-tabs>
+    <v-tabs-window v-model="activeTab">
+        <v-tabs-window-item value="burn">
+            <Line class="pr-16" :data="burnUpChartData" :options="burnUpchartOptions" />
+        </v-tabs-window-item>
+        <v-tabs-window-item value="velocity">
+            <Line class="pr-16" :data="velocityChartData" :options="velocityChartOptions" />
+        </v-tabs-window-item>
+    </v-tabs-window>
 </template>
 
 <script setup lang="ts">
 import { type Sprint } from '../api/sprint_api';
 import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale } from 'chart.js';
 import { Line } from 'vue-chartjs';
-import { computed } from 'vue';
-
-ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale);
+import { computed, ref } from 'vue';
 
 const props = defineProps<{
     sprints: Sprint[]
     total_sp: number
-}>()
+}>();
 
-// Calculate cumulative actual_sp
+const activeTab = ref(0);
+
+ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale);
+
+// Burn Up Chart
 const cumulativeActualSp = computed(() => {
     const sprints = props.sprints;
     let cumulative = 0;
@@ -25,7 +38,6 @@ const cumulativeActualSp = computed(() => {
     });
 });
 
-// Calculate cumulative ideal_sp
 const cumulativeIdealSp = computed(() => {
     const sprints = props.sprints;
     let cumulative = 0;
@@ -35,12 +47,12 @@ const cumulativeIdealSp = computed(() => {
     });
 });
 
-const chartData = computed(() => ({
+const burnUpChartData = computed(() => ({
     labels: props.sprints.map((_, index) => `Sprint ${index + 1}`),
     datasets: [
         {
             label: 'accumulated actual_sp',
-            borderColor: '#2196f3',// var(--color-info)
+            borderColor: '#2196f3', // var(--color-info)
             data: cumulativeActualSp.value,
             fill: true,
         },
@@ -60,7 +72,7 @@ const chartData = computed(() => ({
     ],
 }));
 
-const chartOptions = computed(() => {
+const burnUpchartOptions = computed(() => {
     return {
         responsive: true,
         scales: {
@@ -69,8 +81,39 @@ const chartOptions = computed(() => {
                 ticks: {
                     stepSize: 10,
                 },
-            }
-        }
-    }
+            },
+        },
+    };
 });
+
+// Velocity Chart
+const velocity = computed(() => {
+    return props.sprints.map(sprint => sprint.actual_sp);
+});
+
+const velocityChartData = computed(() => ({
+    labels: props.sprints.map((_, index) => `Sprint ${index + 1}`),
+    datasets: [
+        {
+            label: 'velocity',
+            borderColor: '#ff5722', // var(--color-accent)
+            data: velocity.value,
+            fill: true,
+        },
+    ],
+}));
+
+const velocityChartOptions = computed(() => {
+    return {
+        responsive: true,
+        scales: {
+            y: {
+                max: velocity.value.reduce((a, b) => Math.max(a, b)) + 10,
+            },
+        },
+    };
+});
+
+
+
 </script>

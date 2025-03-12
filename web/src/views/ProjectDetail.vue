@@ -46,8 +46,9 @@
             </tbody>
         </v-table>
 
-        <h2 class="mt-3">Burn Up Chart</h2>
-        <BurnUpChart :sprints="sprintsStore.getSprints()" :total_sp="project.total_sp" />
+        <div class="mt-3">
+            <BurnUpChart :sprints="sprintsStore.getSprints()" :total_sp="project.total_sp" />
+        </div>
 
         <SprintModal :show="updateSprintModal" modalTitle="Update Sprint" :sprint="updateSprint"
             @update:show="updateSprintModal = $event" @submit="submitUpdateSprint" />
