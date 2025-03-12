@@ -29,6 +29,10 @@
     var(--color-primary),
     var(--color-tertiary)
   );
+  --color-secondary-primary: linear-gradient(
+    var(--color-secondary),
+    var(--color-primary)
+  );
   --color-tertiary-secondary: linear-gradient(
     var(--color-tertiary),
     var(--color-secondary)

@@ -219,9 +219,16 @@ const burnUpChartOptions = {
     /* Prevent content overflow */
 }
 
+.about-section {
+    padding-top: 3rem 0;
+    padding-bottom: 0;
+
+}
+
+
 .about-content {
     display: flex;
-    align-items: center;
+    align-items: top;
     gap: 2rem;
     flex-wrap: wrap;
     margin-top: 0.5rem;
@@ -230,6 +237,7 @@ const burnUpChartOptions = {
 
 .about-text {
     flex: 1;
+    /* margin-top: 5px; */
     min-width: 300px;
 }
 
@@ -266,7 +274,7 @@ const burnUpChartOptions = {
 }
 
 .cta-section {
-    background-color: var(--color-tertiary);
+    background: var(--color-secondary-tertiary);
     color: var(--color-text-light);
     text-align: center;
 }
@@ -281,7 +289,7 @@ const burnUpChartOptions = {
 
 .site-footer {
     background-color: var(--color-background-dark);
-    color: rgba(255, 255, 255, 0.8);
+    color: var(--color-text);
     /* テキスト色を調整して視認性を向上 */
     padding: 1.5rem 0;
     /* Reduced padding */
@@ -296,8 +304,7 @@ const burnUpChartOptions = {
 }
 
 .github-link {
-    color: rgba(255, 255, 255, 0.9);
-    /* リンク色を調整して視認性を向上 */
+    color: var(--color-text);
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -314,7 +321,7 @@ const burnUpChartOptions = {
     text-align: center;
     font-size: 0.875rem;
     margin-top: 0.75rem;
-    color: rgba(255, 255, 255, 0.7);
+    color: var(--color-text);
     /* コピーライトのテキスト色も調整 */
 }
 
