@@ -24,6 +24,7 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth_store'
+import { PATH_HOME } from '../router'
 
 const route = useRoute()
 const router = useRouter()
@@ -33,7 +34,7 @@ const isProjectsRouteActive = computed(() => route.path.startsWith("/projects"))
 
 const signOut = () => {
     authStore.signOut()
-    router.push('/sign_in')
+    router.push(PATH_HOME)
 }
 </script>
 
