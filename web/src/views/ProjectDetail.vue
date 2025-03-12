@@ -41,6 +41,7 @@
                             @click.prevent="openUpdateSprintModal(sprint)">
                             Update
                         </button>
+                        <span v-else>not started</span>
                     </td>
                 </tr>
             </tbody>

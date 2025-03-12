@@ -52,19 +52,19 @@ const burnUpChartData = computed(() => ({
     labels: props.sprints.map((_, index) => `Sprint ${index + 1}`),
     datasets: [
         {
-            label: 'cumulative actual sp',
+            label: 'Actual Progeress',
             borderColor: '#2196f3', // var(--color-info)
             data: cumulativeActualSp.value,
             fill: true,
         },
         {
-            label: 'cumulative ideal sp',
+            label: 'Ideal Progress',
             borderColor: '#ffc107', // var(--color-warning)
             data: cumulativeIdealSp.value,
             fill: false,
         },
         {
-            label: 'target sp',
+            label: 'Target Scope',
             borderColor: '#4caf50', // var(--color-success)
             data: Array(props.sprints.length).fill(props.total_sp),
             fill: false,
