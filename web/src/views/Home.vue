@@ -23,8 +23,8 @@
                             Complex project management made simple with an intuitive interface.
                         </p>
                     </div>
-                    <div class="about-image">
-                        <img src="../assets/dog_emoji.png" alt="Burny Logo" />
+                    <div class="chart-example">
+                        <Line :data="burnUpChartData" :options="burnUpchartOptions" />
                     </div>
                 </div>
             </div>
@@ -88,6 +88,12 @@
 <script lang="ts" setup>
 import { useRouter } from 'vue-router';
 import { PATH_SIGN_IN } from '../router';
+import { Line } from 'vue-chartjs';
+import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale } from 'chart.js';
+
+
+ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale);
+
 
 const router = useRouter();
 
@@ -98,6 +104,43 @@ const scrollToAbout = () => {
 const goToSignUp = () => {
     router.push({ path: PATH_SIGN_IN, query: { signup: 'true' } });
 };
+
+const burnUpChartData = {
+    labels: ["Sprint 1", "Sprint 2", "Sprint 3", "Sprint 4", "Sprint 5", "Sprint 6"],
+    datasets: [
+        {
+            label: 'cumulative actual sp',
+            borderColor: '#2196f3', // var(--color-info)
+            data: [30, 45, 53, 68, 98],
+            fill: true,
+        },
+        {
+            label: 'cumulative ideal sp',
+            borderColor: '#ffc107', // var(--color-warning)
+            data: [18, 36, 54, 72, 90, 108],
+            fill: false,
+        },
+        {
+            label: 'target sp',
+            borderColor: '#4caf50', // var(--color-success)
+            data: [110, 110, 110, 110, 110, 110],
+            fill: false,
+            borderDash: [10, 5],
+        },
+    ],
+};
+
+const burnUpchartOptions = {
+    responsive: true,
+    scales: {
+        y: {
+            max: 120,
+            ticks: {
+                stepSize: 10,
+            },
+        },
+    }
+}
 </script>
 
 <style scoped>
@@ -160,21 +203,21 @@ const goToSignUp = () => {
 .about-content {
     display: flex;
     align-items: center;
-    gap: 2rem;
+    gap: 4rem;
 }
 
 .about-text {
     flex: 1;
 }
 
-.about-image {
+.chart-example {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.about-image img {
+.chart-example img {
     max-width: 300px;
     height: auto;
 }

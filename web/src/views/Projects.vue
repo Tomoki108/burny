@@ -116,7 +116,7 @@ const submitDeleteProject = (id: number) => {
 }
 
 .project-card-new {
-    background: var(--coloer-primary-secondary);
+    background: var(--color-primary-secondary);
     display: flex;
     align-items: center;
     justify-content: center;

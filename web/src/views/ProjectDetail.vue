@@ -47,7 +47,7 @@
         </v-table>
 
         <div class="mt-3">
-            <BurnUpChart :sprints="sprintsStore.getSprints()" :total_sp="project.total_sp" />
+            <Charts :sprints="sprintsStore.getSprints()" :total_sp="project.total_sp" />
         </div>
 
         <SprintModal :show="updateSprintModal" modalTitle="Update Sprint" :sprint="updateSprint"
@@ -63,12 +63,12 @@ import { useRoute } from 'vue-router';
 import { type Project } from '../api/project_api';
 import { getEndDate } from '../utils/project_helper';
 import { type Sprint } from '../api/sprint_api';
-import { isSprintStarted, getPrefSumActualSP } from '../utils/sprint_helper';
+import { isSprintStarted } from '../utils/sprint_helper';
 import SprintModal from '../components/SprintModal.vue';
 import { useSprintsStore } from '../stores/sprints_store';
 import { useAlertComposable } from '../composables/alert_composable';
 import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale } from 'chart.js';
-import BurnUpChart from '../components/BurnUpChart.vue';
+import Charts from '../components/Charts.vue';
 
 ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale);
 

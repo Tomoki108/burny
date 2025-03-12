@@ -18,6 +18,7 @@ import { type Sprint } from '../api/sprint_api';
 import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale } from 'chart.js';
 import { Line } from 'vue-chartjs';
 import { computed, ref } from 'vue';
+import { isSprintStarted } from '../utils/sprint_helper';
 
 const props = defineProps<{
     sprints: Sprint[]
@@ -30,7 +31,7 @@ ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, LinearScale,
 
 // Burn Up Chart
 const cumulativeActualSp = computed(() => {
-    const sprints = props.sprints;
+    const sprints = props.sprints.filter(sprint => isSprintStarted(sprint));
     let cumulative = 0;
     return sprints.map(sprint => {
         cumulative += sprint.actual_sp;
@@ -51,19 +52,19 @@ const burnUpChartData = computed(() => ({
     labels: props.sprints.map((_, index) => `Sprint ${index + 1}`),
     datasets: [
         {
-            label: 'accumulated actual_sp',
+            label: 'cumulative actual sp',
             borderColor: '#2196f3', // var(--color-info)
             data: cumulativeActualSp.value,
             fill: true,
         },
         {
-            label: 'accumulated ideal_sp',
+            label: 'cumulative ideal sp',
             borderColor: '#ffc107', // var(--color-warning)
             data: cumulativeIdealSp.value,
             fill: false,
         },
         {
-            label: 'total_sp',
+            label: 'target sp',
             borderColor: '#4caf50', // var(--color-success)
             data: Array(props.sprints.length).fill(props.total_sp),
             fill: false,
@@ -73,11 +74,16 @@ const burnUpChartData = computed(() => ({
 }));
 
 const burnUpchartOptions = computed(() => {
+    let max = props.total_sp + 10
+    if (props.total_sp % 10 !== 0) {
+        max -= props.total_sp % 10
+    }
+
     return {
         responsive: true,
         scales: {
             y: {
-                max: props.total_sp + 10,
+                max: max,
                 ticks: {
                     stepSize: 10,
                 },
@@ -88,7 +94,8 @@ const burnUpchartOptions = computed(() => {
 
 // Velocity Chart
 const velocity = computed(() => {
-    return props.sprints.map(sprint => sprint.actual_sp);
+    // 既に開始日を過ぎているスプリントのactyual_spを取得
+    return props.sprints.filter(sprint => isSprintStarted(sprint)).map(sprint => sprint.actual_sp);
 });
 
 const velocityChartData = computed(() => ({
@@ -96,7 +103,7 @@ const velocityChartData = computed(() => ({
     datasets: [
         {
             label: 'velocity',
-            borderColor: '#ff5722', // var(--color-accent)
+            borderColor: '#ff5252', // var(--color-danger)
             data: velocity.value,
             fill: true,
         },
@@ -108,7 +115,7 @@ const velocityChartOptions = computed(() => {
         responsive: true,
         scales: {
             y: {
-                max: velocity.value.reduce((a, b) => Math.max(a, b)) + 10,
+                min: 0,
             },
         },
     };
