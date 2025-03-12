@@ -42,7 +42,7 @@ const signOut = () => {
 .sidebar {
     width: 10%;
     min-width: 200px;
-    background-color: var(--color-secondary);
+    background: var(--color-secondary-tertiary);
     height: 100vh;
     position: sticky;
     top: 0;

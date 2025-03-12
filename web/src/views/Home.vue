@@ -67,14 +67,14 @@
                     <h2>Get Started Now</h2>
                     <div class="cta-buttons">
                         <router-link to="/sign_in" class="button primary">Sign In</router-link>
-                        <button @click="goToSignUp" class="button secondary">Sign Up</button>
+                        <button @click="goToSignUp" class="button primary">Sign Up</button>
                     </div>
                 </div>
             </div>
             <div class="footer-content">
                 <div class="content-container">
                     <div class="footer-links">
-                        <a href="https://github.com/yourusername/burny" target="_blank" rel="noopener noreferrer"
+                        <a href="https://github.com/tomoki108/burny" target="_blank" rel="noopener noreferrer"
                             class="github-link">
                             <span>View Source Code on GitHub</span>
                         </a>
