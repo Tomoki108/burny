@@ -4,7 +4,7 @@
             <h1 class="hero-title">Burny 🐶</h1>
             <p class="hero-subtitle">Simplify Project Management with Burn-up Charts</p>
             <div class="hero-actions">
-                <router-link to="/sign_in" class="button primary">Sign In</router-link>
+                <button @click="openSignInModal(false)" class="button primary">Sign In</button>
                 <button @click="scrollToAbout" class="button secondary">Learn More</button>
             </div>
         </header>
@@ -66,8 +66,8 @@
                 <div class="content-container">
                     <h2>Get Started Now</h2>
                     <div class="cta-buttons">
-                        <router-link to="/sign_in" class="button primary">Sign In</router-link>
-                        <button @click="goToSignUp" class="button primary">Sign Up</button>
+                        <button @click="openSignInModal(false)" class="button primary">Sign In</button>
+                        <button @click="openSignInModal(true)" class="button primary">Sign Up</button>
                     </div>
                 </div>
             </div>
@@ -83,35 +83,60 @@
                 </div>
             </div>
         </footer>
+
+        <!-- Sign In Modal -->
+        <SignInModal :isVisible="showSignInModal" :initialSignUp="isSignUp" @close="closeSignInModal"
+            @auth-success="handleAuthSuccess" />
     </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
-import { useRouter } from 'vue-router';
-import { PATH_SIGN_IN } from '../router';
+import { useRoute } from 'vue-router';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import { Line } from 'vue-chartjs';
+import SignInModal from '../components/SignInModal.vue';
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
-const router = useRouter();
+const route = useRoute();
 const chartReady = ref(false);
+const showSignInModal = ref(false);
+const isSignUp = ref(false);
 
 onMounted(() => {
     // Delay chart initialization to prevent rendering issues
     setTimeout(() => {
         chartReady.value = true;
     }, 100);
+
+    // Check if redirected from a protected route
+    if (route.query.auth === 'required') {
+        openSignInModal(false);
+    }
+
+    // Check if signup parameter was provided
+    if (route.query.signup === 'true') {
+        openSignInModal(true);
+    }
 });
 
 const scrollToAbout = () => {
     document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
 };
 
-const goToSignUp = () => {
-    router.push({ path: PATH_SIGN_IN, query: { signup: 'true' } });
+const openSignInModal = (signup = false) => {
+    isSignUp.value = signup;
+    showSignInModal.value = true;
+};
+
+const closeSignInModal = () => {
+    showSignInModal.value = false;
+};
+
+const handleAuthSuccess = () => {
+    showSignInModal.value = false;
 };
 
 const burnUpChartData = {
