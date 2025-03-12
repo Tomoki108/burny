@@ -1,11 +1,11 @@
 <template>
     <div class="home-container">
         <header class="hero">
-            <h1 class="hero-title">Burny</h1>
+            <h1 class="hero-title">Burny 🐶</h1>
             <p class="hero-subtitle">Simplify Project Management with Burn-up Charts</p>
             <div class="hero-actions">
-                <router-link to="/sign_in" class="button primary">Sign In</router-link>
-                <button @click="scrollToAbout" class="button secondary">Learn More</button>
+                <router-link to="/sign_in"><button class="button">Sign In</button></router-link>
+                <button @click="scrollToAbout" class="button">Learn More</button>
             </div>
         </header>
 
@@ -74,7 +74,7 @@
         <footer class="site-footer">
             <div class="content-container">
                 <div class="footer-links">
-                    <a href="https://github.com/yourusername/burny" target="_blank" rel="noopener noreferrer"
+                    <a href="https://github.com/tomoki108/burny" target="_blank" rel="noopener noreferrer"
                         class="github-link">
                         <span>View Source Code on GitHub</span>
                     </a>
@@ -134,6 +134,10 @@ const goToSignUp = () => {
 .hero-actions {
     display: flex;
     gap: 1rem;
+}
+
+.button {
+    width: 130px;
 }
 
 .content-container {
@@ -212,7 +216,7 @@ const goToSignUp = () => {
 
 .site-footer {
     background-color: var(--color-background-dark);
-    color: var(--color-text-light);
+    color: var(--color-text);
     padding: 2rem 0;
 }
 
@@ -223,7 +227,7 @@ const goToSignUp = () => {
 }
 
 .github-link {
-    color: var(--color-text-light);
+    color: var(--color-text);
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -238,35 +242,6 @@ const goToSignUp = () => {
     text-align: center;
     font-size: 0.875rem;
     margin-top: 1rem;
-}
-
-.button {
-    padding: 0.75rem 1.5rem;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background-color 0.3s;
-}
-
-.button.primary {
-    background-color: var(--color-primary);
-    color: var(--color-text-light);
-}
-
-.button.secondary {
-    background-color: transparent;
-    color: var(--color-text-light);
-    border: 2px solid var(--color-text-light);
-}
-
-.button.primary:hover {
-    background-color: var(--color-primary-dark);
-}
-
-.button.secondary:hover {
-    background-color: rgba(255, 255, 255, 0.1);
 }
 
 @media (max-width: 768px) {
