@@ -4,8 +4,8 @@
             <h1 class="hero-title">Burny 🐶</h1>
             <p class="hero-subtitle">Simplify Project Management with Burn-up Charts</p>
             <div class="hero-actions">
-                <router-link to="/sign_in"><button class="button">Sign In</button></router-link>
-                <button @click="scrollToAbout" class="button">Learn More</button>
+                <router-link to="/sign_in" class="button primary">Sign In</router-link>
+                <button @click="scrollToAbout" class="button secondary">Learn More</button>
             </div>
         </header>
 
@@ -23,8 +23,8 @@
                             Complex project management made simple with an intuitive interface.
                         </p>
                     </div>
-                    <div class="chart-example">
-                        <Line :data="burnUpChartData" :options="burnUpchartOptions" />
+                    <div class="chart-container">
+                        <Line v-if="chartReady" :data="burnUpChartData" :options="burnUpChartOptions" />
                     </div>
                 </div>
             </div>
@@ -50,7 +50,7 @@
             </div>
         </section>
 
-        <!-- <section class="why-section">
+        <section class="why-section">
             <div class="content-container">
                 <h2>Why We Built This</h2>
                 <p>
@@ -58,13 +58,6 @@
                     By providing features missing in existing tools and a more intuitive interface,
                     we aim to reduce the burden of project management and allow teams to focus on higher-value work.
                 </p>
-            </div>
-        </section> -->
-
-
-        <section class="why-section">
-            <div class="content-container">
-                <h2>Why I Built This</h2>
             </div>
         </section>
 
@@ -75,36 +68,42 @@
                     <router-link to="/sign_in" class="button primary">Sign In</router-link>
                     <button @click="goToSignUp" class="button secondary">Sign Up</button>
                 </div>
-                <p class="copyright">&copy; {{ new Date().getFullYear() }} Burny. All rights reserved.</p>
             </div>
         </section>
 
-
-
-        <!-- <footer class="site-footer">
+        <footer class="site-footer">
             <div class="content-container">
                 <div class="footer-links">
-                    <a href="https://github.com/tomoki108/burny" target="_blank" rel="noopener noreferrer"
+                    <a href="https://github.com/yourusername/burny" target="_blank" rel="noopener noreferrer"
                         class="github-link">
                         <span>View Source Code on GitHub</span>
                     </a>
                 </div>
+                <p class="copyright">&copy; {{ new Date().getFullYear() }} Burny. All rights reserved.</p>
             </div>
-        </footer> -->
+        </footer>
     </div>
 </template>
 
 <script lang="ts" setup>
+import { ref, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { PATH_SIGN_IN } from '../router';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
 import { Line } from 'vue-chartjs';
-import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale } from 'chart.js';
 
-
-ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale);
-
+// Register Chart.js components
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
 
 const router = useRouter();
+const chartReady = ref(false);
+
+onMounted(() => {
+    // Delay chart initialization to prevent rendering issues
+    setTimeout(() => {
+        chartReady.value = true;
+    }, 100);
+});
 
 const scrollToAbout = () => {
     document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
@@ -115,23 +114,24 @@ const goToSignUp = () => {
 };
 
 const burnUpChartData = {
-    labels: ["Sprint 1", "Sprint 2", "Sprint 3", "Sprint 4", "Sprint 5", "Sprint 6"],
+    labels: ['Sprint 1', 'Sprint 2', 'Sprint 3', 'Sprint 4', 'Sprint 5', 'Sprint 6'],
     datasets: [
         {
-            label: 'cumulative actual sp',
-            borderColor: '#2196f3', // var(--color-info)
-            data: [30, 45, 53, 68, 98],
+            label: 'Actual Progress',
+            borderColor: '#2196F3',
+            backgroundColor: 'rgba(33, 150, 243, 0.1)',
+            data: [30, 45, 53, 68, 98, null],
             fill: true,
         },
         {
-            label: 'cumulative ideal sp',
-            borderColor: '#ffc107', // var(--color-warning)
+            label: 'Ideal Progress',
+            borderColor: '#FFC107',
             data: [18, 36, 54, 72, 90, 108],
             fill: false,
         },
         {
-            label: 'target sp',
-            borderColor: '#4caf50', // var(--color-success)
+            label: 'Target Scope',
+            borderColor: '#4CAF50',
             data: [110, 110, 110, 110, 110, 110],
             fill: false,
             borderDash: [10, 5],
@@ -139,17 +139,25 @@ const burnUpChartData = {
     ],
 };
 
-const burnUpchartOptions = {
+const burnUpChartOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     scales: {
         y: {
-            max: 120,
-            ticks: {
-                stepSize: 10,
-            },
+            beginAtZero: true,
+            title: {
+                display: true,
+                text: 'Story Points'
+            }
         },
+        x: {
+            title: {
+                display: true,
+                text: 'Sprint'
+            }
+        }
     }
-}
+};
 </script>
 
 <style scoped>
@@ -161,14 +169,18 @@ const burnUpchartOptions = {
 }
 
 .hero {
-    height: 100vh;
+    min-height: 100vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     text-align: center;
-    background: var(--color-tertiary-secondary);
+    background: linear-gradient(var(--color-tertiary), var(--color-secondary));
     color: var(--color-text-light);
+    padding: 2rem 1rem;
+    /* Reduced padding */
+    box-sizing: border-box;
+    /* Include padding in height calculation */
 }
 
 .hero-title {
@@ -187,59 +199,46 @@ const burnUpchartOptions = {
     gap: 1rem;
 }
 
-.button {
-    width: 130px;
-}
-
 .content-container {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 2rem;
+    padding: 0 2rem;
+    width: 100%;
+    box-sizing: border-box;
 }
 
-.about-section>.content-container,
-.features-section>.content-container {
-    height: 35vh;
-}
-
-.why-section>.content-container {
-    height: 15vh;
-}
-
-
-.cta-section>.content-container {
-    height: 15vh;
-}
-
-/* .site-footer {
-    height: 10vh;
-} */
-
-/* .about-section,
+.about-section,
 .features-section,
 .why-section,
 .cta-section {
-    padding: 2rem 0;
-} */
+    padding: 3rem 0;
+    /* Reduced padding from 5rem to 3rem */
+    width: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    /* Prevent content overflow */
+}
 
 .about-content {
     display: flex;
     align-items: center;
-    gap: 4rem;
+    gap: 2rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+    /* テキストと見出しの間の隙間を調整 */
 }
 
 .about-text {
     flex: 1;
+    min-width: 300px;
 }
 
-.chart-example {
+.chart-container {
     flex: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
+    min-width: 300px;
+    height: 300px;
+    position: relative;
 }
-
 
 .features-section {
     background-color: var(--color-background-alt);
@@ -248,13 +247,16 @@ const burnUpchartOptions = {
 .features-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
-    margin-top: 2rem;
+    gap: 1.5rem;
+    /* Reduced gap */
+    margin-top: 1.5rem;
+    /* Reduced margin */
 }
 
 .feature-card {
     background-color: var(--color-background);
-    padding: 2rem;
+    padding: 1.5rem;
+    /* Reduced padding */
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -264,49 +266,111 @@ const burnUpchartOptions = {
 }
 
 .cta-section {
-    background: var(--color-secondary-tertiary);
+    background-color: var(--color-tertiary);
     color: var(--color-text-light);
     text-align: center;
-    min-height: 120px;
 }
 
 .cta-buttons {
     display: flex;
     justify-content: center;
     gap: 1rem;
-    margin-top: 2rem;
+    margin-top: 1.5rem;
+    /* Reduced margin */
 }
 
 .site-footer {
     background-color: var(--color-background-dark);
-    color: var(--color-text);
-    padding: 2rem 0;
+    color: rgba(255, 255, 255, 0.8);
+    /* テキスト色を調整して視認性を向上 */
+    padding: 1.5rem 0;
+    /* Reduced padding */
+    width: 100%;
 }
 
 .footer-links {
     display: flex;
     justify-content: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.75rem;
+    /* Reduced margin */
 }
 
 .github-link {
-    color: var(--color-text);
+    color: rgba(255, 255, 255, 0.9);
+    /* リンク色を調整して視認性を向上 */
     text-decoration: none;
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    font-weight: bold;
 }
 
 .github-link:hover {
+    color: var(--color-primary);
     text-decoration: underline;
 }
 
 .copyright {
     text-align: center;
     font-size: 0.875rem;
-    margin-top: 1rem;
+    margin-top: 0.75rem;
+    color: rgba(255, 255, 255, 0.7);
+    /* コピーライトのテキスト色も調整 */
 }
 
+.button {
+    font-family: var(--font-family-base);
+    background-color: var(--color-primary);
+    color: var(--color-text-light) !important;
+    border: none;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin: 5px 5px;
+    box-shadow: 0.1rem 0.1rem var(--color-shadow);
+    font-weight: 500;
+    width: auto;
+    /* 自動幅に変更 */
+    min-width: 120px;
+    /* 最小幅を設定 */
+    display: inline-block;
+}
+
+.button.primary {
+    background-color: var(--color-primary);
+    color: var(--color-text-light) !important;
+}
+
+.button.secondary {
+    background-color: transparent;
+    color: var(--color-text-light) !important;
+    border: 2px solid var(--color-text-light);
+    box-shadow: none;
+}
+
+.button.primary:hover {
+    background-color: var(--color-primary-dark);
+}
+
+.button.secondary:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* 見出しのマージンを調整 */
+h2 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    /* 1.5remから0.75remに縮小 */
+}
+
+h3 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+    /* 0.75remから0.5remに縮小 */
+}
+
+/* Responsive adjustments */
 @media (max-width: 768px) {
     .about-content {
         flex-direction: column;
@@ -318,6 +382,68 @@ const burnUpchartOptions = {
 
     .hero-subtitle {
         font-size: 1.25rem;
+    }
+
+    .hero-actions {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+    }
+
+    .cta-buttons {
+        flex-direction: column;
+        width: 100%;
+        max-width: 300px;
+        margin: 1.5rem auto 0;
+        /* Reduced margin */
+    }
+
+    .chart-container {
+        width: 100%;
+        margin-top: 2rem;
+    }
+
+    .about-section,
+    .features-section,
+    .why-section,
+    .cta-section {
+        padding: 2rem 0;
+        /* Further reduce padding on mobile */
+    }
+
+    .hero-actions,
+    .cta-buttons {
+        flex-direction: column;
+        width: 100%;
+        max-width: 200px;
+        /* ボタン幅を制限 */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-actions .button,
+    .cta-buttons .button {
+        width: 100%;
+        /* モバイルでは幅いっぱいに */
+    }
+}
+
+/* For very small screens */
+@media (max-height: 600px) {
+    .hero {
+        min-height: 500px;
+        padding: 2rem 1rem;
+        /* Reduced padding */
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-title {
+        font-size: 2.5rem;
+    }
+
+    .feature-card {
+        padding: 1.5rem;
     }
 }
 </style>
