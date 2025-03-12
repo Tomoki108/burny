@@ -39,12 +39,12 @@
                         <p>Visually display project progress and easily verify completion predictions.</p>
                     </div>
                     <div class="feature-card">
-                        <h3>Sprint Management</h3>
-                        <p>Effectively manage agile development sprints and improve team productivity.</p>
-                    </div>
-                    <div class="feature-card">
                         <h3>Project Tracking</h3>
                         <p>Centrally manage multiple projects and check progress at a glance.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>Sprint Management</h3>
+                        <p>Effectively manage agile development sprints and improve team productivity.</p>
                     </div>
                 </div>
             </div>
