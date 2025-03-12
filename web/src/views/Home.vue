@@ -50,7 +50,7 @@
             </div>
         </section>
 
-        <section class="why-section">
+        <!-- <section class="why-section">
             <div class="content-container">
                 <h2>Why We Built This</h2>
                 <p>
@@ -58,6 +58,13 @@
                     By providing features missing in existing tools and a more intuitive interface,
                     we aim to reduce the burden of project management and allow teams to focus on higher-value work.
                 </p>
+            </div>
+        </section> -->
+
+
+        <section class="why-section">
+            <div class="content-container">
+                <h2>Why I Built This</h2>
             </div>
         </section>
 
@@ -68,10 +75,13 @@
                     <router-link to="/sign_in" class="button primary">Sign In</router-link>
                     <button @click="goToSignUp" class="button secondary">Sign Up</button>
                 </div>
+                <p class="copyright">&copy; {{ new Date().getFullYear() }} Burny. All rights reserved.</p>
             </div>
         </section>
 
-        <footer class="site-footer">
+
+
+        <!-- <footer class="site-footer">
             <div class="content-container">
                 <div class="footer-links">
                     <a href="https://github.com/tomoki108/burny" target="_blank" rel="noopener noreferrer"
@@ -79,9 +89,8 @@
                         <span>View Source Code on GitHub</span>
                     </a>
                 </div>
-                <p class="copyright">&copy; {{ new Date().getFullYear() }} Burny. All rights reserved.</p>
             </div>
-        </footer>
+        </footer> -->
     </div>
 </template>
 
@@ -158,9 +167,8 @@ const burnUpchartOptions = {
     justify-content: center;
     align-items: center;
     text-align: center;
-    background: linear-gradient(var(--color-tertiary), var(--color-secondary));
+    background: var(--color-tertiary-secondary);
     color: var(--color-text-light);
-    padding: 2rem;
 }
 
 .hero-title {
@@ -189,16 +197,30 @@ const burnUpchartOptions = {
     padding: 2rem;
 }
 
-.about-section,
+.about-section>.content-container,
+.features-section>.content-container {
+    height: 35vh;
+}
+
+.why-section>.content-container {
+    height: 15vh;
+}
+
+
+.cta-section>.content-container {
+    height: 15vh;
+}
+
+/* .site-footer {
+    height: 10vh;
+} */
+
+/* .about-section,
 .features-section,
 .why-section,
 .cta-section {
-    padding: 5rem 0;
-}
-
-.about-section {
-    background-color: var(--color-background);
-}
+    padding: 2rem 0;
+} */
 
 .about-content {
     display: flex;
@@ -215,12 +237,9 @@ const burnUpchartOptions = {
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100%;
 }
 
-.chart-example img {
-    max-width: 300px;
-    height: auto;
-}
 
 .features-section {
     background-color: var(--color-background-alt);
@@ -245,9 +264,10 @@ const burnUpchartOptions = {
 }
 
 .cta-section {
-    background-color: var(--color-tertiary);
+    background: var(--color-secondary-tertiary);
     color: var(--color-text-light);
     text-align: center;
+    min-height: 120px;
 }
 
 .cta-buttons {

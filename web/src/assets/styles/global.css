@@ -33,6 +33,10 @@
     var(--color-tertiary),
     var(--color-secondary)
   );
+  --color-secondary-tertiary: linear-gradient(
+    var(--color-secondary),
+    var(--color-tertiary)
+  );
 
   /* フォントファミリー */
   --font-family-base: "Roboto", sans-serif;
@@ -111,6 +115,7 @@ h5 {
   width: 100%;
   margin: 5 5;
   box-shadow: 0.1rem 0.1rem var(--color-shadow);
+  font-weight: 500;
 }
 
 .button-small,
