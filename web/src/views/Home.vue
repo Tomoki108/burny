@@ -228,24 +228,20 @@ const burnUpChartOptions = {
 
 .about-content {
     display: flex;
-    align-items: top;
-    gap: 2rem;
-    flex-wrap: wrap;
+    flex-direction: column;
+    gap: 1.5rem;
     margin-top: 0.5rem;
-    /* テキストと見出しの間の隙間を調整 */
 }
 
 .about-text {
-    flex: 1;
-    /* margin-top: 5px; */
-    min-width: 300px;
+    width: 100%;
 }
 
 .chart-container {
-    flex: 1;
-    min-width: 300px;
+    width: 100%;
     height: 300px;
     position: relative;
+    margin-top: 1rem;
 }
 
 .features-section {
