@@ -61,25 +61,26 @@
             </div>
         </section>
 
-        <section class="cta-section">
-            <div class="content-container">
-                <h2>Get Started Now</h2>
-                <div class="cta-buttons">
-                    <router-link to="/sign_in" class="button primary">Sign In</router-link>
-                    <button @click="goToSignUp" class="button secondary">Sign Up</button>
+        <footer class="site-footer">
+            <div class="cta-section">
+                <div class="content-container">
+                    <h2>Get Started Now</h2>
+                    <div class="cta-buttons">
+                        <router-link to="/sign_in" class="button primary">Sign In</router-link>
+                        <button @click="goToSignUp" class="button secondary">Sign Up</button>
+                    </div>
                 </div>
             </div>
-        </section>
-
-        <footer class="site-footer">
-            <div class="content-container">
-                <div class="footer-links">
-                    <a href="https://github.com/yourusername/burny" target="_blank" rel="noopener noreferrer"
-                        class="github-link">
-                        <span>View Source Code on GitHub</span>
-                    </a>
+            <div class="footer-content">
+                <div class="content-container">
+                    <div class="footer-links">
+                        <a href="https://github.com/yourusername/burny" target="_blank" rel="noopener noreferrer"
+                            class="github-link">
+                            <span>View Source Code on GitHub</span>
+                        </a>
+                    </div>
+                    <p class="copyright">&copy; {{ new Date().getFullYear() }} Burny. All rights reserved.</p>
                 </div>
-                <p class="copyright">&copy; {{ new Date().getFullYear() }} Burny. All rights reserved.</p>
             </div>
         </footer>
     </div>
@@ -270,9 +271,13 @@ const burnUpChartOptions = {
 }
 
 .cta-section {
-    background: var(--color-secondary-tertiary);
-    color: var(--color-text-light);
+    padding: 3rem 0 2rem;
     text-align: center;
+}
+
+.footer-content {
+    padding: 2rem 0 1.5rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .cta-buttons {
@@ -280,15 +285,11 @@ const burnUpChartOptions = {
     justify-content: center;
     gap: 1rem;
     margin-top: 1.5rem;
-    /* Reduced margin */
 }
 
 .site-footer {
-    background-color: var(--color-background-dark);
-    color: var(--color-text);
-    /* テキスト色を調整して視認性を向上 */
-    padding: 1.5rem 0;
-    /* Reduced padding */
+    background: var(--color-secondary-tertiary);
+    color: var(--color-text-light);
     width: 100%;
 }
 
@@ -300,7 +301,7 @@ const burnUpChartOptions = {
 }
 
 .github-link {
-    color: var(--color-text);
+    color: var(--color-text-light);
     text-decoration: none;
     display: flex;
     align-items: center;
@@ -317,8 +318,7 @@ const burnUpChartOptions = {
     text-align: center;
     font-size: 0.875rem;
     margin-top: 0.75rem;
-    color: var(--color-text);
-    /* コピーライトのテキスト色も調整 */
+    color: rgba(255, 255, 255, 0.7);
 }
 
 .button {
