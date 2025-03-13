@@ -2,6 +2,9 @@
     <div class="sidebar">
         <nav>
             <ul>
+                <li>
+                    <h1 class="mt-n3 color-white">🐶 Burny</h1>
+                </li>
                 <router-link to="/projects" custom v-slot="{ navigate }">
                     <li :class="{ 'active-li': isProjectsRouteActive }" @click="navigate">
                         <font-awesome-icon icon="project-diagram" /> Projects
@@ -42,8 +45,8 @@ const signOut = () => {
 <style scoped>
 .sidebar {
     width: 10%;
-    min-width: 200px;
-    background: var(--color-secondary-tertiary);
+    min-width: 210px;
+    background: var(--color-tertiary-secondary);
     height: 100vh;
     position: sticky;
     top: 0;
