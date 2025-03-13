@@ -40,7 +40,7 @@ const router = createRouter({
 });
 
 // グローバルなナビゲーションガードで認証をチェック
-router.beforeEach((to, from, next) => {
+router.beforeEach((to, _, next) => {
   const authStore = useAuthStore();
   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
     // Redirect to home page where the modal can be shown instead

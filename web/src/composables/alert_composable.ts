@@ -1,4 +1,4 @@
-import { reactive, ref } from "vue";
+import { reactive } from "vue";
 
 export type AlertType = "info" | "success" | "error" | "warning" | undefined;
 
