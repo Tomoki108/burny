@@ -5,12 +5,12 @@
                 <li>
                     <h1 class="mt-n3 color-white">🐶 Burny</h1>
                 </li>
-                <router-link to="/projects" custom v-slot="{ navigate }">
+                <router-link :to=PATH_PROJECTS custom v-slot="{ navigate }">
                     <li :class="{ 'active-li': isProjectsRouteActive }" @click="navigate">
                         <font-awesome-icon :icon="['fas', 'diagram-project']" /> Projects
                     </li>
                 </router-link>
-                <router-link to="/settings" custom v-slot="{ navigate, isActive }">
+                <router-link :to=PATH_ACCOUNT custom v-slot="{ navigate, isActive }">
                     <li :class="{ 'active-li': isActive }" @click="navigate">
                         <font-awesome-icon :icon="['fas', 'user']" /> Account
                     </li>
@@ -27,7 +27,7 @@
 import { computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth_store'
-import { PATH_HOME } from '../router'
+import { PATH_ACCOUNT, PATH_HOME, PATH_PROJECTS } from '../router'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
 
 

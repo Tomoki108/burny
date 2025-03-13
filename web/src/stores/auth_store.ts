@@ -4,11 +4,14 @@ import { jwtDecode } from "jwt-decode";
 
 interface DecodedToken {
   exp: number;
+  email?: string;
+  sub?: string;
 }
 
 export const useAuthStore = defineStore("auth", {
   state: () => ({
     token: localStorage.getItem("token") || "",
+    email: localStorage.getItem("email") || "",
   }),
   getters: {
     isAuthenticated: (state): boolean =>
@@ -19,14 +22,18 @@ export const useAuthStore = defineStore("auth", {
       try {
         const data = await signIn(email, password);
         this.token = data.token;
+        this.email = email;
         localStorage.setItem("token", data.token);
+        localStorage.setItem("email", email);
       } catch (error) {
         throw error;
       }
     },
     signOut() {
       this.token = "";
+      this.email = "";
       localStorage.removeItem("token");
+      localStorage.removeItem("email");
     },
   },
 });
