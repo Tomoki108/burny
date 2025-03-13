@@ -5,10 +5,14 @@
     </v-tabs>
     <v-tabs-window v-model="activeTab">
         <v-tabs-window-item value="burn">
-            <Line class="pr-16" :data="burnUpChartData" :options="burnUpchartOptions" />
+            <div class="chart-container">
+                <Line :data="burnUpChartData" :options="burnUpchartOptions" />
+            </div>
         </v-tabs-window-item>
         <v-tabs-window-item value="velocity">
-            <Line class="pr-16" :data="velocityChartData" :options="velocityChartOptions" />
+            <div class="chart-container">
+                <Line :data="velocityChartData" :options="velocityChartOptions" />
+            </div>
         </v-tabs-window-item>
     </v-tabs-window>
 </template>
@@ -17,7 +21,7 @@
 import { type Sprint } from '../api/sprint_api';
 import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale } from 'chart.js';
 import { Line } from 'vue-chartjs';
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted, onUnmounted } from 'vue';
 import { isSprintStarted } from '../utils/sprint_helper';
 
 const props = defineProps<{
@@ -81,6 +85,7 @@ const burnUpchartOptions = computed(() => {
 
     return {
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
             y: {
                 max: max,
@@ -113,6 +118,7 @@ const velocityChartData = computed(() => ({
 const velocityChartOptions = computed(() => {
     return {
         responsive: true,
+        maintainAspectRatio: false,
         scales: {
             y: {
                 min: 0,
@@ -121,6 +127,30 @@ const velocityChartOptions = computed(() => {
     };
 });
 
+// ウィンドウサイズが変更された時にチャートを再レンダリングする
+const handleResize = () => {
+    const charts = document.querySelectorAll('canvas');
+    charts.forEach(canvas => {
+        const chart = ChartJS.getChart(canvas);
+        if (chart) {
+            chart.resize();
+        }
+    });
+};
 
+onMounted(() => {
+    window.addEventListener('resize', handleResize);
+});
 
+onUnmounted(() => {
+    window.removeEventListener('resize', handleResize);
+});
 </script>
+
+<style scoped>
+.chart-container {
+    position: relative;
+    height: 650px;
+    width: 100%;
+}
+</style>
