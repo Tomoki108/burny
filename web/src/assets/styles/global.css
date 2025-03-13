@@ -187,3 +187,34 @@ label {
   margin-top: 16px;
   font-size: var(--font-size-small);
 }
+
+/* v-tabコンポーネントのデフォルトテキストスタイルをオーバーライド */
+:deep(.v-tab) {
+  /* テキストに関するデフォルトスタイルをリセット */
+  text-transform: none;
+  font-weight: normal;
+  letter-spacing: normal;
+  /* 必要に応じてその他のスタイルを追加 */
+  color: inherit;
+  font-size: inherit;
+}
+
+/* アクティブなタブのスタイルもカスタマイズ可能 */
+:deep(.v-tab--selected) {
+  font-weight: bold;
+  /* 必要に応じてその他のスタイルを追加 */
+}
+
+/* Vuetifyのv-tabコンポーネントのスタイル上書き */
+.v-tab.v-tab {
+  text-transform: none !important;
+  font-weight: normal !important;
+  letter-spacing: normal !important;
+  color: inherit !important;
+  font-size: inherit !important;
+}
+
+/* アクティブなタブのスタイルもカスタマイズ */
+.v-tab--selected.v-tab--selected {
+  font-weight: bold !important;
+}
