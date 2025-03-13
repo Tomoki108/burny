@@ -10,7 +10,7 @@
                         <p class="mb-2"></p>
                         <p>{{ project.description }}</p>
                         <div class="project-actions">
-                            <button class="button-small" @click.prevent="openUpdateProjectModal(project)">Update
+                            <button class="button-small" @click.prevent="openUpdateProjectModal(project)">Edit
                             </button>
                             <button class="button-small-danger" @click.prevent="dialog(`Delete Project`, `Are you shure
                                 to delete project ${project.title}?`)">Delete
@@ -31,7 +31,7 @@
 
         <ProjectModal :show="newProjectModal" modalTitle="New Project" :project="defaultProject"
             @update:show="newProjectModal = $event" @submit="submitNewProject" />
-        <ProjectModal :show="updateProjectModal" modalTitle="Update Project" :project="updateProject"
+        <ProjectModal :show="updateProjectModal" modalTitle="Edit Project" :project="updateProject"
             @update:show="updateProjectModal = $event" @submit="submitUpdateProject" />
     </ContentsContainer>
 </template>
