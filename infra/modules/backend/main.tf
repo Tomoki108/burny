@@ -68,14 +68,12 @@ resource "google_cloud_run_domain_mapping" "default" {
   metadata {
     namespace = var.project_id
     annotations = {
-      "run.googleapis.com/ingress"        = "all"
-      "run.googleapis.com/force-override" = "true"
+      "run.googleapis.com/ingress" = "all"
     }
   }
 
   spec {
-    route_name     = var.cloud_run_service_name
-    force_override = true
+    route_name = var.cloud_run_service_name
   }
 }
 
