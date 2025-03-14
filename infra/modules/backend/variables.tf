@@ -6,10 +6,6 @@ variable "project_region" {
   type = string
 }
 
-variable "dns_project_id" {
-  type = string
-}
-
 variable "cloud_run_domain" {
   type = string
 }
