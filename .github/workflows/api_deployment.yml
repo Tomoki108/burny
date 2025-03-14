@@ -55,4 +55,4 @@ jobs:
             --update-secrets=DB_HOST=db_host:latest, \
             DB_NAME=db_name:latest, \
             DB_USER=db_user:latest, \
-            DB_PASS=db_pass:latest
+            DB_PASS=db_password:latest
