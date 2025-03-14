@@ -10,7 +10,7 @@ type Config struct {
 	DB_HOST   string `env:"DB_HOST" envDefault:"localhost"`
 	DB_NAME   string `env:"DB_NAME" envDefault:"burny_db"`
 	DB_USER   string `env:"DB_USER" envDefault:"burny_user"`
-	DB_PASS   string `env:"DB_PASS" envDefault:"pass"`
+	DB_PASS   string `env:"DB_PASSWORD" envDefault:"pass"`
 }
 
 var Conf Config

@@ -1,12 +1,18 @@
 project_id     = ""
 project_region = ""
 
+# Backend設定
 secrets = {
-  db_name                     = ""
-  db_user                     = ""
-  db_password                 = ""
+  db_name     = ""
+  db_user     = ""
+  db_password = ""
 }
 
-github_repository = ""
+cloud_run_domain       = "dev-api.burny.page"
+cloud_run_service_name = "burny-api"
 
-cloud_run_domain = "
+github_repository = "Tomoki108/burny"
+
+# Frontend設定
+frontend_bucket_name     = ""
+frontend_bucket_location = ""

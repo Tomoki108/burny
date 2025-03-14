@@ -11,9 +11,11 @@ on:
 jobs:
   deploy:
     permissions:
-        contents: 'read'
-        id-token: 'write'
+      contents: "read"
+      id-token: "write"
     runs-on: ubuntu-latest
+    env:
+      IMAGE_NAME: asia-northeast1-docker.pkg.dev/turing-reach-451305-f4/cloud-run/api
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -23,38 +25,30 @@ jobs:
         with:
           workload_identity_provider: projects/810897677786/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider
           service_account: github-actions-service@turing-reach-451305-f4.iam.gserviceaccount.com
-  
+
       - name: Set up Cloud SDK
-        uses: 'google-github-actions/setup-gcloud@v2'
+        uses: "google-github-actions/setup-gcloud@v2"
         with:
-            version: '>= 363.0.0'
+          version: ">= 363.0.0"
 
-      - name: Retrieve Secrets from Secret Manager
-        run: |
-          export DB_HOST=$(gcloud secrets versions access latest --secret=db_host)
-          export DB_NAME=$(gcloud secrets versions access latest --secret=db_name)
-          export DB_USER=$(gcloud secrets versions access latest --secret=db_user)
-          export DB_PASS=$(gcloud secrets versions access latest --secret=db_password)
-          
-          echo "DB_HOST=$DB_HOST" >> $GITHUB_ENV
-          echo "DB_NAME=$DB_NAME" >> $GITHUB_ENV
-          echo "DB_USER=$DB_USER" >> $GITHUB_ENV
-          echo "DB_PASS=$DB_PASS" >> $GITHUB_ENV
-
-      - name: Install Skaffold
-        run: |
-          curl -Lo skaffold https://storage.googleapis.com/skaffold/releases/latest/skaffold-linux-amd64
-          chmod +x skaffold
-          sudo mv skaffold /usr/local/bin/
-
-          ## kome
-      - name: Deploy to Cloud Run via Skaffold
-        working-directory: api
-        env:
-          DB_HOST: ${{ env.DB_HOST }}
-          DB_NAME: ${{ env.DB_NAME }}
-          DB_USER: ${{ env.DB_USER }}
-          DB_PASS: ${{ env.DB_PASS }}
+      - name: Configure Docker for Artifact Registry
         run: |
           gcloud auth configure-docker asia-northeast1-docker.pkg.dev
-          skaffold run
+
+      - name: Build and Push Docker Image
+        working-directory: api
+        run: |
+          docker build -t ${{ env.IMAGE_NAME }}:${{ github.sha }} .
+          docker push ${{ env.IMAGE_NAME }}:${{ github.sha }}
+          docker tag ${{ env.IMAGE_NAME }}:${{ github.sha }} ${{ env.IMAGE_NAME }}:latest
+          docker push ${{ env.IMAGE_NAME }}:latest
+
+      - name: Deploy to Cloud Run
+        run: |
+          gcloud run deploy burny-api \
+            --image ${{ env.IMAGE_NAME }}:${{ github.sha }} \
+            --region asia-northeast1 \
+            --platform managed \
+            --allow-unauthenticated \
+            --set-env-vars=HOST=dev-api.burny.page \
+            --update-secrets=DB_HOST=db_host:latest,DB_NAME=db_name:latest,DB_USER=db_user:latest,DB_PASSWORD=db_password:latest

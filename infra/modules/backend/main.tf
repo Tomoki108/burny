@@ -6,6 +6,61 @@ provider "google" {
 ####################
 # Cloud Run
 ####################
+resource "google_cloud_run_service" "api" {
+  name     = var.cloud_run_service_name
+  location = var.project_region
+
+  template {
+    metadata {
+      annotations = {
+        "run.googleapis.com/cloudsql-instances" = "${var.project_id}:${var.project_region}:postgres-instance"
+        "autoscaling.knative.dev/maxScale"      = "100"
+      }
+    }
+
+    spec {
+      service_account_name = google_service_account.cloud_run_sa.email
+      containers {
+        image = "${var.project_region}-docker.pkg.dev/${var.project_id}/cloud-run/api"
+        ports {
+          container_port = 8080
+        }
+
+        env {
+          name  = "HOST"
+          value = var.cloud_run_domain
+        }
+
+        dynamic "env" {
+          for_each = local.backend_secret_ids
+          content {
+            name = upper(env.value)
+            value_from {
+              secret_key_ref {
+                name = env.value
+                key  = "latest"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  depends_on = [
+    google_secret_manager_secret.backend_secrets,
+    google_sql_database_instance.postgres_instance
+  ]
+}
+
+# Allow unauthenticated access to the service
+resource "google_cloud_run_service_iam_member" "public_access" {
+  service  = google_cloud_run_service.api.name
+  location = google_cloud_run_service.api.location
+  role     = "roles/run.invoker"
+  member   = "allUsers"
+}
+
 resource "google_cloud_run_domain_mapping" "default" {
   location = var.project_region
   name     = var.cloud_run_domain
