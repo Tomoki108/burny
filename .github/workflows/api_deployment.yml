@@ -32,18 +32,6 @@ jobs:
         with:
           version: ">= 363.0.0"
 
-      - name: Retrieve Secrets from Secret Manager
-        run: |
-          export DB_HOST=$(gcloud secrets versions access latest --secret=db_host)
-          export DB_NAME=$(gcloud secrets versions access latest --secret=db_name)
-          export DB_USER=$(gcloud secrets versions access latest --secret=db_user)
-          export DB_PASS=$(gcloud secrets versions access latest --secret=db_password)
-
-          echo "DB_HOST=$DB_HOST" >> $GITHUB_ENV
-          echo "DB_NAME=$DB_NAME" >> $GITHUB_ENV
-          echo "DB_USER=$DB_USER" >> $GITHUB_ENV
-          echo "DB_PASS=$DB_PASS" >> $GITHUB_ENV
-
       - name: Configure Docker for Artifact Registry
         run: |
           gcloud auth configure-docker asia-northeast1-docker.pkg.dev
@@ -64,7 +52,7 @@ jobs:
             --platform managed \
             --allow-unauthenticated \
             --set-env-vars=HOST=dev.api.burny.page \
-            --update-secrets=DB_HOST:latest \
-            --update-secrets=DB_NAME:latest \
-            --update-secrets=DB_USER:latest \
-            --update-secrets=DB_PASS:latest
+            --update-secrets=DB_HOST=db_host:latest, \
+            DB_NAME=db_name:latest, \
+            DB_USER=db_user:latest, \
+            DB_PASS=db_pass:latest
