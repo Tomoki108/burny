@@ -67,13 +67,18 @@ resource "google_cloud_run_domain_mapping" "default" {
 
   metadata {
     namespace = var.project_id
-    annotations = {
-      "run.googleapis.com/ingress" = "all"
-    }
   }
 
   spec {
     route_name = var.cloud_run_service_name
+  }
+
+  lifecycle {
+    ignore_changes = [
+      # これがないとリソースが毎回再作成される. warningでこのignoreは意味ないと表示されるが、実際には必要
+      # https://github.com/hashicorp/terraform-provider-google/issues/8053#issuecomment-2579999126
+      metadata[0].effective_annotations
+    ]
   }
 }
 
