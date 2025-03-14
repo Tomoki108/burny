@@ -8,7 +8,7 @@ secrets = {
   db_password = ""
 }
 
-cloud_run_domain       = "dev.api.burny.page"
+cloud_run_domain       = "dev-api.burny.page"
 cloud_run_service_name = "burny-api"
 
 github_repository = "Tomoki108/burny"

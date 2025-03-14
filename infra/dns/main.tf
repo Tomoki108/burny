@@ -16,7 +16,7 @@ resource "google_dns_managed_zone" "zone" {
 
 # APIサーバー用のCNAMEレコード
 resource "google_dns_record_set" "dev_api_cname" {
-  name         = "dev.api.${var.dns_name}"
+  name         = "dev-api.${var.dns_name}"
   managed_zone = google_dns_managed_zone.zone.name
   type         = "CNAME"
   ttl          = 300

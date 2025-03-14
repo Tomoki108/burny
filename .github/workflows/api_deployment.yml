@@ -51,5 +51,5 @@ jobs:
             --region asia-northeast1 \
             --platform managed \
             --allow-unauthenticated \
-            --set-env-vars=HOST=dev.api.burny.page \
+            --set-env-vars=HOST=dev-api.burny.page \
             --update-secrets=DB_HOST=db_host:latest,DB_NAME=db_name:latest,DB_USER=db_user:latest,DB_PASSWORD=db_password:latest
