@@ -18,7 +18,7 @@ spec:
         - containerPort: 8080
         env:
           - name: HOST
-            value: "dev.burny.page"
+            value: "dev.api.burny.page"
           - name: DB_HOST
             valueFrom:            
               secretKeyRef:

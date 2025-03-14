@@ -41,7 +41,6 @@ variable "cloud_run_domain" {
 variable "frontend_bucket_name" {
   description = "GCS静的ウェブサイトのバケット名"
   type        = string
-  default     = "burny-frontend"
 }
 
 variable "frontend_bucket_location" {

@@ -24,11 +24,5 @@ variable "zone_description" {
 variable "dns_name" {
   description = "DNS Zone Name（ex, example.com. suffixed with dot）"
   type        = string
-  default = "burny.page."
-}
-
-variable "dns_subdomain_name_dev" {
-    description = "Subdomain for dev environment"
-    type        = string
-    default     = "dev.burny.page."
+  default     = "burny.page."
 }
