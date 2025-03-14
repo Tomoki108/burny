@@ -31,10 +31,6 @@ Install [goenv](https://github.com/go-nv/goenv), specified go version and tools.
 brew install goenv
 goenv install 1.23.4
 go install github.com/swaggo/swag/cmd/swag@latest
-
-# deployment tools
-brew install skaffold
-brew install ko
 ```
 
 ### Other Commands
@@ -42,9 +38,4 @@ brew install ko
 ```shell
 # update API DOC
 swag init
-
-# push application image
-skaffold build
-# push application image && deploy to cloud run
-skaffold run
 ```
