@@ -77,6 +77,8 @@ resource "google_cloud_run_domain_mapping" "default" {
     route_name     = var.cloud_run_service_name
     force_override = true
   }
+
+  depends_on = [google_cloud_run_service.api]
 }
 
 ####################
