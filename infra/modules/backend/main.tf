@@ -7,16 +7,20 @@ provider "google" {
 # Cloud Run
 ####################
 resource "google_cloud_run_domain_mapping" "default" {
-  # Cloud Run Domain Mappingはグローバルサービスなので、locationをglobalに変更
-  location = "global"
+  location = var.project_region
   name     = var.cloud_run_domain
-
-  spec {
-    route_name = var.cloud_run_service_name
-  }
 
   metadata {
     namespace = var.project_id
+    annotations = {
+      "run.googleapis.com/ingress"        = "all"
+      "run.googleapis.com/force-override" = "true"
+    }
+  }
+
+  spec {
+    route_name     = var.cloud_run_service_name
+    force_override = true
   }
 }
 

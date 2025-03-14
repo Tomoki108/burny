@@ -2,15 +2,20 @@ apiVersion: serving.knative.dev/v1
 kind: Service
 metadata:
   name: burny-api
+  annotations:
+    run.googleapis.com/ingress: "all"
 spec:
   template:
     metadata:
       annotations:
         run.googleapis.com/cloudsql-instances: "turing-reach-451305-f4:asia-northeast1:postgres-instance"
+        autoscaling.knative.dev/maxScale: "100"
     spec:
       serviceAccountName: cloud-run-service@turing-reach-451305-f4.iam.gserviceaccount.com
       containers:
       - image: asia-northeast1-docker.pkg.dev/turing-reach-451305-f4/cloud-run/api
+        ports:
+        - containerPort: 8080
         env:
           - name: HOST
             value: "dev.burny.page"
