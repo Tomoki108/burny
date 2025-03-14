@@ -13,9 +13,9 @@ variable "project_region" {
 variable "secrets" {
   description = "Secrets for the project"
   type = object({
-    db_name                     = string
-    db_user                     = string
-    db_password                 = string
+    db_name     = string
+    db_user     = string
+    db_password = string
   })
   sensitive = true
 }
@@ -35,4 +35,23 @@ variable "cloud_run_service_name" {
 variable "cloud_run_domain" {
   description = "Cloud Run domain"
   type        = string
+}
+
+# Frontend関連の変数
+variable "frontend_bucket_name" {
+  description = "GCS静的ウェブサイトのバケット名"
+  type        = string
+  default     = "burny-frontend"
+}
+
+variable "frontend_bucket_location" {
+  description = "GCSバケットのロケーション"
+  type        = string
+  default     = "asia-northeast1"
+}
+
+variable "enable_cdn" {
+  description = "Cloud CDNを有効にするかどうか"
+  type        = bool
+  default     = false
 }

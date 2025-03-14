@@ -7,3 +7,16 @@ module "backend" {
   secrets                = var.secrets
   github_repository      = var.github_repository
 }
+
+module "frontend" {
+  source          = "../modules/frontend"
+  project_id      = var.project_id
+  bucket_name     = var.frontend_bucket_name
+  bucket_location = var.frontend_bucket_location
+  enable_cdn      = var.enable_cdn
+}
+
+# フロントエンドのデプロイURLを出力
+output "frontend_url" {
+  value = module.frontend.bucket_url
+}

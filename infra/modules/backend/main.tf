@@ -7,7 +7,8 @@ provider "google" {
 # Cloud Run
 ####################
 resource "google_cloud_run_domain_mapping" "default" {
-  location = var.project_region
+  # Cloud Run Domain Mappingはグローバルサービスなので、locationをglobalに変更
+  location = "global"
   name     = var.cloud_run_domain
 
   spec {
