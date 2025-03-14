@@ -50,11 +50,6 @@ jobs:
 
       - name: Build and Push Docker Image
         working-directory: api
-        env:
-          DB_HOST: ${{ env.DB_HOST }}
-          DB_NAME: ${{ env.DB_NAME }}
-          DB_USER: ${{ env.DB_USER }}
-          DB_PASS: ${{ env.DB_PASS }}
         run: |
           docker build -t ${{ env.IMAGE_NAME }}:${{ github.sha }} .
           docker push ${{ env.IMAGE_NAME }}:${{ github.sha }}
@@ -63,12 +58,13 @@ jobs:
 
       - name: Deploy to Cloud Run
         run: |
-          gcloud run deploy api \
+          gcloud run deploy burny-api \
             --image ${{ env.IMAGE_NAME }}:${{ github.sha }} \
             --region asia-northeast1 \
             --platform managed \
             --allow-unauthenticated \
-            --set-env-vars DB_HOST=${{ env.DB_HOST }} \
-            --set-env-vars DB_NAME=${{ env.DB_NAME }} \
-            --set-env-vars DB_USER=${{ env.DB_USER }} \
-            --set-env-vars DB_PASS=${{ env.DB_PASS }}
+            --set-env-vars=HOST=dev.api.burny.page \
+            --update-secrets=DB_HOST:latest \
+            --update-secrets=DB_NAME:latest \
+            --update-secrets=DB_USER:latest \
+            --update-secrets=DB_PASS:latest
