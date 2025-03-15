@@ -14,7 +14,7 @@ jobs:
       id-token: "write"
     runs-on: ubuntu-latest
     env:
-      BUCKET_NAME: burny-web-static
+      BUCKET_NAME: burny-frontend-dev
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
