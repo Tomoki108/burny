@@ -144,6 +144,10 @@ locals {
       role   = "roles/run.admin"
       member = "serviceAccount:${google_service_account.github_actions_sa.email}"
     },
+    "${google_service_account.github_actions_sa.email}_roles_storage_object" = {
+      role   = "roles/storage.objectUser"
+      member = "serviceAccount:${google_service_account.github_actions_sa.email}"
+    },
     # Cloud Run Service Account
     "${google_service_account.cloud_run_sa.email}_roles_run_admin" = {
       role   = "roles/run.admin"
