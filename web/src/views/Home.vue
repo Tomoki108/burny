@@ -52,11 +52,12 @@
 
         <section class="why-section">
             <div class="content-container">
-                <h2>Why We Built This</h2>
+                <h2>Why I Built This</h2>
                 <p>
-                    This project began with the desire to manage team progress more efficiently.
-                    By providing features missing in existing tools and a more intuitive interface,
-                    we aim to reduce the burden of project management and allow teams to focus on higher-value work.
+                    I have developed burn-up chart tools in my spare time at two organizations. Because both
+                    organizations customized task management systems, their native chart generation capabilities were
+                    insufficient. I want to offer an easy-to-use, high-quality solution for burn-up chart management by
+                    Burny, enabling development teams to focus on their core business.
                 </p>
             </div>
         </section>
