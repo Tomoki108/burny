@@ -77,7 +77,8 @@ resource "google_cloud_run_domain_mapping" "default" {
     ignore_changes = [
       # これがないとリソースが毎回再作成される. warningでこのignoreは意味ないと表示されるが、実際には必要
       # https://github.com/hashicorp/terraform-provider-google/issues/8053#issuecomment-2579999126
-      metadata[0].effective_annotations
+      metadata[0].effective_annotations,
+      metadata[0].annotations
     ]
   }
 }
@@ -142,6 +143,10 @@ locals {
     },
     "${google_service_account.github_actions_sa.email}_roles_run_admin" = {
       role   = "roles/run.admin"
+      member = "serviceAccount:${google_service_account.github_actions_sa.email}"
+    },
+    "${google_service_account.github_actions_sa.email}_roles_storage_object" = {
+      role   = "roles/storage.objectUser"
       member = "serviceAccount:${google_service_account.github_actions_sa.email}"
     },
     # Cloud Run Service Account

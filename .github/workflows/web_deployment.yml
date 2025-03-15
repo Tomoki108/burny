@@ -1,0 +1,62 @@
+name: Web Deployment to GCS
+on:
+  push:
+    branches:
+      - main
+      - web-deploy-workflow # for test
+    paths:
+      - "web/**"
+      - ".github/workflows/web_deployment.yml"
+
+jobs:
+  build-and-deploy:
+    permissions:
+      contents: "read"
+      id-token: "write"
+    runs-on: ubuntu-latest
+    env:
+      BUCKET_NAME: burny-frontend-dev
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "18"
+          cache: "npm"
+          cache-dependency-path: web/package-lock.json
+
+      - name: Install dependencies
+        working-directory: web
+        run: npm ci
+
+      - name: Build web application
+        working-directory: web
+        run: npm run build
+
+      - name: Authenticate with Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          workload_identity_provider: projects/810897677786/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider
+          service_account: github-actions-service@turing-reach-451305-f4.iam.gserviceaccount.com
+
+      - name: Set up Cloud SDK
+        uses: "google-github-actions/setup-gcloud@v2"
+        with:
+          version: ">= 363.0.0"
+
+      - name: Upload to GCS
+        working-directory: web
+        run: |
+          gsutil -m rsync -r dist gs://${{ env.BUCKET_NAME }}
+
+      - name: Set cache metadata for static files
+        run: |
+          gsutil -m setmeta -h "Cache-Control:public, max-age=31536000" gs://${{ env.BUCKET_NAME }}/**/*.js
+          gsutil -m setmeta -h "Cache-Control:public, max-age=31536000" gs://${{ env.BUCKET_NAME }}/**/*.css
+          gsutil -m setmeta -h "Cache-Control:public, max-age=31536000" gs://${{ env.BUCKET_NAME }}/assets/**
+
+      - name: Set cache metadata for HTML files
+        run: |
+          gsutil -m setmeta -h "Cache-Control:no-cache, max-age=0" gs://${{ env.BUCKET_NAME }}/*.html
