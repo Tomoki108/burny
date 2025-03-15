@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - web-deploy-workflow # for test
     paths:
       - "web/**"
       - ".github/workflows/web_deployment.yml"
