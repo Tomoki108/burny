@@ -1,5 +1,7 @@
 # Burny Infrastructure
 
+Infrastructure as Code for Google Cloud resources.
+
 ## Prerequisites
 
 ### Tools

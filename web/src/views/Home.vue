@@ -18,12 +18,9 @@
                 <div class="about-content">
                     <div class="about-text">
                         <p>
-                            Burny is a burn-up chart tool designed to visually track project management.
-                            Easily monitor progress and visualize project completion predictions.
-                        </p>
-                        <p>
-                            Developed to improve team performance and enhance project transparency.
-                            Complex project management made simple with an intuitive interface.
+                            Burny is a burn-up chart generation tool designed to visualize and manage scrum project
+                            progress. It makes easy to predict completion dates and coordinate project scopes. Complex
+                            project management made simple with an intuitive interface.
                         </p>
                     </div>
                     <div class="chart-container">
