@@ -6,12 +6,10 @@ variable "project_region" {
   type = string
 }
 
-variable "cloud_run_domain" {
+variable "api_domain" {
   type = string
 }
-variable "cloud_run_service_name" {
-  type = string
-}
+
 variable "secrets" {
   type = object({
     db_name : string,
@@ -19,9 +17,7 @@ variable "secrets" {
     db_password : string
   })
 }
-variable "github_repository" {
-  type = string
-}
+
 variable "github_actions_sa_email" {
   type = string
 }

@@ -2,7 +2,7 @@
 
 REST API Server for Burny.
 
-API DOC: http://dev.burny.page/swagger/index.html
+API DOC: https://dev-api.burny.page/swagger/index.html
 
 ## Teck Stack
 
@@ -11,6 +11,7 @@ API DOC: http://dev.burny.page/swagger/index.html
 | **FW**           | https://github.com/labstack/echo           |
 | **ORM**          | https://github.com/go-gorm/gorm            |
 | **DB**           | PostgreSQL                                 |
+| **Architecture** | Clean Architecture                         |
 | **Validation**   | https://github.com/go-playground/validator |
 | **DI Container** | https://github.com/uber-go/dig             |
 | **E2E Test**     | https://github.com/sebdah/goldie           |

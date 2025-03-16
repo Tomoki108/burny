@@ -7,12 +7,9 @@ secrets = {
   db_user     = ""
   db_password = ""
 }
-
-cloud_run_domain       = "dev-api.burny.page"
-cloud_run_service_name = "burny-api"
-
-github_repository = "Tomoki108/burny"
+api_domain       = "dev-api.burny.page"
 
 # Frontend設定
+web_domain               = "dev.burny.page"
 frontend_bucket_name     = ""
 frontend_bucket_location = ""

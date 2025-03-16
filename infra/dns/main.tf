@@ -23,28 +23,18 @@ resource "google_dns_record_set" "dev_api_cname" {
   rrdatas      = ["ghs.googlehosted.com."]
 }
 
-# data "terraform_remote_state" "dev_frontend_state" {
-#   backend = "gcs"
-#   config = {
-#     bucket = var.terraform_state_bucket
-#     prefix = "frontend"
-#   }
-# }
+data "terraform_remote_state" "dev_state" {
+  backend = "gcs"
+  config = {
+    bucket = var.dev_terraform_state_bucket
+    prefix = "dev" // dev環境のステートファイルのプレフィックスを追加
+  }
+}
 
-# # フロントエンド用のAレコード
-# resource "google_dns_record_set" "dev_web_a" {
-#   name         = "dev." + var.dns_name
-#   managed_zone = google_dns_managed_zone.zone.name
-#   type         = "A"
-#   ttl          = 300
-#   rrdatas      = [data.terraform_remote_state.dev_frontend_state.outputs.external_ip]
-# }
-
-# # フロントエンド用のAAAAレコード（IPv6）
-# resource "google_dns_record_set" "dev_web_aaaa" {
-#   name         = "dev." + var.dns_name
-#   managed_zone = google_dns_managed_zone.zone.name
-#   type         = "AAAA"
-#   ttl          = 300
-#   rrdatas      = [data.terraform_remote_state.dev_frontend_state.outputs.external_ip]
-# }
+resource "google_dns_record_set" "dev_web_a_record" {
+  name         = "dev.${var.dns_name}"
+  managed_zone = google_dns_managed_zone.zone.name
+  type         = "A"
+  ttl          = 300
+  rrdatas      = [data.terraform_remote_state.dev_state.outputs.website_ip]
+}

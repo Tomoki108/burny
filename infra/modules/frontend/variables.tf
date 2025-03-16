@@ -14,14 +14,7 @@ variable "bucket_location" {
   default     = "asia-northeast1"
 }
 
-variable "website_domain" {
-  description = "The domain name for the website (optional, if using custom domain)"
+variable "web_domain" {
+  description = "The domain name for the website"
   type        = string
-  default     = null
-}
-
-variable "enable_cdn" {
-  description = "Enable Cloud CDN for the static website"
-  type        = bool
-  default     = false
 }

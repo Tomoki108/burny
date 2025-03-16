@@ -32,6 +32,8 @@ jobs:
 
       - name: Build web application
         working-directory: web
+        env:
+          VITE_API_HOST: ${{ secrets.DEV_API_HOST }}
         run: npm run build
 
       - name: Authenticate with Google Cloud

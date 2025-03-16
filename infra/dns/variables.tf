@@ -26,3 +26,8 @@ variable "dns_name" {
   type        = string
   default     = "burny.page."
 }
+
+variable "dev_terraform_state_bucket" {
+  description = "Terraform state bucket for dev environment"
+  type        = string
+}
