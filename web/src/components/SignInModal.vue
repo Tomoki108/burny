@@ -8,14 +8,13 @@
             </div>
             <form @submit.prevent="onSubmit">
                 <label for="email">Email</label>
-                <input type="text" id="email" v-model="email" placeholder="yourname@burny.page" required />
+                <input type="email" id="email" v-model="email" placeholder="yourname@burny.page" required />
                 <label for="password">Password</label>
                 <input type="password" id="password" v-model="password" placeholder="************" required
                     minlength="8" maxlength="20" />
                 <button type="submit" class="button">{{ isSignUp ? 'Sign Up' : 'Sign In' }}</button>
             </form>
-            <p v-if="error" class="error">{{ error }}</p>
-            <button class="close-button" @click="close">×</button>
+            <v-alert v-if="error" type="error" :text="error" closable class="mt-7" />
         </div>
     </div>
 </template>
@@ -48,7 +47,6 @@ const isSignUp = ref(props.initialSignUp)
 const router = useRouter()
 const authStore = useAuthStore()
 
-// Watch for changes in the initialSignUp prop
 watch(() => props.initialSignUp, (newVal) => {
     isSignUp.value = newVal
 })
@@ -145,23 +143,6 @@ h1 {
     font-size: var(--font-size-base);
     margin-top: 15px;
     text-align: center;
-}
-
-.close-button {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: none;
-    border: none;
-    color: var(--color-text-light);
-    font-size: 24px;
-    cursor: pointer;
-    opacity: 0.7;
-    transition: opacity 0.3s;
-}
-
-.close-button:hover {
-    opacity: 1;
 }
 
 /* Responsive adjustments */
