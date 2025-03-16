@@ -1,8 +1,8 @@
 # Burny Infrastructure
 
-# Prerequisites
+## Prerequisites
 
-## tools
+### Tools
 
 - Install tfenv and sepcified terraform version.
 
@@ -17,7 +17,7 @@
   gcloud auth application-default login
   ```
 
-## each environment setting (dev, prod, dns)
+### Each Environment Setting (dev, prod, dns)
 
 - Create `terraform.tfvars` from `terraform.tfvars.sample`. Secret values can be referenced at Secret Manager console of burny-{env} project.
 - Init module by `terraform init`.
