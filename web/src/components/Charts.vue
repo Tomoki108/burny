@@ -1,6 +1,6 @@
 <template>
     <v-tabs v-model="activeTab">
-        <v-tab value="burn">Burn Up Chart</v-tab>
+        <v-tab value="burn">Burn-Up Chart</v-tab>
         <v-tab value="velocity">Velocity Chart</v-tab>
     </v-tabs>
     <v-tabs-window v-model="activeTab">

@@ -107,6 +107,34 @@ h5 {
   color: var(--color-text-light);
 }
 
+.button-large {
+  font-family: var(--font-family-base);
+  background-color: var(--color-primary);
+  color: var(--color-text-light) !important;
+  border: none;
+  padding: 12px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 5px 5px;
+  box-shadow: 0.1rem 0.1rem var(--color-shadow);
+  font-weight: 500;
+  width: auto;
+  min-width: 120px;
+  display: inline-block;
+}
+
+.button-large.nav_link {
+  background-color: transparent;
+  color: var(--color-text-light) !important;
+  border: 2px solid var(--color-text-light);
+  box-shadow: none;
+}
+
+.button-large.nav_link:hover {
+  background-color: #ffffff1a !important;
+}
+
 .button {
   font-family: var(--font-family-base);
   background-color: var(--color-primary);
@@ -196,8 +224,6 @@ label {
   color: inherit !important;
   font-size: inherit !important;
 }
-
-/* アクティブなタブのスタイルもカスタマイズ */
 .v-tab--selected.v-tab--selected {
   font-weight: bold !important;
 }
