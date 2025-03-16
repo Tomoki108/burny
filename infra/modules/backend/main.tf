@@ -14,6 +14,7 @@ resource "google_cloud_run_service" "api" {
     metadata {
       annotations = {
         "run.googleapis.com/client-name"        = "gcloud"
+        "run.googleapis.com/client-version"     = "514.0.0"
         "run.googleapis.com/cloudsql-instances" = "${var.project_id}:${var.project_region}:postgres-instance"
         "autoscaling.knative.dev/maxScale"      = "100"
       }
