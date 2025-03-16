@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from "vue-router";
+import { createRouter, createWebHistory } from "vue-router";
 import type { RouteRecordRaw } from "vue-router";
 import { useAuthStore } from "./stores/auth_store";
 
@@ -35,8 +35,7 @@ const routes: Array<RouteRecordRaw> = [
 ];
 
 const router = createRouter({
-  // GCS静的ホスティングでの動作を改善するためにハッシュモードに変更
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 });
 

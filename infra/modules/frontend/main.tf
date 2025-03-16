@@ -76,6 +76,26 @@ resource "google_compute_url_map" "website_url_map" {
   name            = "${var.bucket_name}-url-map"
   default_service = google_compute_backend_bucket.static_website_backend.id
   project         = var.project_id
+
+  # SPA向けのカスタムルート設定
+  host_rule {
+    hosts        = [var.web_domain]
+    path_matcher = "spa-routes"
+  }
+
+  path_matcher {
+    name            = "spa-routes"
+    default_service = google_compute_backend_bucket.static_website_backend.id
+
+    # 静的アセットのパスルール
+    path_rule {
+      paths   = ["/assets/*"]
+      service = google_compute_backend_bucket.static_website_backend.id
+    }
+
+    # 基本的にはdefault_serviceにすべてのリクエストを渡し、
+    # サーバーサイドの静的ウェブサイト設定でindex.htmlへのフォールバックを処理
+  }
 }
 
 # HTTPからHTTPSへのリダイレクト設定
