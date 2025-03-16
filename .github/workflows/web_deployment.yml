@@ -43,8 +43,6 @@ jobs:
 
       - name: Set up Cloud SDK
         uses: "google-github-actions/setup-gcloud@v2"
-        with:
-          version: ">= 363.0.0"
 
       - name: Upload to GCS
         working-directory: web

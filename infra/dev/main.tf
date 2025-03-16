@@ -24,17 +24,11 @@ module "frontend" {
   enable_cdn      = var.enable_cdn
 }
 
-# フロントエンドのデプロイURLを出力
 output "frontend_url" {
   value = module.frontend.bucket_url
 }
 
-# # GitHub Workload Identity Pool ID を出力
-# output "github_workload_identity_pool_id" {
-#   value = module.github.workload_identity_pool.id
-# }
+output "github_workload_identity_provider_id" {
+  value = module.github.workload_identity_provider_id
+}
 
-# # GitHub Actions サービスアカウントのメールアドレスを出力
-# output "github_actions_sa_email" {
-#   value = module.github.github_actions_sa.email
-# }
