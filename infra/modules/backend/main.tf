@@ -30,7 +30,7 @@ resource "google_cloud_run_service" "api" {
 
         env {
           name  = "HOST"
-          value = var.cloud_run_domain
+          value = var.api_domain
         }
 
         dynamic "env" {
@@ -72,14 +72,14 @@ resource "google_cloud_run_service_iam_member" "public_access" {
 
 resource "google_cloud_run_domain_mapping" "default" {
   location = var.project_region
-  name     = var.cloud_run_domain
+  name     = var.api_domain
 
   metadata {
     namespace = var.project_id
   }
 
   spec {
-    route_name = var.cloud_run_service_name
+    route_name = google_cloud_run_service.api.name
   }
 
   lifecycle {

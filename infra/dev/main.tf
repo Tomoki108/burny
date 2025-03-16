@@ -8,7 +8,7 @@ module "backend" {
   source                  = "../modules/backend"
   project_id              = var.project_id
   project_region          = var.project_region
-  cloud_run_domain        = var.cloud_run_domain
+  api_domain              = var.api_domain
   secrets                 = var.secrets
   github_actions_sa_email = module.github.github_actions_sa.email
 }

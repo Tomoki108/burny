@@ -8,6 +8,10 @@ variable "project_region" {
   type        = string
 }
 
+###################
+# backend関連の変数
+###################
+
 // NOTE: vscode autocomplete not work with object variable
 // https://github.com/hashicorp/vscode-terraform/issues/1855
 variable "secrets" {
@@ -20,12 +24,15 @@ variable "secrets" {
   sensitive = true
 }
 
-variable "cloud_run_domain" {
+variable "api_domain" {
   description = "Cloud Run domain"
   type        = string
 }
 
-# Frontend関連の変数
+###################
+# frontend関連の変数
+###################
+
 variable "frontend_bucket_name" {
   description = "GCS静的ウェブサイトのバケット名"
   type        = string

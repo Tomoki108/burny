@@ -7,7 +7,7 @@ secrets = {
   db_user     = ""
   db_password = ""
 }
-cloud_run_domain       = "dev-api.burny.page"
+api_domain       = "dev-api.burny.page"
 
 # Frontend設定
 web_domain               = "dev.burny.page"

@@ -6,7 +6,7 @@ variable "project_region" {
   type = string
 }
 
-variable "cloud_run_domain" {
+variable "api_domain" {
   type = string
 }
 
