@@ -4,8 +4,8 @@
             <h1 class="hero-title">Burny 🐶</h1>
             <p class="hero-subtitle">Simplify Project Management with Burn-up Charts</p>
             <div class="hero-actions">
-                <button @click="openSignInModal(false)" class="button primary">Sign In</button>
-                <button @click="scrollToAbout" class="button secondary">Learn More</button>
+                <button @click="openSignInModal(false)" class="button-large">Sign In</button>
+                <button @click="scrollToAbout" class="button-large nav_link">Learn More</button>
             </div>
         </header>
 
@@ -67,8 +67,8 @@
                 <div class="content-container">
                     <h2>Get Started Now</h2>
                     <div class="cta-buttons">
-                        <button @click="openSignInModal(false)" class="button primary">Sign In</button>
-                        <button @click="openSignInModal(true)" class="button primary">Sign Up</button>
+                        <button @click="openSignInModal(false)" class="button-large">Sign In</button>
+                        <button @click="openSignInModal(true)" class="button-large">Sign Up</button>
                     </div>
                 </div>
             </div>
@@ -85,7 +85,6 @@
             </div>
         </footer>
 
-        <!-- Sign In Modal -->
         <SignInModal :isVisible="showSignInModal" :initialSignUp="isSignUp" @close="closeSignInModal"
             @auth-success="handleAuthSuccess" />
     </div>
@@ -205,9 +204,7 @@ const burnUpChartOptions = {
     background: linear-gradient(var(--color-tertiary), var(--color-secondary));
     color: var(--color-text-light);
     padding: 2rem 1rem;
-    /* Reduced padding */
     box-sizing: border-box;
-    /* Include padding in height calculation */
 }
 
 .hero-title {
@@ -239,11 +236,9 @@ const burnUpChartOptions = {
 .why-section,
 .cta-section {
     padding: 3rem 0;
-    /* Reduced padding from 5rem to 3rem */
     width: 100%;
     box-sizing: border-box;
     overflow: hidden;
-    /* Prevent content overflow */
 }
 
 .about-section {
@@ -251,7 +246,6 @@ const burnUpChartOptions = {
     padding-bottom: 0;
 
 }
-
 
 .about-content {
     display: flex;
@@ -279,15 +273,12 @@ const burnUpChartOptions = {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1.5rem;
-    /* Reduced gap */
     margin-top: 1.5rem;
-    /* Reduced margin */
 }
 
 .feature-card {
     background-color: var(--color-background);
     padding: 1.5rem;
-    /* Reduced padding */
     border-radius: 8px;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
@@ -323,7 +314,6 @@ const burnUpChartOptions = {
     display: flex;
     justify-content: center;
     margin-bottom: 0.75rem;
-    /* Reduced margin */
 }
 
 .github-link {
@@ -347,56 +337,14 @@ const burnUpChartOptions = {
     color: rgba(255, 255, 255, 0.7);
 }
 
-.button {
-    font-family: var(--font-family-base);
-    background-color: var(--color-primary);
-    color: var(--color-text-light) !important;
-    border: none;
-    padding: 12px;
-    font-size: 16px;
-    border-radius: 4px;
-    cursor: pointer;
-    margin: 5px 5px;
-    box-shadow: 0.1rem 0.1rem var(--color-shadow);
-    font-weight: 500;
-    width: auto;
-    /* 自動幅に変更 */
-    min-width: 120px;
-    /* 最小幅を設定 */
-    display: inline-block;
-}
-
-.button.primary {
-    background-color: var(--color-primary);
-    color: var(--color-text-light) !important;
-}
-
-.button.secondary {
-    background-color: transparent;
-    color: var(--color-text-light) !important;
-    border: 2px solid var(--color-text-light);
-    box-shadow: none;
-}
-
-.button.primary:hover {
-    background-color: var(--color-primary-dark);
-}
-
-.button.secondary:hover {
-    background-color: rgba(255, 255, 255, 0.1);
-}
-
-/* 見出しのマージンを調整 */
 h2 {
     margin-top: 0;
     margin-bottom: 0.75rem;
-    /* 1.5remから0.75remに縮小 */
 }
 
 h3 {
     margin-top: 0;
     margin-bottom: 0.5rem;
-    /* 0.75remから0.5remに縮小 */
 }
 
 /* Responsive adjustments */
@@ -424,7 +372,6 @@ h3 {
         width: 100%;
         max-width: 300px;
         margin: 1.5rem auto 0;
-        /* Reduced margin */
     }
 
     .chart-container {
@@ -437,7 +384,6 @@ h3 {
     .why-section,
     .cta-section {
         padding: 2rem 0;
-        /* Further reduce padding on mobile */
     }
 
     .hero-actions,
@@ -445,7 +391,6 @@ h3 {
         flex-direction: column;
         width: 100%;
         max-width: 200px;
-        /* ボタン幅を制限 */
         margin-left: auto;
         margin-right: auto;
     }
@@ -453,7 +398,6 @@ h3 {
     .hero-actions .button,
     .cta-buttons .button {
         width: 100%;
-        /* モバイルでは幅いっぱいに */
     }
 }
 
@@ -462,7 +406,6 @@ h3 {
     .hero {
         min-height: 500px;
         padding: 2rem 1rem;
-        /* Reduced padding */
     }
 }
 
