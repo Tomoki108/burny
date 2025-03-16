@@ -7,7 +7,7 @@ provider "google" {
 # Cloud Run
 ####################
 resource "google_cloud_run_service" "api" {
-  name     = var.cloud_run_service_name
+  name     = "burny-api"
   location = var.project_region
 
   template {

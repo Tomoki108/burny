@@ -20,12 +20,6 @@ variable "secrets" {
   sensitive = true
 }
 
-variable "cloud_run_service_name" {
-  description = "Cloud Run service name"
-  type        = string
-  default     = "burny-api"
-}
-
 variable "cloud_run_domain" {
   description = "Cloud Run domain"
   type        = string
