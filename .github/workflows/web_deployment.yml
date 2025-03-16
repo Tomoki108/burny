@@ -3,7 +3,7 @@ on:
   push:
     branches:
       - main
-      - web-deploy-workflow # for test
+      - create-github-module # for test
     paths:
       - "web/**"
       - ".github/workflows/web_deployment.yml"
@@ -38,7 +38,7 @@ jobs:
       - name: Authenticate with Google Cloud
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: projects/810897677786/locations/global/workloadIdentityPools/github-actions-pool/providers/github-actions-provider
+          workload_identity_provider: projects/810897677786/locations/global/workloadIdentityPools/github-actions-pool-01/providers/github-actions-provider-01
           service_account: github-actions-service@turing-reach-451305-f4.iam.gserviceaccount.com
 
       - name: Set up Cloud SDK
