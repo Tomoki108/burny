@@ -49,6 +49,13 @@ resource "google_cloud_run_service" "api" {
     }
   }
 
+  lifecycle {
+    ignore_changes = [
+      # github actionsでのデプロイ時にtag（commit hash）付きのimage名に更新されるため、それによる差分を無視する
+      template[0].spec[0].containers[0].image,
+    ]
+  }
+
   depends_on = [
     google_secret_manager_secret.backend_secrets,
     google_sql_database_instance.postgres_instance

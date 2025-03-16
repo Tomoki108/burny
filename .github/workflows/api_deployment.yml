@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - create-github-module # for test
     paths:
       - "api/**"
       - ".github/workflows/api_deployment.yml"
