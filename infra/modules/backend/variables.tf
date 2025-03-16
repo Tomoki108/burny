@@ -13,7 +13,6 @@ variable "cloud_run_service_name" {
   type = string
 }
 variable "secrets" {
-  description = "DB secrets in an object with db_name, db_user and db_password."
   type = object({
     db_name : string,
     db_user : string,
@@ -21,5 +20,8 @@ variable "secrets" {
   })
 }
 variable "github_repository" {
+  type = string
+}
+variable "github_actions_sa_email" {
   type = string
 }
