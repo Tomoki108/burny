@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-      - bind-domain-to-front-gcs # for test
     paths:
       - "web/**"
       - ".github/workflows/web_deployment.yml"
