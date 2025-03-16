@@ -15,6 +15,7 @@
                 <button type="submit" class="button">{{ isSignUp ? 'Sign Up' : 'Sign In' }}</button>
             </form>
             <v-alert v-if="error" type="error" :text="error" closable class="mt-7" />
+            <v-alert v-if="successMessage" type="success" :text="successMessage" closable class="mt-7" />
         </div>
     </div>
 </template>
@@ -43,6 +44,7 @@ const emit = defineEmits(['close', 'auth-success'])
 const email = ref('')
 const password = ref('')
 const error = ref('')
+const successMessage = ref('')
 const isSignUp = ref(props.initialSignUp)
 const router = useRouter()
 const authStore = useAuthStore()
@@ -53,6 +55,7 @@ watch(() => props.initialSignUp, (newVal) => {
 
 const onSubmit = async () => {
     error.value = ''
+    successMessage.value = ''
 
     try {
         if (isSignUp.value) {
@@ -60,7 +63,7 @@ const onSubmit = async () => {
             if (response instanceof ErrorResponse) {
                 error.value = response.getMessage()
             } else {
-                alert('Registration successful. Please sign in.')
+                successMessage.value = 'Registration successful. Please sign in.'
                 isSignUp.value = false
             }
         } else {
@@ -81,6 +84,7 @@ const close = () => {
     email.value = ''
     password.value = ''
     error.value = ''
+    successMessage.value = ''
 }
 </script>
 

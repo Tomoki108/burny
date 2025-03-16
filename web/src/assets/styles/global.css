@@ -224,8 +224,6 @@ label {
   color: inherit !important;
   font-size: inherit !important;
 }
-
-/* アクティブなタブのスタイルもカスタマイズ */
 .v-tab--selected.v-tab--selected {
   font-weight: bold !important;
 }
