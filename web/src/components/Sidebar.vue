@@ -60,7 +60,7 @@ li {
     font-size: var(--font-size-large);
 }
 
-li:hover,
+li:not(:first-child):hover,
 div.signout:hover {
     color: var(--color-text-light);
     font-weight: bold;
