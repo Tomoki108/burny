@@ -2,7 +2,7 @@
 
 REST API Server for Burny.
 
-API DOC: http://dev.burny.page/swagger/index.html
+API DOC: https://dev-api.burny.page/swagger/index.html
 
 ## Teck Stack
 
