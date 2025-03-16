@@ -5,12 +5,12 @@ output "bucket_url" {
 
 output "backend_bucket_name" {
   description = "The name of the backend bucket for CDN (if enabled)"
-  value       = var.enable_cdn ? google_compute_backend_bucket.static_website_backend[0].name : null
+  value       = google_compute_backend_bucket.static_website_backend.name
 }
 
 output "custom_domain_ip" {
   description = "The global IP address for the custom domain (if enabled)"
-  value       = google_compute_global_address.website_ip[0].address
+  value       = google_compute_global_address.website_ip.address
 }
 
 output "custom_domain" {

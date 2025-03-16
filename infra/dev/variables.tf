@@ -20,12 +20,6 @@ variable "secrets" {
   sensitive = true
 }
 
-variable "github_repository" {
-  description = "GitHub repository name"
-  type        = string
-  default     = "Tomoki108/burny"
-}
-
 variable "cloud_run_service_name" {
   description = "Cloud Run service name"
   type        = string
@@ -49,8 +43,7 @@ variable "frontend_bucket_location" {
   default     = "asia-northeast1"
 }
 
-variable "enable_cdn" {
-  description = "Cloud CDNを有効にするかどうか"
-  type        = bool
-  default     = false
+variable "web_domain" {
+  description = "ウェブサイトのドメイン名"
+  type        = string
 }

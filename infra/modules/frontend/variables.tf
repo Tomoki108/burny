@@ -18,9 +18,3 @@ variable "web_domain" {
   description = "The domain name for the website"
   type        = string
 }
-
-variable "enable_cdn" {
-  description = "Enable Cloud CDN for the static website"
-  type        = bool
-  default     = false
-}

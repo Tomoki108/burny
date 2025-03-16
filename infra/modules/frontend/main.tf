@@ -31,12 +31,12 @@ resource "google_storage_bucket_iam_binding" "public_access" {
   ]
 }
 
-# CDNが有効な場合のロードバランサー設定（オプション）
+# ロードバランサー設定
 resource "google_compute_backend_bucket" "static_website_backend" {
-  count       = var.enable_cdn ? 1 : 0
+  project     = var.project_id
   name        = "${var.bucket_name}-backend"
   bucket_name = google_storage_bucket.static_website.name
-  enable_cdn  = var.enable_cdn
+  enable_cdn  = true
 
   # CDNキャッシュの設定
   cdn_policy {
@@ -47,7 +47,7 @@ resource "google_compute_backend_bucket" "static_website_backend" {
   }
 }
 
-# SSL証明書の作成（カスタムドメインがある場合）
+# SSL証明書の作成
 resource "google_compute_managed_ssl_certificate" "website_cert" {
   name    = "${var.bucket_name}-cert"
   project = var.project_id
@@ -66,15 +66,15 @@ resource "google_compute_global_address" "website_ip" {
 # カスタムドメイン用のHTTPSプロキシ
 resource "google_compute_target_https_proxy" "website_https_proxy" {
   name             = "${var.bucket_name}-https-proxy"
-  url_map          = google_compute_url_map.website_url_map[0].id
-  ssl_certificates = [google_compute_managed_ssl_certificate.website_cert[0].id]
+  url_map          = google_compute_url_map.website_url_map.id
+  ssl_certificates = [google_compute_managed_ssl_certificate.website_cert.id]
   project          = var.project_id
 }
 
-# URLマップの作成（カスタムドメインがある場合）
+# URLマップの作成
 resource "google_compute_url_map" "website_url_map" {
   name            = "${var.bucket_name}-url-map"
-  default_service = google_compute_backend_bucket.static_website_backend[0].id
+  default_service = google_compute_backend_bucket.static_website_backend.id
   project         = var.project_id
 }
 
@@ -93,15 +93,15 @@ resource "google_compute_url_map" "http_redirect" {
 # HTTP用プロキシ（HTTPSへリダイレクトするため）
 resource "google_compute_target_http_proxy" "website_http_proxy" {
   name    = "${var.bucket_name}-http-proxy"
-  url_map = google_compute_url_map.http_redirect[0].id
+  url_map = google_compute_url_map.http_redirect.id
   project = var.project_id
 }
 
 # HTTPSのグローバルフォワーディングルール
 resource "google_compute_global_forwarding_rule" "website_https_rule" {
   name       = "${var.bucket_name}-https-rule"
-  target     = google_compute_target_https_proxy.website_https_proxy[0].id
-  ip_address = google_compute_global_address.website_ip[0].address
+  target     = google_compute_target_https_proxy.website_https_proxy.id
+  ip_address = google_compute_global_address.website_ip.address
   port_range = "443"
   project    = var.project_id
 }
@@ -109,8 +109,8 @@ resource "google_compute_global_forwarding_rule" "website_https_rule" {
 # HTTPのグローバルフォワーディングルール（HTTPSへリダイレクト）
 resource "google_compute_global_forwarding_rule" "website_http_rule" {
   name       = "${var.bucket_name}-http-rule"
-  target     = google_compute_target_http_proxy.website_http_proxy[0].id
-  ip_address = google_compute_global_address.website_ip[0].address
+  target     = google_compute_target_http_proxy.website_http_proxy.id
+  ip_address = google_compute_global_address.website_ip.address
   port_range = "80"
   project    = var.project_id
 }
