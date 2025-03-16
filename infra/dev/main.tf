@@ -22,11 +22,3 @@ module "frontend" {
   web_domain      = var.web_domain
 }
 
-output "frontend_url" {
-  value = module.frontend.bucket_url
-}
-
-output "github_workload_identity_provider_id" {
-  value = module.github.workload_identity_provider_id
-}
-
