@@ -15,9 +15,20 @@ import "@mdi/font/css/materialdesignicons.css";
 
 library.add(faProjectDiagram, faSignOutAlt, faUser);
 
-createApp(App)
-  .component("font-awesome-icon", FontAwesomeIcon)
-  .use(createPinia())
-  .use(router)
-  .use(vuetify)
-  .mount("#app");
+enableMocking().then(() => {
+  createApp(App)
+    .component("font-awesome-icon", FontAwesomeIcon)
+    .use(createPinia())
+    .use(router)
+    .use(vuetify)
+    .mount("#app");
+});
+
+async function enableMocking() {
+  if (import.meta.env.VITE_ENV !== "test") {
+    return;
+  }
+
+  const { worker } = await import("../tests/mock_server.ts");
+  return worker.start();
+}
