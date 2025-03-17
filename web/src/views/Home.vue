@@ -1,7 +1,7 @@
 <template>
     <div class="home-container">
         <v-card class="px-2 py-2 text-center">⚠️ This application is in beta version and might be discontinued or
-            changed without notice. ⚠️</v-card>
+            changed without notice.</v-card>
         <header class="hero">
             <h1 class="hero-title">Burny 🐶</h1>
             <p class="hero-subtitle">Simplify Project Management with Burn-up Charts</p>
