@@ -25,7 +25,7 @@ enableMocking().then(() => {
 });
 
 async function enableMocking() {
-  if (import.meta.env.VITE_ENV !== "test") {
+  if (import.meta.env.VITE_MOCK_API == "false") {
     return;
   }
 

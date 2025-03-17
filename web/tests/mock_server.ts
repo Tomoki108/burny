@@ -1,6 +1,7 @@
 import { http, HttpResponse } from "msw";
 import { setupWorker } from "msw/browser";
-import { API_HOST } from "../src/config";
+
+const API_HOST = "http://localhost:1323/api/v1";
 
 export const handlers = [
   http.post(`${API_HOST}/sign_up`, () => {
