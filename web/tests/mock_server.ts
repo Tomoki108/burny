@@ -12,10 +12,10 @@ export const handlers = [
       { status: 201 }
     );
   }),
-  http.post(`${API_HOST}/api/v1/sign_in`, () => {
+  http.post(`${API_HOST}/sign_in`, () => {
     return HttpResponse.json(
       {
-        token: "mock-jwt-token",
+        token: generateMockJWT(),
         user: {
           id: "1",
           email: "test@example.com",
@@ -27,3 +27,19 @@ export const handlers = [
 ];
 
 export const worker = setupWorker(...handlers);
+
+// デコード可能なモックJWTトークン
+// ペイロード: { "sub": "1", "email": "test@example.com", "exp": 最新の時刻から1時間後 }
+const generateMockJWT = () => {
+  const header = btoa(JSON.stringify({ alg: "HS256", typ: "JWT" }));
+  const now = Math.floor(Date.now() / 1000);
+  const payload = btoa(
+    JSON.stringify({
+      sub: "1",
+      email: "test@example.com",
+      exp: now + 3600, // 1時間後
+    })
+  );
+  const signature = btoa("mock-signature"); // 実際の署名は不要
+  return `${header}.${payload}.${signature}`;
+};
