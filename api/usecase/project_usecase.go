@@ -164,7 +164,7 @@ func (u ProjectUseCase) Delete(userID uint, req io.DeleteProjectRequest) error {
 	})
 }
 
-func (u ProjectUseCase) CreateDemoProject(userID uint) {
+func (u ProjectUseCase) CreateDemoProject(userID uint) error {
 	// startDateに4週間前の月曜日をセットする
 	now := time.Now()
 	startDate := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local)
@@ -184,7 +184,7 @@ func (u ProjectUseCase) CreateDemoProject(userID uint) {
 	}
 	actualSPs := []int{15, 27, 10, 24, 0, 0}
 
-	u.Transactioner.Transaction(func(tx domain.Transaction) (err error) {
+	err := u.Transactioner.Transaction(func(tx domain.Transaction) (err error) {
 		project, err = u.ProjectRepo.Create(tx, project)
 		if err != nil {
 			return err
@@ -218,4 +218,6 @@ func (u ProjectUseCase) CreateDemoProject(userID uint) {
 
 		return nil
 	})
+
+	return err
 }
