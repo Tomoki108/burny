@@ -14,6 +14,7 @@ API DOC: https://dev-api.burny.page/swagger/index.html
 | **Architecture** | Clean Architecture                         |
 | **Validation**   | https://github.com/go-playground/validator |
 | **DI Container** | https://github.com/uber-go/dig             |
+| **Event Bus**    | https://github.com/asaskevich/EventBus     |
 | **E2E Test**     | https://github.com/sebdah/goldie           |
 | **Swagger**      | https://github.com/swaggo/swag             |
 
@@ -39,4 +40,9 @@ go install github.com/swaggo/swag/cmd/swag@latest
 ```shell
 # update API DOC
 swag init
+
+# run e2e tests
+go test ./e2e
+# update golden file of e2e tests
+go test ./e2e -update
 ```
