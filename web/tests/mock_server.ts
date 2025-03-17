@@ -1,8 +1,9 @@
 import { http, HttpResponse } from "msw";
 import { setupWorker } from "msw/browser";
+import { API_HOST } from "../src/config";
 
 export const handlers = [
-  http.post("http://localhost:1323/api/v1/sign_up", () => {
+  http.post(`${API_HOST}/sign_up`, () => {
     return HttpResponse.json(
       {
         message: "Registration successful. Please sign in.",
@@ -10,7 +11,7 @@ export const handlers = [
       { status: 201 }
     );
   }),
-  http.post("http://localhost:1323/api/v1/sign_in", () => {
+  http.post(`${API_HOST}/api/v1/sign_in`, () => {
     return HttpResponse.json(
       {
         token: "mock-jwt-token",
