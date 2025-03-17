@@ -1,9 +1,9 @@
-import { http, HttpResponse } from "msw";
+import { http, HttpResponse, passthrough } from "msw";
 import { setupWorker } from "msw/browser";
 
 const API_HOST = "http://localhost:1323/api/v1";
 
-export const handlers = [
+const handlers = [
   http.post(`${API_HOST}/sign_up`, () => {
     return HttpResponse.json(
       {
@@ -23,6 +23,13 @@ export const handlers = [
       },
       { status: 200 }
     );
+  }),
+  http.get(`${API_HOST}/projects`, () => {
+    return HttpResponse.json([], { status: 200 });
+  }),
+  // CSS, Vue, TypeScriptファイルを取得するリクエストをそのまま通す（unhandle requestの警告を消すため）
+  http.get(new RegExp("\\.(css|vue|ts)$"), () => {
+    passthrough();
   }),
 ];
 
