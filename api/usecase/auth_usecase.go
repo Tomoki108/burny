@@ -9,6 +9,7 @@ import (
 	"github.com/Tomoki108/burny/config"
 	"github.com/Tomoki108/burny/domain"
 	"github.com/Tomoki108/burny/handler/io"
+	evbus "github.com/asaskevich/EventBus"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -19,12 +20,14 @@ var ErrInvalidPassword = errors.New("password is invalid")
 type AuthUseCase struct {
 	Repo          domain.UserRepository
 	Transactioner domain.Transactioner
+	EventBus      evbus.Bus
 }
 
-func NewAuthUseCase(repo domain.UserRepository, transactioner domain.Transactioner) AuthUseCase {
+func NewAuthUseCase(repo domain.UserRepository, transactioner domain.Transactioner, eventBus evbus.Bus) AuthUseCase {
 	return AuthUseCase{
 		Repo:          repo,
 		Transactioner: transactioner,
+		EventBus:      eventBus,
 	}
 }
 
@@ -47,7 +50,14 @@ func (u AuthUseCase) SignUp(req io.SignUpRequest) (*domain.User, error) {
 		Password: string(hassedPassword),
 	}
 
-	return u.Repo.Create(u.Transactioner.Default(), user)
+	user, err = u.Repo.Create(u.Transactioner.Default(), user)
+	if err != nil {
+		return nil, err
+	}
+
+	u.EventBus.Publish(domain.UserCreatedTopic, domain.UserCreatedEvent{UserID: user.ID})
+
+	return user, nil
 }
 
 func (u AuthUseCase) SignIn(req io.SignInRequest) (tokenStr string, err error) {

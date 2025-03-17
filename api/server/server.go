@@ -6,7 +6,10 @@ import (
 
 	"github.com/Tomoki108/burny/config"
 	"github.com/Tomoki108/burny/docs"
+	"github.com/Tomoki108/burny/domain"
 	"github.com/Tomoki108/burny/handler"
+	"github.com/Tomoki108/burny/subscriber"
+	"github.com/asaskevich/EventBus"
 	"github.com/golang-jwt/jwt/v5"
 	echojwt "github.com/labstack/echo-jwt/v4"
 
@@ -21,6 +24,19 @@ func NewEchoServer() *echo.Echo {
 	e.Use(middleware.Logger())
 	e.Use(middleware.Recover())
 	e.Use(middleware.CORS()) // デフォルトのCORS設定。（これがないとlocalhostの別のポートからの通信が許可されない）
+
+	// DIコンテナからイベントサブスクライバーを取得
+	var userEventSub subscriber.UserEventSubscriber
+	Container.Invoke(func(s subscriber.UserEventSubscriber) {
+		userEventSub = s
+	})
+
+	// イベントサブスクライバー登録
+	var bus EventBus.Bus
+	Container.Invoke(func(b EventBus.Bus) {
+		bus = b
+	})
+	bus.Subscribe(domain.UserCreatedTopic, userEventSub.HandleUserCreatedEvent)
 
 	// API DOC
 	e.GET("/swagger/*", echoSwagger.WrapHandler)

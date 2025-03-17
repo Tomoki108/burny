@@ -29,3 +29,9 @@ type UserRepository interface {
 	Get(tx Transaction, id uint) (*User, error)
 	GetByEmail(tx Transaction, email string) (*User, error)
 }
+
+const UserCreatedTopic = "user:created"
+
+type UserCreatedEvent struct {
+	UserID uint
+}

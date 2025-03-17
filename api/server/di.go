@@ -4,7 +4,9 @@ import (
 	"github.com/Tomoki108/burny/domain"
 	"github.com/Tomoki108/burny/handler"
 	"github.com/Tomoki108/burny/infrastructure"
+	"github.com/Tomoki108/burny/subscriber"
 	"github.com/Tomoki108/burny/usecase"
+	"github.com/asaskevich/EventBus"
 	"go.uber.org/dig"
 )
 
@@ -23,6 +25,8 @@ func InitDIContainer() {
 		{handler.NewAuthHandler, nil},
 		{handler.NewProjectHandler, nil},
 		{handler.NewSprintHandler, nil},
+		// subscriber
+		{subscriber.NewUserEventSubscriber, nil},
 		// usecase
 		{usecase.NewProjectUseCase, nil},
 		{usecase.NewSprintUseCase, nil},
@@ -32,6 +36,8 @@ func InitDIContainer() {
 		{infrastructure.NewProjectRepository, []dig.ProvideOption{dig.As(new(domain.ProjectRepository))}},
 		{infrastructure.NewSprintRepository, []dig.ProvideOption{dig.As(new(domain.SprintRepository))}},
 		{infrastructure.NewTransactioner, []dig.ProvideOption{dig.As(new(domain.Transactioner))}},
+		// other
+		{EventBus.New, nil},
 	}
 
 	for _, arg := range args {
