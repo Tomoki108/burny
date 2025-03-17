@@ -1,5 +1,13 @@
 [
   {
+    "description": "This is a demo project to show how burny works. Check this out!!",
+    "sprint_count": 6,
+    "sprint_duration": 1,
+    "start_date": "2025-02-17",
+    "title": "Demo Project",
+    "total_sp": 120
+  },
+  {
     "description": "this is test project",
     "sprint_count": 100,
     "sprint_duration": 1,
