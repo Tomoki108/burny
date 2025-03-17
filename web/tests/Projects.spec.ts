@@ -12,18 +12,12 @@ test.describe("Projects page", () => {
     await pageClick(page, "new-project-button");
 
     // Fill project form
-    await page.getByRole("textbox", { name: "title" }).fill("Test Project");
-    await page
-      .getByRole("textbox", { name: "description" })
-      .fill("This is a test project");
-    await page
-      .getByRole("spinbutton", { name: "total-sp" })
-      .fill("100", { force: true });
-    await page.getByRole("spinbutton", { name: "sprint-count" }).fill("5");
-    await page
-      .getByRole("combobox", { name: "sprint-duration" })
-      .selectOption("1");
-    await page.getByRole("textbox", { name: "start-date" }).fill("2024-01-01");
+    await page.getByLabel("Title").fill("Test Project");
+    await page.getByLabel("Description").fill("This is a test project");
+    await page.getByLabel("Total SP").fill("100");
+    await page.getByLabel("Sprint Count").fill("5");
+    await page.getByLabel("Sprint Weeks").selectOption("1");
+    await page.getByLabel("Start Date").fill("2024-01-01");
 
     // Save project
     await pageClick(page, "project-save");
