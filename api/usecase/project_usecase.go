@@ -163,3 +163,59 @@ func (u ProjectUseCase) Delete(userID uint, req io.DeleteProjectRequest) error {
 		return u.ProjectRepo.Delete(u.Transactioner.Default(), userID, req.ProjectID)
 	})
 }
+
+func (u ProjectUseCase) CreateDemoProject(userID uint) {
+	// startDateに4週間前の月曜日をセットする
+	now := time.Now()
+	startDate := time.Date(now.Year(), now.Month(), now.Day(), 0, 0, 0, 0, time.Local)
+	startDate = startDate.AddDate(0, 0, -28)
+	for startDate.Weekday() != time.Monday {
+		startDate = startDate.AddDate(0, 0, -1)
+	}
+
+	project := &domain.Project{
+		UserID:         userID,
+		Title:          "Demo Project",
+		Description:    "This is a demo project to show how burny works. Check this out!!",
+		TotalSP:        120,
+		StartDate:      startDate,
+		SprintDuration: 1,
+		SprintCount:    6,
+	}
+	actualSPs := []int{15, 27, 10, 24, 0, 0}
+
+	u.Transactioner.Transaction(func(tx domain.Transaction) (err error) {
+		project, err = u.ProjectRepo.Create(tx, project)
+		if err != nil {
+			return err
+		}
+
+		sprints := make([]*domain.Sprint, 0, project.SprintCount)
+		idealSP := project.TotalSP / project.SprintCount
+		startDate := project.StartDate
+		endDate := startDate.AddDate(0, 0, 7*project.SprintDuration-1)
+		for i := 0; i < project.SprintCount; i++ {
+			sprint := &domain.Sprint{
+				UserID:    userID,
+				ProjectID: project.ID,
+				IdealSP:   idealSP,
+				ActualSP:  actualSPs[i],
+				StartDate: startDate,
+				EndDate:   endDate,
+			}
+			sprints = append(sprints, sprint)
+
+			startDate = endDate.AddDate(0, 0, 1)
+			endDate = startDate.AddDate(0, 0, 7*project.SprintDuration-1)
+		}
+
+		for _, sprint := range sprints {
+			err := u.SprintRepo.Create(tx, sprint)
+			if err != nil {
+				return err
+			}
+		}
+
+		return nil
+	})
+}
