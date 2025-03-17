@@ -23,7 +23,7 @@
 
             </v-col>
             <v-col lg="3" md="6" sm="12" @click="openNewProjectModal">
-                <div class="project-card-new">
+                <div data-testid="new-project-button" class="project-card-new">
                     <h2>+ New Project</h2>
                 </div>
             </v-col>

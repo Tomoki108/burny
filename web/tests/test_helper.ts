@@ -13,3 +13,11 @@ export async function pageClick(page: Page, dataTestId: string) {
 export async function pageTextContent(page: Page, dataTestId: string) {
   return page.textContent(`[data-testid="${dataTestId}"]`);
 }
+
+export async function login(page: Page) {
+  await page.goto(WEB_LOCAL_HOST);
+  await pageClick(page, "signin-modal-button");
+  await pageFill(page, "email", "test@example.com");
+  await pageFill(page, "password", "burnyburny");
+  await pageClick(page, "auth-submit-button");
+}

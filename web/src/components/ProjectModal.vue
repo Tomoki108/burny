@@ -6,30 +6,30 @@
             </v-card-title>
             <v-card-text>
                 <v-form ref="projectForm">
-                    <v-text-field label="Title" v-model="localProject.title"
+                    <v-text-field name="title" label="Title" v-model="localProject.title"
                         :rules="newRule('title').required().lte(50).rules" /> <br>
-                    <v-textarea label="Description" v-model="localProject.description"
+                    <v-textarea name="description" label="Description" v-model="localProject.description"
                         :rules="newRule('Description').lte(500).rules" />
                     <br>
-                    <v-text-field label="Total SP" v-model.number="localProject.total_sp" type="number"
+                    <v-text-field name="total-sp" label="Total SP" v-model.number="localProject.total_sp" type="number"
                         :rules="newRule('Total SP').required().lte(1000).gt(0).rules" />
                     <br>
-                    <v-text-field label="Sprint Count" v-model.number="localProject.sprint_count" type="number"
-                        :rules="newRule('Sprint Count').required().gt(0).lte(100).rules" />
+                    <v-text-field name="sprint-count" label="Sprint Count" v-model.number="localProject.sprint_count"
+                        type="number" :rules="newRule('Sprint Count').required().gt(0).lte(100).rules" />
                     <v-alert type="info" text="Sprint Weeks and Start Date can't be updated after creation."></v-alert>
                     <br>
-                    <v-select :items="[1, 2, 3]" label="Sprint Weeks" v-model.number="localProject.sprint_duration"
-                        :disabled="project.id !== 0"></v-select>
+                    <v-select name="sprint-duration" :items="[1, 2, 3]" label="Sprint Weeks"
+                        v-model.number="localProject.sprint_duration" :disabled="project.id !== 0"></v-select>
                     <br>
-                    <v-text-field label="Start Date" v-model="localProject.start_date" type="date"
+                    <v-text-field name="start-date" label="Start Date" v-model="localProject.start_date" type="date"
                         :rules="newRule('Start Date').required().rules" :disabled="project.id !== 0" />
                 </v-form>
             </v-card-text>
 
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <button class="button-small" @click.prevent="onSubmit">Save</button>
-                <button class="button-small-cancel" @click="onCancel">Cancel</button>
+                <button class="button-small" data-testid="project-save" @click.prevent="onSubmit">Save</button>
+                <button class="button-small-cancel" data-testid="project-cancel" @click="onCancel">Cancel</button>
             </v-card-actions>
         </v-card>
     </v-dialog>
