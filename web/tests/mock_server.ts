@@ -5,6 +5,8 @@ import {
 } from "../src/api/project_api";
 import { setupWorker } from "msw/browser";
 
+// NOTE: Do not import this module from spec files. Praywright somewhat stops working. (due to cyclic import?)
+
 // NOTE: VITE_API_HOST env var is not loaded in the test environment
 const API_HOST = "http://localhost:1323/api/v1";
 
