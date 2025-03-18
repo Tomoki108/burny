@@ -10,9 +10,11 @@
                         <p class="mb-2"></p>
                         <p>{{ project.description }}</p>
                         <div class="project-actions">
-                            <button class="button-small" @click.prevent="openUpdateProjectModal(project)">Edit
+                            <button :data-testid="'edit-project-button-' + project.id" class="button-small"
+                                @click.prevent="openUpdateProjectModal(project)">Edit
                             </button>
-                            <button class="button-small-danger" @click.prevent="dialog(`Delete Project`, `Are you shure
+                            <button :data-testid="'delete-project-button-' + project.id" class="button-small-danger"
+                                @click.prevent="dialog(`Delete Project`, `Are you shure
                                 to delete project ${project.title}?`)">Delete
                                 <Dialog :ctx="dialogCtx" :callback="() => submitDeleteProject(project.id)">
                                 </Dialog>

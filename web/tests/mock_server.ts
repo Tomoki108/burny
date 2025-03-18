@@ -1,6 +1,5 @@
 import { http, HttpResponse, passthrough } from "msw";
 import { setupWorker } from "msw/browser";
-import type { Project } from "../src/api/project_api";
 
 const API_HOST = "http://localhost:1323/api/v1";
 
@@ -13,6 +12,7 @@ const handlers = [
       { status: 201 }
     );
   }),
+
   http.post(`${API_HOST}/sign_in`, () => {
     return HttpResponse.json(
       {
@@ -25,30 +25,51 @@ const handlers = [
       { status: 200 }
     );
   }),
+
   http.get(`${API_HOST}/projects`, () => {
     return HttpResponse.json([], { status: 200 });
   }),
-  http.post(`${API_HOST}/projects`, async (request) => {
-    const json = await request.request.json();
-    const pj = json?.valueOf();
-    const project = pj as Project;
 
+  http.post(`${API_HOST}/projects`, () => {
     return HttpResponse.json(
       {
         id: 1,
-        user_id: project.user_id,
-        title: project.title,
-        sprint_count: project.sprint_count,
-        description: project.description,
-        sprint_duration: project.sprint_duration,
-        start_date: project.start_date,
-        total_sp: project.total_sp,
+        user_id: 1,
+        title: "Test Project",
+        description: "This is a test project",
+        sprint_count: 5,
+        sprint_duration: 14,
+        start_date: "2024-01-01",
+        total_sp: 100,
         created_at: "2024-01-01T00:00:00Z",
         updated_at: "2024-01-01T00:00:00Z",
       },
       { status: 201 }
     );
   }),
+
+  http.put(`${API_HOST}/projects/:id`, () => {
+    return HttpResponse.json(
+      {
+        id: 1,
+        user_id: 1,
+        title: "Updated Project",
+        description: "This project has been updated",
+        sprint_count: 6,
+        sprint_duration: 14,
+        start_date: "2024-01-01",
+        total_sp: 150,
+        created_at: "2024-01-01T00:00:00Z",
+        updated_at: "2024-01-01T00:00:00Z",
+      },
+      { status: 200 }
+    );
+  }),
+
+  http.delete(`${API_HOST}/projects/:id`, () => {
+    return new HttpResponse(null, { status: 204 });
+  }),
+
   // CSS, Vue, TypeScriptファイルを取得するリクエストをそのまま通す（unhandle requestの警告を消すため）
   http.get(new RegExp("\\.(css|vue|ts)$"), () => {
     passthrough();
