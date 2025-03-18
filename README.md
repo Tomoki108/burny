@@ -8,7 +8,7 @@ Burny is a burn-up chart management application designed to help scrum teams tra
 - [`web/`](/web/README.md) - Frontend SPA written in Vue.js 3.
 - [`infra/`](/infra/README.md) - Infrastructure as Code for Google Cloud resources written in terraform.
 
-For more detailed infomation like setup or teck stack, please refer to each directories README.md
+For more detailed infomation like setup or teck stack, please refer to each directories README.md.
 
 ## License
 

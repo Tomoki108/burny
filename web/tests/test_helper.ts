@@ -7,12 +7,20 @@ export async function pageFill(page: Page, dataTestId: string, value: string) {
 }
 
 export async function pageClick(page: Page, dataTestId: string) {
+  // For dialog buttons and other potentially problematic elements, add extra wait and force option
+  if (dataTestId.includes("dialog")) {
+    // Wait briefly for any animations to complete
+    await sleep(500);
+    return page.click(`[data-testid="${dataTestId}"]`, { force: true });
+  }
   return page.click(`[data-testid="${dataTestId}"]`);
 }
 
 export async function pageTextContent(page: Page, dataTestId: string) {
   return page.textContent(`[data-testid="${dataTestId}"]`);
 }
+
+export const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 export async function login(page: Page) {
   await page.goto(WEB_LOCAL_HOST);

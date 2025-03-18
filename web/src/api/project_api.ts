@@ -66,7 +66,7 @@ export async function fetchProject(
   return await response.json();
 }
 
-type updateProjectRequest = {
+export type UpdateProjectRequest = {
   title: string;
   description: string;
   total_sp: number;
@@ -76,7 +76,7 @@ type updateProjectRequest = {
 export async function updateProject(
   project: Project
 ): Promise<Project | ErrorResponse> {
-  const req: updateProjectRequest = {
+  const req: UpdateProjectRequest = {
     title: project.title,
     description: project.description,
     total_sp: project.total_sp,
