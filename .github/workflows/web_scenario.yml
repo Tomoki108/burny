@@ -49,10 +49,18 @@ jobs:
 
       - name: Start Vite server in the background
         run: |
-          VITE_MOCK_API=true VITE_API_HOST=http://localhost:1323/api/v1 npm run dev &
+          export VITE_MOCK_API="true"
+          export VITE_API_HOST="http://localhost:1323/api/v1"
+          npm run dev &
           echo "Waiting for the server to start..."
           # サーバーが起動するのを待つ
           npx wait-on http://localhost:5179 -t 60000 || (echo "Server failed to start" && exit 1)
+          # MSWの初期化を確実にするために少し待機
+          sleep 3
 
       - name: Run tests
+        # env:
+        # テスト実行時にも環境変数を設定
+        #   VITE_MOCK_API: "true"
+        #   VITE_API_HOST: "http://localhost:1323/api/v1"
         run: npm test
