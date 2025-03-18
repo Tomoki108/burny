@@ -53,7 +53,7 @@ jobs:
       # アプリケーションをバックグラウンドで起動
       - name: Start Vite development server
         run: |
-          npm run dev &
+          VITE_MOCK_API=true npm run dev &
           echo "Waiting for the server to start..."
           # 20秒待機してサーバーが起動するのを待つ
           sleep 10
