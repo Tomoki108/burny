@@ -1,6 +1,7 @@
 import { http, HttpResponse, passthrough } from "msw";
 import { setupWorker } from "msw/browser";
 
+// NOTE: VITE_API_HOST env var is not loaded in the test environment
 const API_HOST = "http://localhost:1323/api/v1";
 
 const handlers = [
