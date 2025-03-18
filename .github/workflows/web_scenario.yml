@@ -2,13 +2,15 @@ name: Web Tests
 
 on:
   push:
-    branches: [main]
+    branches: [main, front-test-wf]
     paths:
       - "web/**"
+      - ".github/workflows/web_scenario.yml"
   pull_request:
     branches: [main, front-test-wf]
     paths:
       - "web/**"
+      - ".github/workflows/web_scenario.yml"
   workflow_dispatch:
 
 jobs:
