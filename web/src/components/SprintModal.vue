@@ -2,7 +2,7 @@
     <v-dialog v-model="isOpen" max-width="400px" persistent>
         <v-card class="sprint-modal">
             <v-card-title>
-                <h2>{{ modalTitle }}</h2>
+                <h2 data-testid="sprint-modal-title">{{ modalTitle }}</h2>
             </v-card-title>
             <v-card-text>
                 <v-form ref="sprintForm">
@@ -12,7 +12,7 @@
             </v-card-text>
             <v-card-actions>
                 <v-spacer></v-spacer>
-                <button class="button-small" @click.prevent="onSubmit">Save</button>
+                <button data-testid="sprint-update-button" class="button-small" @click.prevent="onSubmit">Save</button>
                 <button class="button-small-cancel" @click="onCancel">Cancel</button>
             </v-card-actions>
         </v-card>

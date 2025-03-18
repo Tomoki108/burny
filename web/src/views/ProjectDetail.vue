@@ -29,13 +29,13 @@
                 <tbody>
                     <tr v-for="sprint, idx in sprintsStore.getSprints()" :key="sprint.id">
                         <td>Sprint {{ idx + 1 }}</td>
-                        <td>{{ sprint.start_date }}</td>
-                        <td>{{ sprint.end_date }}</td>
-                        <td>{{ sprint.ideal_sp }}</td>
-                        <td>{{ sprint.actual_sp }}</td>
+                        <td data-testid="start_date">{{ sprint.start_date }}</td>
+                        <td data-testid="end_date">{{ sprint.end_date }}</td>
+                        <td data-testid="ideal_sp">{{ sprint.ideal_sp }}</td>
+                        <td data-testid="actual_sp">{{ sprint.actual_sp }}</td>
                         <td>
-                            <button class="button-small" v-if="isSprintStarted(sprint)"
-                                @click.prevent="openUpdateSprintModal(sprint)">
+                            <button data-testid="update-sprint-button" class="button-small"
+                                v-if="isSprintStarted(sprint)" @click.prevent="openUpdateSprintModal(idx + 1, sprint)">
                                 Update
                             </button>
                             <span v-else>not started</span>
@@ -49,7 +49,7 @@
             <Charts :sprints="sprintsStore.getSprints()" :total_sp="project.total_sp" />
         </div>
 
-        <SprintModal :show="updateSprintModal" modalTitle="Update Sprint" :sprint="updateSprint"
+        <SprintModal :show="updateSprintModal" :modalTitle="'Update Sprint ' + updateSprintNo" :sprint="updateSprint"
             @update:show="updateSprintModal = $event" @submit="submitUpdateSprint" />
     </ContentsContainer>
 </template>
@@ -97,10 +97,12 @@ onMounted(async () => {
 // Update Sprint
 const updateSprintModal = ref(false);
 const updateSprint = ref({} as Sprint);
+const updateSprintNo = ref(0);
 
-const openUpdateSprintModal = (sprint: Sprint) => {
+const openUpdateSprintModal = (sprintNo: number, sprint: Sprint) => {
     updateSprintModal.value = true;
     updateSprint.value = sprint;
+    updateSprintNo.value = sprintNo;
 };
 
 const submitUpdateSprint = async (sprint: Sprint) => {
