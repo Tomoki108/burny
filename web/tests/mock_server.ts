@@ -8,11 +8,9 @@ import { setupWorker } from "msw/browser";
 // NOTE: VITE_API_HOST env var is not loaded in the test environment
 const API_HOST = "http://localhost:1323/api/v1";
 
-export const TEST_USER_ID = 1;
-
 export const TEST_CREATE_PROJECT: Project = {
   id: 10,
-  user_id: TEST_USER_ID,
+  user_id: 1,
   title: "Test Project",
   sprint_count: 5,
   description: "This is a test project",
@@ -47,23 +45,7 @@ const handlers = [
   }),
 
   http.get(`${API_HOST}/projects`, () => {
-    return HttpResponse.json(
-      [
-        {
-          id: 1,
-          user_id: 1,
-          title: "Demo Project",
-          description: "This is a demo project",
-          sprint_count: 5,
-          sprint_duration: 14,
-          start_date: "2024-01-01",
-          total_sp: 100,
-          created_at: "2024-01-01T00:00:00Z",
-          updated_at: "2024-01-01T00:00:00Z",
-        },
-      ],
-      { status: 200 }
-    );
+    return HttpResponse.json([], { status: 200 });
   }),
 
   http.post(`${API_HOST}/projects`, async () => {

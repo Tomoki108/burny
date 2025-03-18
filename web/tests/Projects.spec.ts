@@ -1,5 +1,6 @@
 import { test, expect } from "@playwright/test";
 import { WEB_LOCAL_HOST, pageClick, login, sleep } from "./test_helper";
+import { TEST_CREATE_PROJECT } from "./mock_server";
 
 test.describe("Projects page", () => {
   test("User can create, update and delete project", async ({ page }) => {
@@ -8,11 +9,17 @@ test.describe("Projects page", () => {
 
     // create project
     await pageClick(page, "new-project-button");
-    await page.getByLabel("Title").fill("Test Project");
-    await page.getByLabel("Description").fill("This is a test project");
-    await page.getByLabel("Total SP").fill("100");
-    await page.getByLabel("Sprint Count").fill("5");
-    await page.getByLabel("Start Date").fill("2024-01-01");
+    await page.getByLabel("Title").fill(TEST_CREATE_PROJECT.title);
+    await page.getByLabel("Description").fill(TEST_CREATE_PROJECT.description);
+    await page
+      .getByLabel("Total SP")
+      .fill(String(TEST_CREATE_PROJECT.total_sp));
+    await page
+      .getByLabel("Sprint Count")
+      .fill(String(TEST_CREATE_PROJECT.sprint_count));
+    await page
+      .getByLabel("Start Date")
+      .fill(String(TEST_CREATE_PROJECT.start_date));
     await pageClick(page, "project-save");
 
     // assert created project
