@@ -2,12 +2,10 @@ import { test, expect } from "@playwright/test";
 import { WEB_LOCAL_HOST, pageClick, pageFill, login } from "./test_helper";
 
 test.describe("Projects page", () => {
-  test.beforeEach(async ({ page }) => {
+  test("User can create, update and delete project", async ({ page }) => {
     await page.goto(WEB_LOCAL_HOST);
     await login(page);
-  });
 
-  test("User can create, update and delete project", async ({ page }) => {
     // create project
     await pageClick(page, "new-project-button");
     await page.getByLabel("Title").fill("Test Project");

@@ -6,12 +6,12 @@
                     <h1 class="mt-n3 color-white">🐶 Burny</h1>
                 </li>
                 <router-link :to=PATH_PROJECTS custom v-slot="{ navigate }">
-                    <li :class="{ 'active-li': isProjectsRouteActive }" @click="navigate">
+                    <li data-testid="nav-projects" :class="{ 'active-li': isProjectsRouteActive }" @click="navigate">
                         <font-awesome-icon :icon="['fas', 'diagram-project']" /> Projects
                     </li>
                 </router-link>
                 <router-link :to=PATH_ACCOUNT custom v-slot="{ navigate, isActive }">
-                    <li :class="{ 'active-li': isActive }" @click="navigate">
+                    <li data-testid="nav-account" :class="{ 'active-li': isActive }" @click="navigate">
                         <font-awesome-icon :icon="['fas', 'user']" /> Account
                     </li>
                 </router-link>
