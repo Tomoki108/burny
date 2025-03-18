@@ -49,7 +49,7 @@ jobs:
 
       - name: Start Vite server in the background
         run: |
-          VITE_MOCK_API=true npm run dev &
+          VITE_MOCK_API=true VITE_API_HOST=http://localhost:1323/api/v1 npm run dev &
           echo "Waiting for the server to start..."
           # サーバーが起動するのを待つ
           npx wait-on http://localhost:5179 -t 60000 || (echo "Server failed to start" && exit 1)
