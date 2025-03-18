@@ -25,10 +25,8 @@ enableMocking().then(() => {
 });
 
 async function enableMocking() {
-  if (import.meta.env.VITE_MOCK_API == "false") {
-    return;
+  if (import.meta.env.VITE_MOCK_API == "true") {
+    const { worker } = await import("../tests/mock_server.ts");
+    return worker.start();
   }
-
-  const { worker } = await import("../tests/mock_server.ts");
-  return worker.start();
 }
