@@ -24,35 +24,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Get npm cache directory
-        id: npm-cache-dir
-        run: echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
-
       - name: Set up Node.js
         uses: actions/setup-node@v3
         id: setup_node_id
         with:
           node-version: "18"
-          cache: ${{ steps.npm-cache-dir.outputs.dir }}
+          cache: "npm"
 
       - name: Install dependencies
         if: ${{ steps.setup_node_id.outputs.cache-hit != 'true' }}
         run: npm install
-
-      #   - name: Get installed Playwright version
-      #     id: playwright-version
-      #     run: echo "version=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')" >> $GITHUB_OUTPUT
-
-      #   - name: Cache Playwright browsers
-      #     uses: actions/cache@v3
-      #     id: playwright-cache
-      #     with:
-      #       path: ~/.cache/ms-playwright
-      #       key: playwright-${{ steps.playwright-version.outputs.version }}
-
-      #   - name: Install Playwright browsers
-      #     if: steps.playwright-cache.outputs.cache-hit != 'true'
-      #     run: npx playwright install --with-deps
 
       - name: Start Vite server in the background
         run: |
