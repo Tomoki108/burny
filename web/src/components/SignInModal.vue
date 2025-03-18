@@ -3,19 +3,23 @@
         <div class="login-box">
             <h1 class="color-white">Burny 🐶</h1>
             <div class="tabs">
-                <button @click="isSignUp = false" :class="{ active: !isSignUp }">Sign In</button>
-                <button @click="isSignUp = true" :class="{ active: isSignUp }">Sign Up</button>
+                <button data-testid="signin-tab" @click="isSignUp = false" :class="{ active: !isSignUp }">Sign
+                    In</button>
+                <button data-testid="signup-tab" @click="isSignUp = true" :class="{ active: isSignUp }">Sign Up</button>
             </div>
             <form @submit.prevent="onSubmit">
                 <label for="email">Email</label>
-                <input type="email" id="email" v-model="email" placeholder="yourname@burny.page" required />
+                <input data-testid="email" type="email" id="email" v-model="email" placeholder="yourname@burny.page"
+                    required />
                 <label for="password">Password</label>
-                <input type="password" id="password" v-model="password" placeholder="************" required
-                    minlength="8" maxlength="20" />
-                <button type="submit" class="button">{{ isSignUp ? 'Sign Up' : 'Sign In' }}</button>
+                <input data-testid="password" type="password" id="password" v-model="password"
+                    placeholder="************" required minlength="8" maxlength="20" />
+                <button data-testid="auth-submit-button" type="submit" class="button">
+                    {{ isSignUp ? 'Sign Up' : 'Sign In' }}</button>
             </form>
             <v-alert v-if="error" type="error" :text="error" closable class="mt-7" />
-            <v-alert v-if="successMessage" type="success" :text="successMessage" closable class="mt-7" />
+            <v-alert data-testid="auth-success" v-if="successMessage" type="success" :text="successMessage" closable
+                class="mt-7" />
         </div>
     </div>
 </template>

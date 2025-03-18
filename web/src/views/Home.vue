@@ -6,7 +6,8 @@
             <h1 class="hero-title">Burny 🐶</h1>
             <p class="hero-subtitle">Simplify Project Management with Burn-up Charts</p>
             <div class="hero-actions">
-                <button @click="openSignInModal(false)" class="button-large">Sign In</button>
+                <button data-testid="signin-modal-button" @click="openSignInModal(false)" class="button-large">Sign
+                    In</button>
                 <button @click="scrollToAbout" class="button-large nav_link">Learn More</button>
             </div>
 
@@ -93,17 +94,18 @@
 <script lang="ts" setup>
 import { ref, onMounted } from 'vue';
 import { useRoute } from 'vue-router';
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from 'chart.js';
+import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { Line } from 'vue-chartjs';
 import SignInModal from '../components/SignInModal.vue';
 
 // Register Chart.js components
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend);
+ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
 
 const route = useRoute();
 const chartReady = ref(false);
 const showSignInModal = ref(false);
 const isSignUp = ref(false);
+
 
 onMounted(() => {
     // Delay chart initialization to prevent rendering issues

@@ -3,16 +3,18 @@
         <v-row>
             <v-col v-for="project in projectsStore.getProjects()" :key="project.id" lg="3" md="6" sm="12">
                 <router-link :to="'/projects/' + project.id" :props="project">
-                    <div class="project-card">
+                    <div class="project-card" :data-testid="'project-card-' + project.id">
                         <h2 class="mb-2">{{ project.title }}</h2>
                         <p>{{ project.start_date }} to {{ getEndDate(project) }}, {{ project.sprint_count }} sprints, {{
                             project.total_sp }} sp</p>
                         <p class="mb-2"></p>
                         <p>{{ project.description }}</p>
                         <div class="project-actions">
-                            <button class="button-small" @click.prevent="openUpdateProjectModal(project)">Edit
+                            <button :data-testid="'edit-project-button-' + project.id" class="button-small"
+                                @click.prevent="openUpdateProjectModal(project)">Edit
                             </button>
-                            <button class="button-small-danger" @click.prevent="dialog(`Delete Project`, `Are you shure
+                            <button :data-testid="'delete-project-button-' + project.id" class="button-small-danger"
+                                @click.prevent="dialog(`Delete Project`, `Are you shure
                                 to delete project ${project.title}?`)">Delete
                                 <Dialog :ctx="dialogCtx" :callback="() => submitDeleteProject(project.id)">
                                 </Dialog>
@@ -23,7 +25,7 @@
 
             </v-col>
             <v-col lg="3" md="6" sm="12" @click="openNewProjectModal">
-                <div class="project-card-new">
+                <div data-testid="new-project-button" class="project-card-new">
                     <h2>+ New Project</h2>
                 </div>
             </v-col>
