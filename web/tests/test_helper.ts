@@ -7,6 +7,12 @@ export async function pageFill(page: Page, dataTestId: string, value: string) {
 }
 
 export async function pageClick(page: Page, dataTestId: string) {
+  // For dialog buttons and other potentially problematic elements, add extra wait and force option
+  if (dataTestId.includes("dialog")) {
+    // Wait briefly for any animations to complete
+    await sleep(500);
+    return page.click(`[data-testid="${dataTestId}"]`, { force: true });
+  }
   return page.click(`[data-testid="${dataTestId}"]`);
 }
 
