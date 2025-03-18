@@ -14,6 +14,8 @@ export async function pageTextContent(page: Page, dataTestId: string) {
   return page.textContent(`[data-testid="${dataTestId}"]`);
 }
 
+export const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
+
 export async function login(page: Page) {
   await page.goto(WEB_LOCAL_HOST);
   await pageClick(page, "signin-modal-button");
