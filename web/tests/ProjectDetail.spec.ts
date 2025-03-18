@@ -14,25 +14,16 @@ test.describe("ProjectDetail page", () => {
     await page.goto(WEB_LOCAL_HOST);
     await login(page);
 
-    // Create a project first (since we need a project to view details)
-    await pageClick(page, "new-project-button");
-    await page.getByLabel("Title").fill("Test Project");
-    await page.getByLabel("Description").fill("This is a test project");
-    await page.getByLabel("Total SP").fill("100");
-    await page.getByLabel("Sprint Count").fill("5");
-    await page.getByLabel("Start Date").fill("2024-01-01");
-    await pageClick(page, "project-save");
-
     // Navigate to project detail page by clicking on the project card
-    await page.getByText("Test Project").first().click();
-    await expect(page).toHaveURL(/\/projects\/10$/);
+    await page.getByText("Demo Project").first().click();
+    await expect(page).toHaveURL(/\/projects\/1$/);
 
     // Check that project details are displayed correctly
     await expect(page.getByText("Projects > Test Project")).toBeVisible();
     await expect(
       page.getByText("2024-01-01 to 02-05, 5 sprints, 100 sp")
     ).toBeVisible();
-    await expect(page.getByText("This is a test project")).toBeVisible();
+    await expect(page.getByText("This is a demo project")).toBeVisible();
 
     // Verify that the first sprint shows actual_sp value from our mock
     const firstSprintRow = page
