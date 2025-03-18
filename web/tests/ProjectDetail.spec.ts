@@ -19,7 +19,7 @@ test.describe("ProjectDetail page", () => {
     await expect(page).toHaveURL(/\/projects\/1$/);
 
     // Check that project details are displayed correctly
-    await expect(page.getByText("Projects > Test Project")).toBeVisible();
+    await expect(page.getByText("Projects > Demo Project")).toBeVisible();
     await expect(
       page.getByText("2024-01-01 to 02-05, 5 sprints, 100 sp")
     ).toBeVisible();
