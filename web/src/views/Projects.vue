@@ -3,7 +3,7 @@
         <v-row>
             <v-col v-for="project in projectsStore.getProjects()" :key="project.id" lg="3" md="6" sm="12">
                 <router-link :to="'/projects/' + project.id" :props="project">
-                    <div class="project-card">
+                    <div class="project-card" :data-testid="'project-card-' + project.id">
                         <h2 class="mb-2">{{ project.title }}</h2>
                         <p>{{ project.start_date }} to {{ getEndDate(project) }}, {{ project.sprint_count }} sprints, {{
                             project.total_sp }} sp</p>

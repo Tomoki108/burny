@@ -23,8 +23,7 @@ test.describe("Projects page", () => {
     await pageClick(page, "project-save");
 
     // Verify project is created and visible in the list
-    const projectCard = page.locator('[data-testid="project-card-1"]');
-    await expect(projectCard).toBeVisible();
+    const projectCard = page.getByTestId("project-card-1");
     await expect(projectCard.locator("h2")).toHaveText("Test Project");
   });
 
