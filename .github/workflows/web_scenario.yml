@@ -24,14 +24,27 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        run: echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
+
+      - name: Cache node modules
+        uses: actions/cache@v3
+        id: npm-cache
+        with:
+          path: ${{ steps.npm-cache-dir.outputs.dir }}
+          key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-node-
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-          cache: "npm"
-          cache-dependency-path: "./web/package-lock.json"
 
-      # キャッシュの改善 - Playwrightブラウザのキャッシュ
+      - name: Install dependencies
+        run: npm ci --prefer-offline --no-audit
+
       - name: Get installed Playwright version
         id: playwright-version
         run: echo "version=$(npm ls @playwright/test --json | jq -r '.dependencies["@playwright/test"].version')" >> $GITHUB_OUTPUT
@@ -43,20 +56,16 @@ jobs:
           path: ~/.cache/ms-playwright
           key: playwright-${{ steps.playwright-version.outputs.version }}
 
-      - name: Install dependencies
-        run: npm ci --prefer-offline --no-audit
-
       - name: Install Playwright browsers
         if: steps.playwright-cache.outputs.cache-hit != 'true'
         run: npx playwright install --with-deps
 
-      # アプリケーションをバックグラウンドで起動
-      - name: Start Vite development server
+      - name: Start Vite server in the background
         run: |
           VITE_MOCK_API=true npm run dev &
           echo "Waiting for the server to start..."
-          # 20秒待機してサーバーが起動するのを待つ
-          sleep 10
+          # サーバーが起動するのを待つ
+          npx wait-on http://localhost:5179 -t 60000 || (echo "Server failed to start" && exit 1)
 
       - name: Run tests
-        run: npm run test
+        run: npm test
