@@ -24,12 +24,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Get npm cache directory
+        id: npm-cache-dir
+        run: echo "dir=$(npm config get cache)" >> $GITHUB_OUTPUT
+
       - name: Set up Node.js
         uses: actions/setup-node@v3
         id: setup_node_id
         with:
           node-version: "18"
-          cache: npm
+          cache: ${{ steps.npm-cache-dir.outputs.dir }}
 
       - name: Install dependencies
         if: ${{ steps.setup_node_id.outputs.cache-hit != 'true' }}
