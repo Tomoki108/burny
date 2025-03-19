@@ -19,7 +19,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Echo head branch
-        run: echo ${{ github.event.workflow_run.head_branch }}
+        run: |
+          echo ${{ github.event.workflow_run.head_branch }}
+          echo ${{ github.ref_name }}
 
       - name: Deploy to Production
         if: ${{ github.event.workflow_run.head_branch == 'main' }}
@@ -32,7 +34,7 @@ jobs:
           ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Deploy to Development
-        if: ${{ github.event.workflow_run.head_branch == 'dev' }}
+        if: ${{ github.event.workflow_run.head_branch == 'dev' || github.ref_name == 'dev' }}
         uses: ./.github/actions/web-deployment
         with:
           bucket-name: ${{ secrets.DEV_WEB_BUCKET }}
