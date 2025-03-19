@@ -3,14 +3,13 @@ name: API Deployment to Cloud Run
 on:
   workflow_run:
     workflows: ["API Scenario Test"]
-    branches: [main, dev, organize-workflows]
     types:
       - completed
 
 jobs:
   deploy:
     # Only run if the scenario tests were successful
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' && (github.event.workflow_run.head_branch == 'main' || github.event.workflow_run.head_branch == 'dev' || github.event.workflow_run.head_branch == 'organize-workflows') }}
     permissions:
       contents: "read"
       id-token: "write"
@@ -20,6 +19,12 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      # リポジトリをチェックアウトする際に、ワークフローの起点となったコミットを使用
+      - name: Checkout source code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Authenticate with Google Cloud
         uses: google-github-actions/auth@v2
