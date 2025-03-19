@@ -5,17 +5,19 @@ on:
     branches:
       - main
     paths:
-      - 'api/**'
+      - "api/**"
+      - ".github/workflows/api_e2e.yml"
   pull_request:
     paths:
-      - 'api/**'
+      - "api/**"
+      - ".github/workflows/api_e2e.yml"
 
 defaults:
   run:
     working-directory: api
 
 env:
-    TZ: Asia/Tokyo
+  TZ: Asia/Tokyo
 
 jobs:
   e2e-test:
@@ -34,7 +36,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.23'
+          go-version: "1.23"
 
       - name: Cache Go modules
         uses: actions/cache@v3

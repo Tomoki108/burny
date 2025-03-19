@@ -2,12 +2,12 @@ name: Web Senario Tests
 
 on:
   push:
-    branches: [main, front-test-wf-2]
+    branches: [main]
     paths:
       - "web/**"
       - ".github/workflows/web_scenario.yml"
   pull_request:
-    branches: [main]
+    branches: [main, front-test-wf-2]
     paths:
       - "web/**"
       - ".github/workflows/web_scenario.yml"
