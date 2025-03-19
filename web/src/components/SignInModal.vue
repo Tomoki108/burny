@@ -72,8 +72,10 @@ const onSubmit = async () => {
             }
         } else {
             await authStore.signIn(email.value, password.value)
+            await router.push(PATH_PROJECTS)
+
+            // ページ遷移してしまうのでmodalを閉じるためのイベント発火はしなくてもいいが念のため。
             emit('auth-success')
-            router.push(PATH_PROJECTS)
         }
     } catch (err) {
         error.value = isSignUp.value
