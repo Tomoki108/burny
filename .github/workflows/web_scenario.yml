@@ -63,4 +63,4 @@ jobs:
         # テスト実行時にも環境変数を設定
         #   VITE_MOCK_API: "true"
         #   VITE_API_HOST: "http://localhost:1323/api/v1"
-        run: npm test
+        run: npm test tests/Account.spec.ts
