@@ -1,0 +1,77 @@
+name: Web Deployment to GCS For Each Environment
+
+inputs:
+  bucket-name:
+    description: 'GCS bucket name for deployment'
+    required: true
+  api-host:
+    description: 'API host URL'
+    required: true
+  workload-identity-provider:
+    description: 'Workload identity provider ID'
+    required: true
+  service-account:
+    description: 'Service account email'
+    required: true
+  ref:
+    description: 'Git reference (branch, tag, or SHA) to checkout'
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.ref }}
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: "23"
+        cache: "npm"
+        cache-dependency-path: web/package-lock.json
+      shell: bash
+
+    - name: Install dependencies
+      working-directory: web
+      run: npm ci
+      shell: bash
+
+    - name: Build web application
+      working-directory: web
+      env:
+        VITE_API_HOST: ${{ inputs.api-host }}
+      run: npm run build
+      shell: bash
+
+    - name: Authenticate with Google Cloud
+      uses: google-github-actions/auth@v2
+      with:
+        workload_identity_provider: ${{ inputs.workload-identity-provider }}
+        service_account: ${{ inputs.service-account }}
+
+    - name: Set up Cloud SDK
+      uses: "google-github-actions/setup-gcloud@v2"
+      with:
+        version: "514.0.0"
+
+    - name: Upload to GCS
+      working-directory: web
+      run: |
+        gsutil -m rsync -r dist gs://${{ inputs.bucket-name }}
+      shell: bash
+
+    - name: Set cache metadata for static files
+      run: |
+        gsutil -m setmeta -h "Cache-Control:public, max-age=31536000" gs://${{ inputs.bucket-name }}/**/*.js
+        gsutil -m setmeta -h "Cache-Control:public, max-age=31536000" gs://${{ inputs.bucket-name }}/**/*.css
+        gsutil -m setmeta -h "Cache-Control:public, max-age=31536000" gs://${{ inputs.bucket-name }}/assets/**
+      shell: bash
+
+    - name: Set cache metadata for HTML files
+      run: |
+        gsutil -m setmeta -h "Cache-Control:no-cache, max-age=0" gs://${{ inputs.bucket-name }}/*.html
+      shell: bash
+
+
