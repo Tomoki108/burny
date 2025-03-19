@@ -35,5 +35,5 @@ jobs:
           bucket-name: ${{ secrets.DEV_WEB_BUCKET }}
           api-host: https://${{ secrets.DEV_API_HOST }}/api/v1
           workload-identity-provider: ${{ secrets.DEV_GITHUB_WIP }}
-          service-account: ${{ secrets.DEV_GITHUB_WIP }}
+          service-account: ${{ secrets.DEV_GITHUB_SA }}
           ref: ${{ github.event.workflow_run.head_sha }}
