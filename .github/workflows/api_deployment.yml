@@ -42,8 +42,8 @@ jobs:
         if: ${{ github.event.workflow_run.head_branch }} == 'dev'
         uses: google-github-actions/auth@v2
         with:
-          workload_identity_provider: projects/810897677786/locations/global/workloadIdentityPools/github-actions-pool-01/providers/github-actions-provider-01
-          service_account: github-actions-service@turing-reach-451305-f4.iam.gserviceaccount.com
+          workload_identity_provider: ${{ secrets.DEV_GITHUB_WIP }}
+          service_account: ${{ secrets.DEV_GITHUB_SA }}
 
       - name: Set up Cloud SDK
         uses: "google-github-actions/setup-gcloud@v2"

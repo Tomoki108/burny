@@ -24,8 +24,8 @@ jobs:
         with:
           bucket-name: ${{ secrets.PROD_WEB_BUCKET }}
           api-host: https://${{ secrets.PROD_API_HOST }}/api/v1
-          workload-identity-provider: temp_not_exist_yet
-          service-account: temp_not_exist_yet
+          workload-identity-provider: ${{ secrets.PROD_GITHUB_WIP }}
+          service-account: ${{ secrets.PROD_GITHUB_SA }}
           ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Deploy to Development
@@ -34,6 +34,6 @@ jobs:
         with:
           bucket-name: ${{ secrets.DEV_WEB_BUCKET }}
           api-host: https://${{ secrets.DEV_API_HOST }}/api/v1
-          workload-identity-provider: projects/810897677786/locations/global/workloadIdentityPools/github-actions-pool-01/providers/github-actions-provider-01
-          service-account: github-actions-service@turing-reach-451305-f4.iam.gserviceaccount.com
+          workload-identity-provider: ${{ secrets.DEV_GITHUB_WIP }}
+          service-account: ${{ secrets.DEV_GITHUB_WIP }}
           ref: ${{ github.event.workflow_run.head_sha }}
