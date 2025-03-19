@@ -24,41 +24,44 @@ export const sleep = (ms: number) => new Promise((res) => setTimeout(res, ms));
 
 export async function login(page: Page) {
   await page.goto(WEB_LOCAL_HOST);
-  
+
   // Clear localStorage to ensure clean state
   await page.evaluate(() => localStorage.clear());
-  
+
   // Open sign-in modal
   await pageClick(page, "signin-modal-button");
-  
+
   // Fill login credentials
   await pageFill(page, "email", "test@example.com");
   await pageFill(page, "password", "burnyburny");
-  
+
   // Create a navigation promise before clicking
-  const navigationPromise = page.waitForNavigation({ 
+  const navigationPromise = page.waitForNavigation({
     url: /\/projects$/,
     timeout: 10000,
-    waitUntil: 'networkidle' 
+    waitUntil: "networkidle",
   });
-  
+
   // Click login button
   await pageClick(page, "auth-submit-button");
-  
+
   // Wait for navigation to complete
   await navigationPromise;
-  
+
   // Wait for localStorage to be populated with token
-  await page.waitForFunction(() => {
-    return localStorage.getItem('token') !== null;
-  }, { timeout: 5000 });
-  
+  await page.waitForFunction(
+    () => {
+      return localStorage.getItem("token") !== null;
+    },
+    { timeout: 5000 }
+  );
+
   // Verify we're on the projects page
   await page.waitForURL(/\/projects$/);
-  
+
   // Wait for the page to be fully loaded
-  await page.waitForLoadState('networkidle');
-  
+  await page.waitForLoadState("networkidle");
+
   // Wait a bit more to ensure everything is stabilized
   await sleep(500);
 }
