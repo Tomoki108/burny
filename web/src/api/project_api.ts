@@ -1,4 +1,4 @@
-import { API_HOST } from "../config";
+import { API_BASE_URL } from "../config";
 import {
   getAuthHeader,
   replaceDateWithISOString,
@@ -32,7 +32,7 @@ export const defaultProject: Project = {
 };
 
 export async function fetchProjects(): Promise<Project[]> {
-  const response = await fetch(`${API_HOST}/projects`, {
+  const response = await fetch(`${API_BASE_URL}/projects`, {
     headers: getAuthHeader(),
   });
   return await response.json();
@@ -41,7 +41,7 @@ export async function fetchProjects(): Promise<Project[]> {
 export async function createProject(
   project: Project
 ): Promise<Project | ErrorResponse> {
-  const response = await fetch(`${API_HOST}/projects`, {
+  const response = await fetch(`${API_BASE_URL}/projects`, {
     method: "POST",
     headers: getAuthHeader(),
     body: JSON.stringify(project, replaceDateWithISOString),
@@ -56,7 +56,7 @@ export async function createProject(
 export async function fetchProject(
   id: number
 ): Promise<Project | ErrorResponse> {
-  const response = await fetch(`${API_HOST}/projects/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/projects/${id}`, {
     headers: getAuthHeader(),
   });
   if (!response.ok) {
@@ -82,7 +82,7 @@ export async function updateProject(
     total_sp: project.total_sp,
     sprint_count: project.sprint_count,
   };
-  const response = await fetch(`${API_HOST}/projects/${project.id}`, {
+  const response = await fetch(`${API_BASE_URL}/projects/${project.id}`, {
     method: "PUT",
     headers: getAuthHeader(),
     body: JSON.stringify(req),
@@ -96,7 +96,7 @@ export async function updateProject(
 }
 
 export async function deleteProject(id: number): Promise<void | ErrorResponse> {
-  const response = await fetch(`${API_HOST}/projects/${id}`, {
+  const response = await fetch(`${API_BASE_URL}/projects/${id}`, {
     method: "DELETE",
     headers: getAuthHeader(),
   });

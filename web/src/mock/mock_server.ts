@@ -2,11 +2,9 @@ import { http, HttpResponse, passthrough } from "msw";
 import { type Project, type UpdateProjectRequest } from "../api/project_api";
 import { setupWorker } from "msw/browser";
 import { type Sprint, type UpdateSprintRequest } from "../api/sprint_api";
+import { API_BASE_URL } from "../config";
 
 // NOTE: Do not import this module from spec files. Praywright somewhat stops working. (due to cyclic import?)
-
-// NOTE: VITE_API_HOST env var is not loaded in the test environment
-const API_HOST = "http://localhost:1323/api/v1";
 
 const TEST_CREATE_PROJECT: Project = {
   id: 10,
@@ -94,7 +92,7 @@ const TEST_DEMO_PROJECT_SPRINTS: Sprint[] = [
 
 const handlers = [
   // auth api
-  http.post(`${API_HOST}/sign_up`, () => {
+  http.post(`${API_BASE_URL}/sign_up`, () => {
     return HttpResponse.json(
       {
         message: "Registration successful. Please sign in.",
@@ -102,7 +100,7 @@ const handlers = [
       { status: 201 }
     );
   }),
-  http.post(`${API_HOST}/sign_in`, () => {
+  http.post(`${API_BASE_URL}/sign_in`, () => {
     return HttpResponse.json(
       {
         token: generateMockJWT(),
@@ -115,13 +113,13 @@ const handlers = [
     );
   }),
   // projects api
-  http.get(`${API_HOST}/projects`, () => {
+  http.get(`${API_BASE_URL}/projects`, () => {
     return HttpResponse.json([TEST_DEMO_PROJECT], { status: 200 });
   }),
-  http.post(`${API_HOST}/projects`, async () => {
+  http.post(`${API_BASE_URL}/projects`, async () => {
     return HttpResponse.json(TEST_CREATE_PROJECT, { status: 201 });
   }),
-  http.put(`${API_HOST}/projects/:id`, async (request) => {
+  http.put(`${API_BASE_URL}/projects/:id`, async (request) => {
     const json = await request.request.json();
     const updateReq = json?.valueOf();
     const req = updateReq as UpdateProjectRequest;
@@ -135,10 +133,10 @@ const handlers = [
 
     return HttpResponse.json(updatedProject, { status: 200 });
   }),
-  http.delete(`${API_HOST}/projects/:id`, () => {
+  http.delete(`${API_BASE_URL}/projects/:id`, () => {
     return new HttpResponse(null, { status: 204 });
   }),
-  http.get(`${API_HOST}/projects/:projectId/sprints`, ({ params }) => {
+  http.get(`${API_BASE_URL}/projects/:projectId/sprints`, ({ params }) => {
     const { projectId } = params;
     if (projectId === "1") {
       return HttpResponse.json(TEST_DEMO_PROJECT_SPRINTS, { status: 200 });
@@ -147,7 +145,7 @@ const handlers = [
   }),
   // sprints api
   http.patch(
-    `${API_HOST}/projects/:projectId/sprints/:sprintId`,
+    `${API_BASE_URL}/projects/:projectId/sprints/:sprintId`,
     async (request) => {
       const json = await request.request.json();
       const updateReq = json?.valueOf();

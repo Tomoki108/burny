@@ -1,4 +1,4 @@
-import { API_HOST } from "../config";
+import { API_BASE_URL } from "../config";
 import { ErrorResponse } from "./api_helper";
 
 export interface SignInResponse {
@@ -16,7 +16,7 @@ export async function signIn(
   email: string,
   password: string
 ): Promise<SignInResponse> {
-  const response = await fetch(`${API_HOST}/sign_in`, {
+  const response = await fetch(`${API_BASE_URL}/sign_in`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),
@@ -33,7 +33,7 @@ export async function signUp(
   email: string,
   password: string
 ): Promise<SignUpResponse | ErrorResponse> {
-  const response = await fetch(`${API_HOST}/sign_up`, {
+  const response = await fetch(`${API_BASE_URL}/sign_up`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ email, password }),

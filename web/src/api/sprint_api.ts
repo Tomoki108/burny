@@ -1,4 +1,4 @@
-import { API_HOST } from "../config";
+import { API_BASE_URL } from "../config";
 import { getAuthHeader, ErrorResponse } from "./api_helper";
 
 export interface Sprint {
@@ -14,9 +14,12 @@ export interface Sprint {
 }
 
 export async function fetchSprints(projectID: number): Promise<Sprint[]> {
-  const response = await fetch(`${API_HOST}/projects/${projectID}/sprints`, {
-    headers: getAuthHeader(),
-  });
+  const response = await fetch(
+    `${API_BASE_URL}/projects/${projectID}/sprints`,
+    {
+      headers: getAuthHeader(),
+    }
+  );
   return await response.json();
 }
 
@@ -30,7 +33,7 @@ export async function updateSprint(
   req: UpdateSprintRequest
 ): Promise<Sprint | ErrorResponse> {
   const response = await fetch(
-    `${API_HOST}/projects/${projectID}/sprints/${sprintID}`,
+    `${API_BASE_URL}/projects/${projectID}/sprints/${sprintID}`,
     {
       method: "PATCH",
       headers: getAuthHeader(),
