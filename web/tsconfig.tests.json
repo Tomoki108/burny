@@ -1,0 +1,15 @@
+
+{
+    "extends": "./tsconfig.json",
+    "compilerOptions": {
+      "types": ["node", "playwright", "@playwright/test"],
+      "moduleResolution": "node",
+      "esModuleInterop": true,
+      "allowSyntheticDefaultImports": true,
+      "noEmit": true,
+      "target": "es6",
+      "lib": ["dom", "dom.iterable", "esnext"]
+    },
+    "include": ["tests/**/*.ts"]
+  }
+  

@@ -1,4 +1,6 @@
-import { Page } from "playwright";
+import { type Page } from "@playwright/test";
+import path from "path";
+import { mkdir } from "fs/promises";
 
 export const WEB_LOCAL_HOST = "http://localhost:5179"; // vite.config.tsのserver.portと合わせてある
 
@@ -28,4 +30,15 @@ export async function login(page: Page) {
   await pageFill(page, "email", "test@example.com");
   await pageFill(page, "password", "burnyburny");
   await pageClick(page, "auth-submit-button");
+}
+
+// for debug use, can pass to page.screenshot()
+export async function createScreenShotDir(testName: string) {
+  const screenshotsDir = path.join(
+    process.cwd(),
+    `test-results/screenshots/${testName}`
+  );
+  await mkdir(screenshotsDir, { recursive: true });
+
+  return screenshotsDir;
 }
