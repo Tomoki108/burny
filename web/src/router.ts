@@ -40,14 +40,14 @@ const router = createRouter({
 });
 
 // グローバルなナビゲーションガードで認証をチェック
-router.beforeEach((to, _, next) => {
-  const authStore = useAuthStore();
-  if (to.meta.requiresAuth && !authStore.isAuthenticated) {
-    // Redirect to home page where the modal can be shown instead
-    next({ path: PATH_HOME, query: { auth: "required" } });
-  } else {
-    next();
-  }
-});
+// router.beforeEach((to, _, next) => {
+//   const authStore = useAuthStore();
+//   if (to.meta.requiresAuth && !authStore.isAuthenticated) {
+//     // Redirect to home page where the modal can be shown instead
+//     next({ path: PATH_HOME, query: { auth: "required" } });
+//   } else {
+//     next();
+//   }
+// });
 
 export default router;

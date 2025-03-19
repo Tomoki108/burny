@@ -1,10 +1,18 @@
 import { test, expect } from "@playwright/test";
 import { WEB_LOCAL_HOST, pageClick, login, sleep } from "./test_helper";
+import path from "path";
+import { mkdir } from "fs/promises";
 
 test.describe("Projects page", () => {
   test("User can create, update and delete project", async ({ page }) => {
+    const screenshotsDir = path.join(
+      process.cwd(),
+      "test-results/screenshots/projects"
+    );
+    await mkdir(screenshotsDir, { recursive: true });
+
     await page.goto(WEB_LOCAL_HOST);
-    await login(page);
+    await login(page, screenshotsDir);
 
     // create project
     await pageClick(page, "new-project-button");
