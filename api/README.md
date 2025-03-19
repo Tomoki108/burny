@@ -6,17 +6,17 @@ API DOC: https://dev-api.burny.page/swagger/index.html
 
 ## Teck Stack
 
-| Category         | Tool                                       |
-| ---------------- | ------------------------------------------ |
-| **FW**           | https://github.com/labstack/echo           |
-| **ORM**          | https://github.com/go-gorm/gorm            |
-| **DB**           | PostgreSQL                                 |
-| **Architecture** | Clean Architecture                         |
-| **Validation**   | https://github.com/go-playground/validator |
-| **DI Container** | https://github.com/uber-go/dig             |
-| **Event Bus**    | https://github.com/asaskevich/EventBus     |
-| **E2E Test**     | https://github.com/sebdah/goldie           |
-| **Swagger**      | https://github.com/swaggo/swag             |
+| Category          | Tool                                       |
+| ----------------- | ------------------------------------------ |
+| **FW**            | https://github.com/labstack/echo           |
+| **ORM**           | https://github.com/go-gorm/gorm            |
+| **DB**            | PostgreSQL                                 |
+| **Architecture**  | Clean Architecture                         |
+| **Validation**    | https://github.com/go-playground/validator |
+| **DI Container**  | https://github.com/uber-go/dig             |
+| **Event Bus**     | https://github.com/asaskevich/EventBus     |
+| **Scenario Test** | https://github.com/sebdah/goldie           |
+| **Swagger**       | https://github.com/swaggo/swag             |
 
 ## How to run
 
@@ -41,8 +41,8 @@ go install github.com/swaggo/swag/cmd/swag@latest
 # update API DOC
 swag init
 
-# run e2e tests
-go test ./e2e
-# update golden file of e2e tests
-go test ./e2e -update
+# run scenario tests
+go test ./scenario
+# update golden files of scenario tests
+go test ./scenario -update
 ```

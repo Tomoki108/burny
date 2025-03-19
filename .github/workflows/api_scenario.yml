@@ -1,4 +1,4 @@
-name: API E2E Test
+name: API Scenario Test
 
 on:
   push:
@@ -20,7 +20,7 @@ env:
   TZ: Asia/Tokyo
 
 jobs:
-  e2e-test:
+  scenario-test:
     runs-on: ubuntu-latest
 
     steps:
@@ -49,8 +49,8 @@ jobs:
       - name: Install dependencies
         run: go mod download
 
-      - name: Run E2E tests
-        run: go test -v ./e2e/...
+      - name: Run Scenario tests
+        run: go test -v ./scenario/...
 
       - name: Shutdown Docker Compose services
         if: always()

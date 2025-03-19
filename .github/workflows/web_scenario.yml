@@ -14,7 +14,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  test:
+  scenario-test:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -50,7 +50,6 @@ jobs:
           export VITE_API_HOST="http://localhost:1323/api/v1"
           npx vite --port 5179 &
           echo "Waiting for the server to start..."
-          # サーバーが起動するのを待つ
           sleep 5
 
       - name: Run tests

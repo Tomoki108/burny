@@ -1,4 +1,4 @@
-package e2e
+package scenario
 
 import (
 	"encoding/json"
@@ -41,7 +41,7 @@ func init() {
 	e = server.NewEchoServer()
 }
 
-func TestE2E(t *testing.T) {
+func TestScenario(t *testing.T) {
 	defer testTx.Rollback()
 
 	UserCanSignUp(t)
