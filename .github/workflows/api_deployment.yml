@@ -1,15 +1,17 @@
 name: API Deployment to Cloud Run
 
+# GitHub Actionsがワークフロー名とファイル名を区別しているため、正確にワークフロー名を参照
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "api/**"
-      - ".github/workflows/api_deployment.yml"
+  workflow_run:
+    workflows: ["API Scenario Test"]
+    branches: [main, dev, organize-workflows]
+    types:
+      - completed
 
 jobs:
   deploy:
+    # Only run if the scenario tests were successful
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     permissions:
       contents: "read"
       id-token: "write"
@@ -17,8 +19,18 @@ jobs:
     env:
       IMAGE_NAME: asia-northeast1-docker.pkg.dev/turing-reach-451305-f4/cloud-run/api
     steps:
+      - name: Debug workflow run info
+        run: |
+          echo "Workflow: ${{ github.event.workflow_run.name }}"
+          echo "Workflow conclusion: ${{ github.event.workflow_run.conclusion }}"
+          echo "Head branch: ${{ github.event.workflow_run.head_branch }}"
+          echo "Head SHA: ${{ github.event.workflow_run.head_sha }}"
+          echo "Event: ${{ github.event.workflow_run.event }}"
+
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
 
       - name: Authenticate with Google Cloud
         uses: google-github-actions/auth@v2
@@ -38,15 +50,15 @@ jobs:
       - name: Build and Push Docker Image
         working-directory: api
         run: |
-          docker build -t ${{ env.IMAGE_NAME }}:${{ github.sha }} .
-          docker push ${{ env.IMAGE_NAME }}:${{ github.sha }}
-          docker tag ${{ env.IMAGE_NAME }}:${{ github.sha }} ${{ env.IMAGE_NAME }}:latest
+          docker build -t ${{ env.IMAGE_NAME }}:${{ github.event.workflow_run.head_sha }} .
+          docker push ${{ env.IMAGE_NAME }}:${{ github.event.workflow_run.head_sha }}
+          docker tag ${{ env.IMAGE_NAME }}:${{ github.event.workflow_run.head_sha }} ${{ env.IMAGE_NAME }}:latest
           docker push ${{ env.IMAGE_NAME }}:latest
 
       - name: Deploy to Cloud Run
         run: |
           gcloud run deploy burny-api \
-            --image ${{ env.IMAGE_NAME }}:${{ github.sha }} \
+            --image ${{ env.IMAGE_NAME }}:${{ github.event.workflow_run.head_sha }} \
             --region asia-northeast1 \
             --platform managed \
             --allow-unauthenticated \

@@ -4,13 +4,14 @@ on:
   push:
     branches:
       - main
+      - dev
     paths:
       - "api/**"
-      - ".github/workflows/api_e2e.yml"
+      - ".github/workflows/api_scenario.yml"
   pull_request:
     paths:
       - "api/**"
-      - ".github/workflows/api_e2e.yml"
+      - ".github/workflows/api_scenario.yml"
 
 defaults:
   run:
