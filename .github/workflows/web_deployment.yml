@@ -30,7 +30,7 @@ jobs:
 
       - name: Deploy to Development
         if: ${{ github.event.workflow_run.head_branch == 'dev' || github.ref_name == 'dev' }}
-        uses: ./.github/actions/web-deployment
+        uses: ./.github/actions/web_deployment
         with:
           bucket-name: ${{ secrets.DEV_WEB_BUCKET }}
           api-host: https://${{ secrets.DEV_API_HOST }}/api/v1
