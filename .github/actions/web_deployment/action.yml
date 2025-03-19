@@ -5,7 +5,7 @@ inputs:
     description: 'GCS bucket name for deployment'
     required: true
   api-base-url:
-    description: 'API host URL'
+    description: 'API base URL'
     required: true
   workload-identity-provider:
     description: 'Workload identity provider ID'
