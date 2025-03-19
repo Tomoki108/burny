@@ -1,15 +1,16 @@
 name: API Deployment to Cloud Run
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "api/**"
-      - ".github/workflows/api_deployment.yml"
+  workflow_run:
+    workflows: ["API Scenario Test"]
+    branches: [main, dev]
+    types:
+      - completed
 
 jobs:
   deploy:
+    # Only run if the scenario tests were successful
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     permissions:
       contents: "read"
       id-token: "write"

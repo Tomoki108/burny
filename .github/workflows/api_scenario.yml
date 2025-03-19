@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - main
+      - dev
     paths:
       - "api/**"
       - ".github/workflows/api_e2e.yml"
