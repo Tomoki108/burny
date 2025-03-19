@@ -10,6 +10,15 @@ import path from "path";
 import { mkdir } from "fs/promises";
 import { generateMockJWT } from "./mock_server";
 
+// // Mock the Vite environment variables
+// // @ts-ignore - Mocking import.meta.env
+// import.meta = {
+//   env: {
+//     VITE_API_HOST: "http://localhost:1323/api/v1",
+//     VITE_MOCK_API: "true"
+//   }
+// };
+
 test.describe("Account page", () => {
   test("User can view their account information", async ({ page }) => {
     // Create screenshots directory if it doesn't exist
