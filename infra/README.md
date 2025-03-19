@@ -6,7 +6,7 @@ Infrastructure as Code for Google Cloud resources.
 
 ### Tools
 
-- Install tfenv and sepcified terraform version.
+- Install tfenv and sepcified Terraform version.
 
   ```shell
   brew install tfenv
