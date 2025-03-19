@@ -26,7 +26,7 @@
 
 <script lang="ts" setup>
 import { ref, defineProps, defineEmits, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { type NavigationFailure, useRouter } from 'vue-router'
 import { useAuthStore } from '../stores/auth_store'
 import { PATH_PROJECTS } from '../router'
 import { signUp } from '../api/auth_api'
@@ -73,7 +73,11 @@ const onSubmit = async () => {
         } else {
             await authStore.signIn(email.value, password.value)
             emit('auth-success')
-            router.push(PATH_PROJECTS)
+            const ret = await router.push(PATH_PROJECTS)
+
+            if (ret !== void 0 && ret !== undefined) {
+                alert(ret.message)
+            }
         }
     } catch (err) {
         error.value = isSignUp.value
