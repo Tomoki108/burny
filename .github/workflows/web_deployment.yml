@@ -13,11 +13,21 @@ jobs:
       contents: "read"
       id-token: "write"
     runs-on: ubuntu-latest
-    env:
-      BUCKET_NAME: burny-frontend-dev
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+
+      - name: Set environment variables based on branch
+        run: |
+          if [[ "${{ github.event.workflow_run.head_branch }}" == "main" ]]; then
+            echo "BUCKET_NAME=${{ secrets.PROD_WEB_BUCKET }}" >> $GITHUB_ENV
+            echo "API_HOST=https://${{ secrets.PROD_API_HOST }}/api/v1" >> $GITHUB_ENV
+          else
+            echo "BUCKET_NAME=${{ secrets.DEV_WEB_BUCKET }}" >> $GITHUB_ENV
+            echo "API_HOST=https://${{ secrets.DEV_API_HOST }}/api/v1" >> $GITHUB_ENV
+          fi
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -33,7 +43,7 @@ jobs:
       - name: Build web application
         working-directory: web
         env:
-          VITE_API_HOST: ${{ secrets.DEV_API_HOST }}
+          VITE_API_HOST: ${{ env.API_HOST }}
         run: npm run build
 
       - name: Authenticate with Google Cloud
