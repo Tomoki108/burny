@@ -4,7 +4,7 @@ inputs:
   bucket-name:
     description: 'GCS bucket name for deployment'
     required: true
-  api-host:
+  api-base-url:
     description: 'API host URL'
     required: true
   workload-identity-provider:
@@ -40,7 +40,7 @@ runs:
     - name: Build web application
       working-directory: web
       env:
-        VITE_API_HOST: ${{ inputs.api-host }}
+        VITE_API_BASE_URL: ${{ inputs.api-base-url }}
       run: npm run build
       shell: bash
 
