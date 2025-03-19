@@ -3,7 +3,7 @@ name: API Deployment to Cloud Run
 on:
   workflow_run:
     workflows: ["API Scenario Test"]
-    branches: [main, dev]
+    branches: [main, dev, organize-workflows]
     types:
       - completed
 
