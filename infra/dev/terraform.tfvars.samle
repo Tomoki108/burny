@@ -7,9 +7,9 @@ secrets = {
   db_user     = ""
   db_password = ""
 }
-api_domain       = "dev-api.burny.page"
+api_domain       = ""
 
 # Frontend設定
-web_domain               = "dev.burny.page"
+web_domain               = ""
 frontend_bucket_name     = ""
 frontend_bucket_location = ""

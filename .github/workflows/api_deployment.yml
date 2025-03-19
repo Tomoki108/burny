@@ -23,7 +23,7 @@ jobs:
         if: ${{ github.event.workflow_run.head_branch == 'main' || github.ref_name == 'main' }} # ref is for workflow_dispatch (manual) trigger
         uses: ./.github/actions/api_deployment
         with:
-          domain: ${{ secrets.PROD_API_HOST }}
+          domain: ${{ secrets.PROD_API_DOMAIN }}
           workload-identity-provider: ${{ secrets.PROD_GITHUB_WIP }}
           service-account: ${{ secrets.PROD_GITHUB_SA }}
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
@@ -33,7 +33,7 @@ jobs:
         if: ${{ github.event.workflow_run.head_branch == 'dev' || github.ref_name == 'dev' }}
         uses: ./.github/actions/api_deployment
         with:
-          domain: ${{ secrets.DEV_API_HOST }}
+          domain: ${{ secrets.DEV_API_DOMAIN }}
           workload-identity-provider: ${{ secrets.DEV_GITHUB_WIP }}
           service-account: ${{ secrets.DEV_GITHUB_SA }}
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
