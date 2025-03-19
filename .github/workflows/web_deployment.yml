@@ -1,14 +1,14 @@
 name: Web Deployment to GCS
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "web/**"
-      - ".github/workflows/web_deployment.yml"
+  workflow_run:
+    workflows: ["Web Scenario Test"]
+    branches: [main, dev]
+    types:
+      - completed
 
 jobs:
   build-and-deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     permissions:
       contents: "read"
       id-token: "write"
