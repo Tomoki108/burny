@@ -75,7 +75,11 @@ const onSubmit = async () => {
             const ret = await router.push(PATH_PROJECTS)
 
             if (ret !== void 0 && ret !== undefined) {
-                error.value = (ret.message)
+                alert(ret.type)
+                alert(ret.message)
+                alert(ret.stack)
+                error.value = "hello there"
+
             } else {
                 emit('auth-success')
             }
