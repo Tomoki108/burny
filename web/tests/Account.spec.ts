@@ -10,7 +10,7 @@ test.describe("Account page", () => {
     await mkdir(screenshotsDir, { recursive: true });
 
     // ログインして、Projects画面まで遷移する
-    await login(page);
+    await login(page, screenshotsDir);
 
     // Take screenshot after login (should be on Projects page)
     await page.screenshot({
