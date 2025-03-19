@@ -51,6 +51,8 @@ test.describe("Account page", () => {
 
     await pageClick(page, "auth-submit-button");
 
+    sleep(5000);
+
     await page.screenshot({
       path: path.join(screenshotsDir, "login_submit.png"),
       fullPage: true,
