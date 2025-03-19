@@ -1,4 +1,4 @@
-import { Page } from "playwright";
+import { type Page } from "@playwright/test";
 
 export const WEB_LOCAL_HOST = "http://localhost:5179"; // vite.config.tsのserver.portと合わせてある
 
