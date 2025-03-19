@@ -1,9 +1,9 @@
-import { http, HttpResponse, passthrough } from "msw";
+// import { http, HttpResponse, passthrough } from "msw";
 import {
   type Project,
   type UpdateProjectRequest,
 } from "../src/api/project_api";
-import { setupWorker } from "msw/browser";
+// import { setupWorker } from "msw/browser";
 import { type Sprint, type UpdateSprintRequest } from "../src/api/sprint_api";
 
 // NOTE: Do not import this module from spec files. Praywright somewhat stops working. (due to cyclic import?)
