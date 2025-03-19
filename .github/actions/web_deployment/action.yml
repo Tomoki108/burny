@@ -40,7 +40,7 @@ runs:
     - name: Build web application
       working-directory: web
       env:
-        VITE_API_HOST: ${{ inputs.api-host }}
+        VITE_API_BASE_URL: ${{ inputs.api-host }}
       run: npm run build
       shell: bash
 
