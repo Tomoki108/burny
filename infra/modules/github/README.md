@@ -19,6 +19,6 @@ This module manages GitHub Actions integration with Google Cloud Platform for th
 
 For detailed configuration options, please refer to:
 
-- `variables.tf` - For input variables and their descriptions
-- `main.tf` - For the main module implementation
-- `outputs.tf` - For module outputs
+- `variables.tf`
+- `main.tf`
+- `outputs.tf`

@@ -20,6 +20,6 @@ This module manages the frontend infrastructure components for the Burny applica
 
 For detailed configuration options, please refer to:
 
-- `variables.tf` - For input variables and their descriptions
-- `main.tf` - For the main module implementation
-- `output.tf` - For module outputs
+- `variables.tf`
+- `main.tf`
+- `output.tf`

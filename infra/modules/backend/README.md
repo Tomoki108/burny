@@ -21,5 +21,5 @@ This module manages the backend infrastructure components for the Burny applicat
 
 For detailed configuration options, please refer to:
 
-- `variables.tf` - For input variables and their descriptions
-- `main.tf` - For the main module implementation
+- `variables.tf`
+- `main.tf`
