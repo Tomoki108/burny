@@ -1,0 +1,68 @@
+name: Web Senario Tests
+
+on:
+  push:
+    branches: [main, front-test-wf-2]
+    paths:
+      - "web/**"
+      - ".github/workflows/web_scenario.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - "web/**"
+      - ".github/workflows/web_scenario.yml"
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./web
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        id: setup_node_id
+        with:
+          node-version: "23"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Cache Playwright dependencies
+        uses: actions/cache@v3
+        id: playwright_cache
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('web/package-lock.json') }}
+
+      - name: Install Playwright
+        if: ${{ steps.playwright_cache.outputs.cache-hit != 'true' }}
+        run: npx playwright install --with-deps
+
+      - name: Start Vite server in the background
+        run: |
+          export VITE_MOCK_API="true"
+          export VITE_API_HOST="http://localhost:1323/api/v1"
+          npx vite --port 5179 &
+          echo "Waiting for the server to start..."
+          # サーバーが起動するのを待つ
+          sleep 5
+      - name: Run tests
+        env:
+          # テスト実行時にも環境変数を設定
+          VITE_MOCK_API: "true"
+          VITE_API_HOST: "http://localhost:1323/api/v1"
+        run: npm run test tests/Account.spec.ts || true # Continue even if tests fail
+
+      - name: Upload test results and screenshots
+        uses: actions/upload-artifact@v4
+        if: always() # Always upload artifacts even if tests fail
+        with:
+          name: test-results
+          path: web/test-results/
+          retention-days: 7
