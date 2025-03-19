@@ -52,12 +52,9 @@ jobs:
           echo "Waiting for the server to start..."
           # サーバーが起動するのを待つ
           sleep 5
+
       - name: Run tests
-        env:
-          # テスト実行時にも環境変数を設定
-          VITE_MOCK_API: "true"
-          VITE_API_HOST: "http://localhost:1323/api/v1"
-        run: npm run test tests/Account.spec.ts || true # Continue even if tests fail
+        run: npm run test
 
       - name: Upload test results and screenshots
         uses: actions/upload-artifact@v4
