@@ -68,7 +68,7 @@ func (h ProjectHandler) Create(c echo.Context) error {
 // @Accept       json
 // @Produce      json
 // @Param 	 	 project_id path int true "project_id"
-// @Success      200 {object}  domain.Project
+// @Success      200 {object} domain.Project
 // @Failure      404 {object} io.ErrorResponse
 // @Router       /projects/{project_id} [get]
 func (h ProjectHandler) Get(c echo.Context) error {
