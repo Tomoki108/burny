@@ -37,8 +37,7 @@ func (h AuthHandler) SignUp(c echo.Context) error {
 	user, err := h.Usecase.SignUp(*req)
 	if errors.Is(err, usecase.ErrEmailAlreadyExists) {
 		return c.JSON(http.StatusConflict, io.NewErrResp(err.Error()))
-	}
-	if err != nil {
+	} else if err != nil {
 		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}
 

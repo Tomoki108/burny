@@ -22,7 +22,24 @@ jobs:
         with:
           ref: ${{ github.event.workflow_run.head_sha }}
 
-      - name: Authenticate with Google Cloud
+      - name: Set environment variables based on branch
+        run: |
+          if [[ "${{ github.event.workflow_run.head_branch }}" == "main" ]]; then
+            echo "HOST=api.burny.page" >> $GITHUB_ENV
+          else
+            echo "HOST=dev-api.burny.page" >> $GITHUB_ENV
+          fi
+
+      # prod project is not set up yet
+      # - name: Authenticate with Google Cloud (prod project)
+      #   if: ${{ github.event.workflow_run.head_branch }} == 'main'
+      #   uses: google-github-actions/auth@v2
+      #   with:
+      #     workload_identity_provider: projects/810897677786/locations/global/workloadIdentityPools/github-actions-pool-01/providers/github-actions-provider-01
+      #     service_account: github-actions-service@turing-reach-451305-f4.iam.gserviceaccount.com
+
+      - name: Authenticate with Google Cloud (dev project)
+        if: ${{ github.event.workflow_run.head_branch }} == 'dev'
         uses: google-github-actions/auth@v2
         with:
           workload_identity_provider: projects/810897677786/locations/global/workloadIdentityPools/github-actions-pool-01/providers/github-actions-provider-01
@@ -52,5 +69,5 @@ jobs:
             --region asia-northeast1 \
             --platform managed \
             --allow-unauthenticated \
-            --set-env-vars=HOST=dev-api.burny.page \
+            --set-env-vars=HOST=${{ env.HOST }} \
             --update-secrets=DB_HOST=db_host:latest,DB_NAME=db_name:latest,DB_USER=db_user:latest,DB_PASSWORD=db_password:latest
