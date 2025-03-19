@@ -30,11 +30,11 @@ jobs:
         with:
           node-version: "18"
           cache: "npm"
-          cache-dependency-path: "./package-lock.json"
+          cache-dependency-path: "./web/package-lock.json"
 
       - name: Install dependencies
         if: ${{ steps.setup_node_id.outputs.cache-hit != 'true' }}
-        run: npm install
+        run: npm ci
 
       - name: Cache Playwright dependencies
         uses: actions/cache@v3
@@ -51,7 +51,7 @@ jobs:
         run: |
           export VITE_MOCK_API="true"
           export VITE_API_HOST="http://localhost:1323/api/v1"
-          npm run dev &
+          npx vite --port 5179 &
           echo "Waiting for the server to start..."
           # サーバーが起動するのを待つ
           npx wait-on http://localhost:5179 -t 60000 || (echo "Server failed to start" && exit 1)
