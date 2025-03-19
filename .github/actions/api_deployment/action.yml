@@ -1,0 +1,63 @@
+name: API Deployment to Cloud Run For Each Environment
+inputs:
+  project-id:
+    description: 'Google Cloud Project ID'
+    required: true
+  domaindomain:
+    description: 'API Domain'
+    required: true
+  workload-identity-provider:
+    description: 'Workload identity provider ID'
+    required: true
+  service-account:
+    description: 'Service account email'
+    required: true
+  ref:
+    description: 'Git reference (branch, tag, or SHA) to checkout'
+    required: true
+  image-name:
+    description: 'Container image name'
+    required: true
+runs:
+  using: 'composite'
+  steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ inputs.ref }}
+
+    - name: Authenticate with Google Cloud
+      uses: google-github-actions/auth@v2
+      with:
+        workload_identity_provider: ${{ inputs.workload-identity-provider }}
+        service_account: ${{ inputs.service-account }}
+
+    - name: Set up Cloud SDK
+      uses: "google-github-actions/setup-gcloud@v2"
+      with:
+        version: "514.0.0"
+
+    - name: Configure Docker for Artifact Registry
+      run: |
+        gcloud auth configure-docker asia-northeast1-docker.pkg.dev
+      shell: bash
+
+    - name: Build and Push Docker Image
+      working-directory: api
+      run: |
+        docker build -t ${{ inputs.image-name }}:${{ inputs.ref }} .
+        docker push ${{ inputs.image-name }}:${{ inputs.ref }}
+        docker tag ${{ inputs.image-name }}:${{ inputs.ref }} ${{ inputs.image-name }}:latest
+        docker push ${{ inputs.image-name }}:latest
+      shell: bash
+
+    - name: Deploy to Cloud Run
+      run: |
+        gcloud run deploy burny-api \
+          --image ${{ inputs.image-name }}:${{ inputs.ref }} \
+          --region asia-northeast1 \
+          --platform managed \
+          --allow-unauthenticated \
+          --set-env-vars=HOST=${{ inputs.domain }} \
+          --update-secrets=DB_HOST=db_host:latest,DB_NAME=db_name:latest,DB_USER=db_user:latest,DB_PASSWORD=db_password:latest
+      shell: bash

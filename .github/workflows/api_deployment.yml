@@ -6,68 +6,35 @@ on:
     branches: [main, dev]
     types:
       - completed
+  workflow_dispatch:
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' || github.event_name == 'workflow_dispatch' }}
     permissions:
       contents: "read"
       id-token: "write"
     runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: asia-northeast1-docker.pkg.dev/turing-reach-451305-f4/cloud-run/api
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
+
+      - name: Deploy to Production
+        if: ${{ github.event.workflow_run.head_branch == 'main' || github.ref_name == 'main' }} # ref is for workflow_dispatch (manual) trigger
+        uses: ./.github/actions/api_deployment
         with:
-          ref: ${{ github.event.workflow_run.head_sha }}
+          domain: ${{ secrets.PROD_API_HOST }}
+          workload-identity-provider: ${{ secrets.PROD_GITHUB_WIP }}
+          service-account: ${{ secrets.PROD_GITHUB_SA }}
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          image-name: asia-northeast1-docker.pkg.dev/burny-prod/cloud-run/api
 
-      - name: Set environment variables based on branch
-        run: |
-          if [[ "${{ github.event.workflow_run.head_branch }}" == "main" ]]; then
-            echo "HOST=${{ secrets.PROD_API_HOST }}" >> $GITHUB_ENV
-          else
-            echo "HOST=${{ secrets.DEV_API_HOST }}" >> $GITHUB_ENV
-          fi
-
-      # prod project is not set up yet
-      # - name: Authenticate with Google Cloud (prod project)
-      #   if: ${{ github.event.workflow_run.head_branch }} == 'main'
-      #   uses: google-github-actions/auth@v2
-      #   with:
-      #     workload_identity_provider: projects/810897677786/locations/global/workloadIdentityPools/github-actions-pool-01/providers/github-actions-provider-01
-      #     service_account: github-actions-service@turing-reach-451305-f4.iam.gserviceaccount.com
-
-      - name: Authenticate with Google Cloud (dev project)
-        if: ${{ github.event.workflow_run.head_branch }} == 'dev'
-        uses: google-github-actions/auth@v2
+      - name: Deploy to Development
+        if: ${{ github.event.workflow_run.head_branch == 'dev' || github.ref_name == 'dev' }}
+        uses: ./.github/actions/api_deployment
         with:
-          workload_identity_provider: ${{ secrets.DEV_GITHUB_WIP }}
-          service_account: ${{ secrets.DEV_GITHUB_SA }}
-
-      - name: Set up Cloud SDK
-        uses: "google-github-actions/setup-gcloud@v2"
-        with:
-          version: "514.0.0"
-
-      - name: Configure Docker for Artifact Registry
-        run: |
-          gcloud auth configure-docker asia-northeast1-docker.pkg.dev
-
-      - name: Build and Push Docker Image
-        working-directory: api
-        run: |
-          docker build -t ${{ env.IMAGE_NAME }}:${{ github.event.workflow_run.head_sha }} .
-          docker push ${{ env.IMAGE_NAME }}:${{ github.event.workflow_run.head_sha }}
-          docker tag ${{ env.IMAGE_NAME }}:${{ github.event.workflow_run.head_sha }} ${{ env.IMAGE_NAME }}:latest
-          docker push ${{ env.IMAGE_NAME }}:latest
-
-      - name: Deploy to Cloud Run
-        run: |
-          gcloud run deploy burny-api \
-            --image ${{ env.IMAGE_NAME }}:${{ github.event.workflow_run.head_sha }} \
-            --region asia-northeast1 \
-            --platform managed \
-            --allow-unauthenticated \
-            --set-env-vars=HOST=${{ env.HOST }} \
-            --update-secrets=DB_HOST=db_host:latest,DB_NAME=db_name:latest,DB_USER=db_user:latest,DB_PASSWORD=db_password:latest
+          domain: ${{ secrets.DEV_API_HOST }}
+          workload-identity-provider: ${{ secrets.DEV_GITHUB_WIP }}
+          service-account: ${{ secrets.DEV_GITHUB_SA }}
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+          image-name: asia-northeast1-docker.pkg.dev/turing-reach-451305-f4/cloud-run/api
