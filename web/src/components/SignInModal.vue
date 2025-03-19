@@ -72,17 +72,8 @@ const onSubmit = async () => {
             }
         } else {
             await authStore.signIn(email.value, password.value)
-            const ret = await router.push(PATH_PROJECTS)
-
-            if (ret !== void 0 && ret !== undefined) {
-                alert(ret.type)
-                alert(ret.message)
-                alert(ret.stack)
-                error.value = "hello there"
-
-            } else {
-                emit('auth-success')
-            }
+            await router.push(PATH_PROJECTS)
+            emit('auth-success')
         }
     } catch (err) {
         error.value = isSignUp.value
