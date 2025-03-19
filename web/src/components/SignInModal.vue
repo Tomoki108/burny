@@ -72,11 +72,12 @@ const onSubmit = async () => {
             }
         } else {
             await authStore.signIn(email.value, password.value)
-            emit('auth-success')
             const ret = await router.push(PATH_PROJECTS)
 
             if (ret !== void 0 && ret !== undefined) {
-                alert(ret.message)
+                error.value = (ret.message)
+            } else {
+                emit('auth-success')
             }
         }
     } catch (err) {
