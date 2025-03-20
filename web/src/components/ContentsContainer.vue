@@ -1,5 +1,5 @@
 <template>
-    <Sidebar />
+    <Navigation />
     <main class="main-content">
         <v-alert v-if="alertCtx?.show" :type="alertCtx?.type" :text="alertCtx?.text" closable class="alert-dialog" />
         <header class="app-header">
@@ -11,8 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
-import Sidebar from './Sidebar.vue'
+import Navigation from './Navigation.vue'
 import type { AlertContext } from '../composables/alert_composable'
 
 defineProps<{
