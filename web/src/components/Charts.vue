@@ -30,6 +30,7 @@ const props = defineProps<{
 }>();
 
 const activeTab = ref(0);
+const windowWidth = ref(window.innerWidth);
 
 ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale);
 
@@ -92,7 +93,17 @@ const burnUpchartOptions = computed(() => {
                 ticks: {
                     stepSize: 10,
                 },
+                title: {
+                    display: windowWidth.value > 390,
+                    text: 'Story Points'
+                }
             },
+            x: {
+                title: {
+                    display: windowWidth.value > 390,
+                    text: 'Sprints'
+                }
+            }
         },
     };
 });
@@ -107,7 +118,7 @@ const velocityChartData = computed(() => ({
     labels: props.sprints.map((_, index) => `Sprint ${index + 1}`),
     datasets: [
         {
-            label: 'velocity',
+            label: 'Velocity',
             borderColor: '#ff5252', // var(--color-danger)
             data: velocity.value,
             fill: true,
@@ -122,13 +133,25 @@ const velocityChartOptions = computed(() => {
         scales: {
             y: {
                 min: 0,
+                title: {
+                    display: windowWidth.value > 390,
+                    text: 'Story Points'
+                }
             },
+            x: {
+                title: {
+                    display: windowWidth.value > 390,
+                    text: 'Sprints'
+                }
+            }
         },
     };
 });
 
 // ウィンドウサイズが変更された時にチャートを再レンダリングする
 const handleResize = () => {
+    windowWidth.value = window.innerWidth;
+
     const charts = document.querySelectorAll('canvas');
     charts.forEach(canvas => {
         const chart = ChartJS.getChart(canvas);

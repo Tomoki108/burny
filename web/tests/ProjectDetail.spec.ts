@@ -17,7 +17,7 @@ test.describe("ProjectDetail page", () => {
     // Check that project details are displayed correctly
     await expect(page.getByText("Projects > Demo Project")).toBeVisible();
     await expect(
-      page.getByText("2024-01-01 to 02-05, 5 sprints, 100 sp")
+      page.getByText("2024-01-01 to 02-05, 5 sprints, 100 total sp")
     ).toBeVisible();
     await expect(page.getByText("This is a demo project")).toBeVisible();
 

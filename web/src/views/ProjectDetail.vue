@@ -1,6 +1,11 @@
 <template>
     <ContentsContainer :title="'Projects > ' + project.title" :alertCtx="alertCtx">
-        <v-card title="Basic Info" class="mb-5" :text="projectBasicInfo" />
+        <v-card title="Basic Info" class="mb-5" :text="projectBasicInfo">
+            <button data-testid="edit-project-button" class="button-small ml-4 mb-4"
+                @click.prevent="openUpdateProjectModal">
+                Edit
+            </button>
+        </v-card>
         <v-card title="Description" class="mb-5" :text="project.description" />
         <v-card title="Sprint Stats" class="mb-5 p-5">
             <v-table class="m-5">
@@ -33,13 +38,13 @@
                         <td data-testid="end_date">{{ sprint.end_date }}</td>
                         <td data-testid="ideal_sp">{{ sprint.ideal_sp }}</td>
                         <td data-testid="actual_sp">{{ sprint.actual_sp }}</td>
-                        <td>
+                        <td v-if="isSprintStarted(sprint)">
                             <button data-testid="update-sprint-button" class="button-small"
-                                v-if="isSprintStarted(sprint)" @click.prevent="openUpdateSprintModal(idx + 1, sprint)">
+                                @click.prevent="openUpdateSprintModal(idx + 1, sprint)">
                                 Update
                             </button>
-                            <span v-else>not started</span>
                         </td>
+                        <td v-else><span class="color-muted">not started</span></td>
                     </tr>
                 </tbody>
             </v-table>
@@ -51,6 +56,9 @@
 
         <SprintModal :show="updateSprintModal" :modalTitle="'Update Sprint ' + updateSprintNo" :sprint="updateSprint"
             @update:show="updateSprintModal = $event" @submit="submitUpdateSprint" />
+
+        <ProjectModal :show="updateProjectModal" modalTitle="Edit Project" :project="updateProject"
+            @update:show="updateProjectModal = $event" @submit="submitUpdateProject" />
     </ContentsContainer>
 </template>
 
@@ -59,26 +67,27 @@ import ContentsContainer from '../components/ContentsContainer.vue';
 import { useProjectsStore } from '../stores/projects_store';
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { type Project } from '../api/project_api';
+import { defaultProject, type Project } from '../api/project_api';
 import { getEndDate } from '../utils/project_helper';
 import { type Sprint } from '../api/sprint_api';
 import { isSprintStarted } from '../utils/sprint_helper';
 import SprintModal from '../components/SprintModal.vue';
+import ProjectModal from '../components/ProjectModal.vue';
 import { useSprintsStore } from '../stores/sprints_store';
 import { useAlertComposable } from '../composables/alert_composable';
-import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale } from 'chart.js';
+import { Chart as ChartJS, Title, Tooltip, Legend, Filler, LineElement, PointElement, LinearScale, CategoryScale } from 'chart.js';
 import Charts from '../components/Charts.vue';
 
-ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale);
+ChartJS.register(Title, Tooltip, Legend, Filler, LineElement, PointElement, LinearScale, CategoryScale);
 
 const route = useRoute();
 
 const projectsStore = useProjectsStore();
-const project = ref({} as Project);
+const project = ref(defaultProject);
 const projectEndDate = ref('');
 
 const projectBasicInfo = computed(() => {
-    return `${project.value.start_date} to ${projectEndDate.value}, ${project.value.sprint_count} sprints, ${project.value.total_sp} sp`;
+    return `${project.value.start_date} to ${projectEndDate.value}, ${project.value.sprint_count} sprints, ${project.value.total_sp} total sp`;
 });
 
 const sprintsStore = useSprintsStore();
@@ -114,4 +123,30 @@ const submitUpdateSprint = async (sprint: Sprint) => {
         alert(`Sprint update failed: ${error.message}`, 'error');
     }
 };
+
+// Update Project
+const updateProjectModal = ref(false);
+const updateProject = ref<Project>({} as Project);
+
+const openUpdateProjectModal = () => {
+    updateProject.value = { ...project.value };
+    updateProjectModal.value = true;
+};
+
+const submitUpdateProject = async (updatedProject: Project) => {
+    try {
+        await projectsStore.updateProject(updatedProject);
+        project.value = updatedProject;
+        projectEndDate.value = getEndDate(updatedProject);
+        alert("Project updated successfully", "success");
+    } catch (error: any) {
+        alert(`Project update failed: ${error.message}`, 'error');
+    }
+};
 </script>
+
+<style scoped>
+tr>td {
+    min-width: 110px;
+}
+</style>

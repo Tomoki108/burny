@@ -9,6 +9,7 @@ test.describe("Account page", () => {
     await login(page);
 
     // Click on the account page
+    await pageClick(page, "nav-drawer");
     await pageClick(page, "nav-account");
     await expect(page).toHaveURL(/\/account$/);
 

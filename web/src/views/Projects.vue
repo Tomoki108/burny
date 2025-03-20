@@ -1,14 +1,14 @@
 <template>
     <ContentsContainer title="Projects" :alertCtx="alertCtx">
         <v-row>
-            <v-col v-for="project in projectsStore.getProjects()" :key="project.id" lg="3" md="6" sm="12">
+            <v-col v-for="project in projectsStore.getProjects()" :key="project.id" lg="3" md="6" sm="6" xs="12">
                 <router-link :to="'/projects/' + project.id" :props="project">
                     <div class="project-card" :data-testid="'project-card-' + project.id">
                         <h2 class="mb-2">{{ project.title }}</h2>
                         <p>{{ project.start_date }} to {{ getEndDate(project) }}, {{ project.sprint_count }} sprints, {{
-                            project.total_sp }} sp</p>
+                            project.total_sp }} total sp</p>
                         <p class="mb-2"></p>
-                        <p>{{ project.description }}</p>
+                        <p class="project-description">{{ truncateStr(project.description, 70) }}</p>
                         <div class="project-actions">
                             <button :data-testid="'edit-project-button-' + project.id" class="button-small"
                                 @click.prevent="openUpdateProjectModal(project)">Edit
@@ -24,7 +24,7 @@
                 </router-link>
 
             </v-col>
-            <v-col lg="3" md="6" sm="12" @click="openNewProjectModal">
+            <v-col lg="3" md="6" sm="6" @click="openNewProjectModal">
                 <div data-testid="new-project-button" class="project-card-new">
                     <h2>+ New Project</h2>
                 </div>
@@ -48,6 +48,7 @@ import { useAlertComposable } from '../composables/alert_composable.ts'
 import Dialog from '../components/Dialog.vue'
 import { useDialogComposable } from '../composables/dialog_composable'
 import { getEndDate } from '../utils/project_helper'
+import { truncateStr } from '../utils/string_helper'
 
 const projectsStore = useProjectsStore()
 const { alertCtx, alert } = useAlertComposable()
@@ -106,15 +107,22 @@ const submitDeleteProject = (id: number) => {
 .project-card,
 .project-card-new {
     background: var(--color-tertiary-secondary);
-    padding: 20px;
     border-radius: 4px;
     min-width: 220px;
     width: auto;
-    height: 200px;
+    height: 245px;
     text-align: left;
     position: relative;
     color: var(--color-text-light);
     cursor: pointer;
+}
+
+.project-card-new {
+    padding: 20px;
+}
+
+.project-card {
+    padding: 20px 20px 70px 20px;
 }
 
 .project-card-new {
