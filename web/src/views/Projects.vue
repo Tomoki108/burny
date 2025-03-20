@@ -1,7 +1,7 @@
 <template>
     <ContentsContainer title="Projects" :alertCtx="alertCtx">
         <v-row>
-            <v-col v-for="project in projectsStore.getProjects()" :key="project.id" lg="3" md="6" sm="12" xs="12">
+            <v-col v-for="project in projectsStore.getProjects()" :key="project.id" lg="3" md="6" sm="6" xs="12">
                 <router-link :to="'/projects/' + project.id" :props="project">
                     <div class="project-card" :data-testid="'project-card-' + project.id">
                         <h2 class="mb-2">{{ project.title }}</h2>
@@ -24,7 +24,7 @@
                 </router-link>
 
             </v-col>
-            <v-col lg="3" md="6" sm="12" @click="openNewProjectModal">
+            <v-col lg="3" md="6" sm="6" @click="openNewProjectModal">
                 <div data-testid="new-project-button" class="project-card-new">
                     <h2>+ New Project</h2>
                 </div>
@@ -56,7 +56,6 @@ const { dialogCtx, dialog } = useDialogComposable()
 onMounted(() => {
     projectsStore.fetchProjects()
 })
-
 
 // Create Project
 const newProjectModal = ref(false)
@@ -107,31 +106,22 @@ const submitDeleteProject = (id: number) => {
 .project-card,
 .project-card-new {
     background: var(--color-tertiary-secondary);
-    padding: 20px;
-
     border-radius: 4px;
     min-width: 220px;
     width: auto;
-    min-height: 200px;
+    height: 245px;
     text-align: left;
     position: relative;
     color: var(--color-text-light);
     cursor: pointer;
 }
 
-.project-card {
-    /* ボタン用のスペースを確保 */
-    padding-bottom: 70px;
+.project-card-new {
+    padding: 20px;
 }
 
-.project-description {
-    max-height: 100px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
-    margin-bottom: 40px;
+.project-card {
+    padding: 20px 20px 70px 20px;
 }
 
 .project-card-new {
