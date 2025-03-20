@@ -1,10 +1,9 @@
 <template>
-    <!-- Using mobile sidebar design for all devices -->
     <div>
         <!-- App bar -->
         <v-app-bar density="comfortable" color="var(--color-tertiary-secondary)" position="fixed">
             <v-app-bar-nav-icon @click="drawer = !drawer" color="white"></v-app-bar-nav-icon>
-            <v-app-bar-title class="text-white">🐶 Burny</v-app-bar-title>
+            <v-app-bar-title class="text-white app-title">🐶&nbsp;&nbsp;Burny</v-app-bar-title>
         </v-app-bar>
 
         <!-- Navigation drawer -->
@@ -48,7 +47,6 @@ const route = useRoute()
 const router = useRouter()
 const authStore = useAuthStore()
 
-// Navigation drawer state
 const drawer = ref(false)
 
 const isProjectsRouteActive = computed(() => route.path.startsWith("/projects"))
@@ -61,9 +59,16 @@ const signOut = () => {
 </script>
 
 <style scoped>
-/* Mobile styles for FontAwesome icons in v-list */
 :deep(.v-list-item__prepend .svg-inline--fa) {
     margin-right: 12px;
     font-size: 1.2em;
+}
+
+.v-toolbar-title {
+    margin-inline-start: 5px !important;
+}
+
+header {
+    background: var(--color-tertiary-secondary) !important;
 }
 </style>
