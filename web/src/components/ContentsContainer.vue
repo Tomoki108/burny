@@ -30,8 +30,10 @@ defineProps<{
 }
 
 .main-content {
-    width: 90%;
+    width: 100%;
     padding: 25px 40px 40px 40px;
+    margin-top: 64px;
+    /* Account for v-app-bar height */
 }
 
 hr {
