@@ -159,6 +159,7 @@ export async function mockListProjectsApi(page: Page) {
   await page.route("**/api/v1/projects", (route) => {
     if (route.request().method() === "GET") {
       route.fulfill({
+        contentType: "application/json",
         status: 200,
         body: JSON.stringify([TEST_DEMO_PROJECT]),
       });
@@ -170,6 +171,7 @@ export async function mockCreateProjectApi(page: Page) {
   await page.route("**/api/v1/projects", (route) => {
     if (route.request().method() === "POST") {
       route.fulfill({
+        contentType: "application/json",
         status: 201,
         body: JSON.stringify(TEST_CREATE_PROJECT),
       });
@@ -191,6 +193,7 @@ export async function mockUpdateProjectApi(page: Page) {
       updatedProject.sprint_count = req.sprint_count;
 
       route.fulfill({
+        contentType: "application/json",
         status: 200,
         body: JSON.stringify(updatedProject),
       });
@@ -202,6 +205,7 @@ export async function mockDeleteProjectApi(page: Page) {
   await page.route("**/api/v1/projects/**", (route) => {
     if (route.request().method() === "DELETE") {
       route.fulfill({
+        contentType: "application/json",
         status: 204,
       });
     }
@@ -218,11 +222,13 @@ export async function mockListSprintsApi(page: Page) {
 
       if (projectId === "1") {
         route.fulfill({
+          contentType: "application/json",
           status: 200,
           body: JSON.stringify(TEST_DEMO_PROJECT_SPRINTS),
         });
       } else {
         route.fulfill({
+          contentType: "application/json",
           status: 200,
           body: JSON.stringify([]),
         });
@@ -248,6 +254,7 @@ export async function mockUpdateSprintApi(page: Page) {
 
       if (sprintIndex === -1) {
         route.fulfill({
+          contentType: "application/json",
           status: 404,
           body: JSON.stringify({ message: "Sprint not found" }),
         });
@@ -263,6 +270,7 @@ export async function mockUpdateSprintApi(page: Page) {
       TEST_DEMO_PROJECT_SPRINTS[sprintIndex] = updatedSprint;
 
       route.fulfill({
+        contentType: "application/json",
         status: 200,
         body: JSON.stringify(updatedSprint),
       });
