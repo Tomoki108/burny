@@ -15,18 +15,16 @@ import "@mdi/font/css/materialdesignicons.css";
 
 library.add(faProjectDiagram, faSignOutAlt, faUser);
 
-enableMocking().then(() => {
-  createApp(App)
-    .component("font-awesome-icon", FontAwesomeIcon)
-    .use(createPinia())
-    .use(router)
-    .use(vuetify)
-    .mount("#app");
-});
+createApp(App)
+  .component("font-awesome-icon", FontAwesomeIcon)
+  .use(createPinia())
+  .use(router)
+  .use(vuetify)
+  .mount("#app");
 
-async function enableMocking() {
-  if (import.meta.env.VITE_MOCK_API == "true") {
-    const { worker } = await import("./mock/mock_server.ts");
-    return worker.start();
-  }
-}
+// async function enableMocking() {
+//   if (import.meta.env.VITE_MOCK_API == "true") {
+//     const { worker } = await import("./mock/mock_server.ts");
+//     return worker.start();
+//   }
+// }

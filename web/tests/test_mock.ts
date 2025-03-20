@@ -129,7 +129,7 @@ const TEST_DEMO_PROJECT_SPRINTS: Sprint[] = [
 
 // 認証系APIのモック
 export async function mockSignInApi(page: Page) {
-  await page.route("**/api/auth/signin", (route) => {
+  await page.route("**/api/v1/sign_in", (route) => {
     route.fulfill({
       status: 200,
       body: JSON.stringify({
@@ -144,7 +144,7 @@ export async function mockSignInApi(page: Page) {
 }
 
 export async function mockSignUpApi(page: Page) {
-  await page.route("**/api/sign_up", (route) => {
+  await page.route("**/api/v1/sign_up", (route) => {
     route.fulfill({
       status: 201,
       body: JSON.stringify({
@@ -156,7 +156,7 @@ export async function mockSignUpApi(page: Page) {
 
 // プロジェクト系APIのモック
 export async function mockListProjectsApi(page: Page) {
-  await page.route("**/api/projects", (route) => {
+  await page.route("**/api/v1/projects", (route) => {
     if (route.request().method() === "GET") {
       route.fulfill({
         status: 200,
@@ -167,7 +167,7 @@ export async function mockListProjectsApi(page: Page) {
 }
 
 export async function mockCreateProjectApi(page: Page) {
-  await page.route("**/api/projects", (route) => {
+  await page.route("**/api/v1/projects", (route) => {
     if (route.request().method() === "POST") {
       route.fulfill({
         status: 201,
@@ -178,7 +178,7 @@ export async function mockCreateProjectApi(page: Page) {
 }
 
 export async function mockUpdateProjectApi(page: Page) {
-  await page.route("**/api/projects/**", async (route) => {
+  await page.route("**/api/v1/projects/**", async (route) => {
     if (route.request().method() === "PUT") {
       const body = JSON.parse((await route.request().postData()) || "{}");
       const req = body as UpdateProjectRequest;
@@ -199,7 +199,7 @@ export async function mockUpdateProjectApi(page: Page) {
 }
 
 export async function mockDeleteProjectApi(page: Page) {
-  await page.route("**/api/projects/**", (route) => {
+  await page.route("**/api/v1/projects/**", (route) => {
     if (route.request().method() === "DELETE") {
       route.fulfill({
         status: 204,
@@ -210,7 +210,7 @@ export async function mockDeleteProjectApi(page: Page) {
 
 // スプリント系APIのモック
 export async function mockListSprintsApi(page: Page) {
-  await page.route("**/api/projects/*/sprints", (route) => {
+  await page.route("**/api/v1/projects/*/sprints", (route) => {
     if (route.request().method() === "GET") {
       const url = route.request().url();
       const projectIdMatch = url.match(/\/projects\/(\d+)\/sprints/);
@@ -232,7 +232,7 @@ export async function mockListSprintsApi(page: Page) {
 }
 
 export async function mockUpdateSprintApi(page: Page) {
-  await page.route("**/api/projects/*/sprints/*", async (route) => {
+  await page.route("**/api/v1/projects/*/sprints/*", async (route) => {
     if (route.request().method() === "PATCH") {
       const url = route.request().url();
       const sprintIdMatch = url.match(/\/sprints\/(\d+)$/);

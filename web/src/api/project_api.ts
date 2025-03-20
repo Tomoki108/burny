@@ -1,8 +1,8 @@
-import { API_BASE_URL } from "../config";
 import {
   getAuthHeader,
   replaceDateWithISOString,
   ErrorResponse,
+  API_BASE_URL,
 } from "./api_helper";
 
 export interface Project {

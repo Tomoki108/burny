@@ -1,8 +1,11 @@
 import { test, expect } from "@playwright/test";
 import { WEB_LOCAL_HOST, pageClick, login, sleep } from "./test_helper";
+import { mockAllApis } from "./test_mock";
 
 test.describe("Projects page", () => {
   test("User can create, update and delete project", async ({ page }) => {
+    await mockAllApis(page);
+
     await page.goto(WEB_LOCAL_HOST);
     await login(page);
 

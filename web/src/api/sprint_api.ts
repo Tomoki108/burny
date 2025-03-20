@@ -1,5 +1,4 @@
-import { API_BASE_URL } from "../config";
-import { getAuthHeader, ErrorResponse } from "./api_helper";
+import { getAuthHeader, ErrorResponse, API_BASE_URL } from "./api_helper";
 
 export interface Sprint {
   id: number;
