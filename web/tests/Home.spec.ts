@@ -5,9 +5,12 @@ import {
   pageFill,
   pageTextContent,
 } from "./test_helper";
+import { mockAllApis } from "./test_mock";
 
 test.describe("Home page", () => {
   test("User can sign up and sign in", async ({ page }) => {
+    await mockAllApis(page);
+
     await page.goto(WEB_LOCAL_HOST);
 
     // sign up

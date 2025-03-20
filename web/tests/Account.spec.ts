@@ -1,9 +1,11 @@
 import { test, expect } from "@playwright/test";
 import { WEB_LOCAL_HOST, login, pageClick } from "./test_helper";
+import { mockAllApis } from "./test_mock";
 
 test.describe("Account page", () => {
   test("User can view their account information", async ({ page }) => {
-    await page.goto(WEB_LOCAL_HOST);
+    await mockAllApis(page);
+
     await login(page);
 
     // Click on the account page
