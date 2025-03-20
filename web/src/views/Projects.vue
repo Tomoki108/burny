@@ -6,9 +6,9 @@
                     <div class="project-card" :data-testid="'project-card-' + project.id">
                         <h2 class="mb-2">{{ project.title }}</h2>
                         <p>{{ project.start_date }} to {{ getEndDate(project) }}, {{ project.sprint_count }} sprints, {{
-                            project.total_sp }} sp</p>
+                            project.total_sp }} total sp</p>
                         <p class="mb-2"></p>
-                        <p>{{ project.description }}</p>
+                        <p v-if="windowWidth >= 600">{{ project.description }}</p>
                         <div class="project-actions">
                             <button :data-testid="'edit-project-button-' + project.id" class="button-small"
                                 @click.prevent="openUpdateProjectModal(project)">Edit
@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted } from 'vue'
+import { ref, onMounted, onUnmounted } from 'vue'
 import ContentsContainer from '../components/ContentsContainer.vue'
 import ProjectModal from '../components/ProjectModal.vue'
 import { useProjectsStore } from '../stores/projects_store.ts'
@@ -53,8 +53,18 @@ const projectsStore = useProjectsStore()
 const { alertCtx, alert } = useAlertComposable()
 const { dialogCtx, dialog } = useDialogComposable()
 
+const windowWidth = ref(window.innerWidth)
+const updateWindowWidth = () => {
+    windowWidth.value = window.innerWidth
+}
+
 onMounted(() => {
     projectsStore.fetchProjects()
+    window.addEventListener('resize', updateWindowWidth)
+})
+
+onUnmounted(() => {
+    window.removeEventListener('resize', updateWindowWidth)
 })
 
 // Create Project

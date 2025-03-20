@@ -78,7 +78,7 @@ const project = ref(defaultProject);
 const projectEndDate = ref('');
 
 const projectBasicInfo = computed(() => {
-    return `${project.value.start_date} to ${projectEndDate.value}, ${project.value.sprint_count} sprints, ${project.value.total_sp} sp`;
+    return `${project.value.start_date} to ${projectEndDate.value}, ${project.value.sprint_count} sprints, ${project.value.total_sp} total sp`;
 });
 
 const sprintsStore = useSprintsStore();
