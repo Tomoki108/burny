@@ -2,7 +2,7 @@
     <div>
         <!-- App bar -->
         <v-app-bar density="comfortable" color="var(--color-tertiary-secondary)" position="fixed">
-            <v-app-bar-nav-icon @click="drawer = !drawer" color="white"></v-app-bar-nav-icon>
+            <v-app-bar-nav-icon @click="drawer = !drawer" color="white" data-testid="nav-drawer"></v-app-bar-nav-icon>
             <v-app-bar-title class="text-white app-title">🐶&nbsp;&nbsp;Burny</v-app-bar-title>
         </v-app-bar>
 
@@ -16,7 +16,7 @@
                     <v-list-item-title>Projects</v-list-item-title>
                 </v-list-item>
 
-                <v-list-item :to="PATH_ACCOUNT">
+                <v-list-item :to="PATH_ACCOUNT" data-testid="nav-account">
                     <template v-slot:prepend>
                         <font-awesome-icon :icon="['fas', 'user']" />
                     </template>
