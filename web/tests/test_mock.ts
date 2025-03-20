@@ -1,9 +1,7 @@
 import { type Page } from "@playwright/test";
 
-// API Base URL
 const API_BASE_URL = "/api";
 
-// Project型の定義
 export interface Project {
   id: number;
   user_id: number;
@@ -17,7 +15,6 @@ export interface Project {
   updated_at: string;
 }
 
-// Sprint型の定義
 export interface Sprint {
   id: number;
   project_id: number;
@@ -30,7 +27,6 @@ export interface Sprint {
   updated_at: string;
 }
 
-// 更新用のリクエスト型定義
 export interface UpdateProjectRequest {
   title: string;
   description: string;
@@ -42,7 +38,6 @@ export interface UpdateSprintRequest {
   actual_sp: number;
 }
 
-// テスト用のモックデータ
 const TEST_CREATE_PROJECT: Project = {
   id: 10,
   user_id: 1,
@@ -127,7 +122,6 @@ const TEST_DEMO_PROJECT_SPRINTS: Sprint[] = [
   },
 ];
 
-// 認証系APIのモック
 export async function mockSignInApi(page: Page) {
   await page.route("**/api/v1/sign_in", (route) => {
     route.fulfill({
@@ -154,7 +148,6 @@ export async function mockSignUpApi(page: Page) {
   });
 }
 
-// プロジェクト系APIのモック
 export async function mockListProjectsApi(page: Page) {
   await page.route("**/api/v1/projects", (route) => {
     if (route.request().method() === "GET") {
@@ -180,8 +173,26 @@ export async function mockCreateProjectApi(page: Page) {
 }
 
 export async function mockUpdateProjectApi(page: Page) {
-  await page.route("**/api/v1/projects/**", async (route) => {
-    if (route.request().method() === "PUT") {
+  await page.route("**/api/v1/projects/10", async (route) => {
+    const method = route.request().method();
+
+    // // OPTIONS (プリフライトリクエスト) の処理
+    // if (method === "OPTIONS") {
+    //   route.fulfill({
+    //     status: 200,
+    //     headers: {
+    //       "Access-Control-Allow-Origin": "*",
+    //       "Access-Control-Allow-Methods":
+    //         "PUT, PATCH, POST, GET, DELETE, OPTIONS",
+    //       "Access-Control-Allow-Headers": "Content-Type, Authorization",
+    //       "Access-Control-Max-Age": "86400",
+    //     },
+    //   });
+    //   return;
+    // }
+
+    // 実際のPUTリクエストの処理
+    if (method === "PUT") {
       const body = JSON.parse((await route.request().postData()) || "{}");
       const req = body as UpdateProjectRequest;
 
@@ -239,7 +250,25 @@ export async function mockListSprintsApi(page: Page) {
 
 export async function mockUpdateSprintApi(page: Page) {
   await page.route("**/api/v1/projects/*/sprints/*", async (route) => {
-    if (route.request().method() === "PATCH") {
+    const method = route.request().method();
+
+    // OPTIONS (プリフライトリクエスト) の処理
+    if (method === "OPTIONS") {
+      route.fulfill({
+        status: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods":
+            "PUT, PATCH, POST, GET, DELETE, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Max-Age": "86400",
+        },
+      });
+      return;
+    }
+
+    // 実際のPATCHリクエストの処理
+    if (method === "PATCH") {
       const url = route.request().url();
       const sprintIdMatch = url.match(/\/sprints\/(\d+)$/);
       const sprintId = sprintIdMatch ? sprintIdMatch[1] : null;
@@ -278,7 +307,6 @@ export async function mockUpdateSprintApi(page: Page) {
   });
 }
 
-// すべてのAPIモックを一度に設定する便利関数
 export async function mockAllApis(page: Page) {
   await mockSignInApi(page);
   await mockSignUpApi(page);
