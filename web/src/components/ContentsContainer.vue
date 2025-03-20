@@ -1,5 +1,5 @@
 <template>
-    <Sidebar />
+    <Navigation />
     <main class="main-content">
         <v-alert v-if="alertCtx?.show" :type="alertCtx?.type" :text="alertCtx?.text" closable class="alert-dialog" />
         <header class="app-header">
@@ -8,13 +8,10 @@
         <hr />
         <slot></slot>
     </main>
-    <Footer :isHome=false />
 </template>
 
 <script setup lang="ts">
-import { defineProps } from 'vue'
-import Sidebar from './Sidebar.vue'
-import Footer from './Footer.vue'
+import Navigation from './Navigation.vue'
 import type { AlertContext } from '../composables/alert_composable'
 
 defineProps<{
@@ -24,18 +21,17 @@ defineProps<{
 </script>
 
 <style scoped>
+.main-content {
+    width: 100%;
+    padding: 25px 40px 40px 40px;
+    margin-top: 64px;
+}
+
 .app-header h1 {
     margin-bottom: 20px;
     text-align: left;
     color: var(--color-text);
     font-weight: bold;
-}
-
-.main-content {
-    width: 100%;
-    padding: 25px 40px 40px 40px;
-    margin-top: 64px;
-    /* Account for v-app-bar height */
 }
 
 hr {

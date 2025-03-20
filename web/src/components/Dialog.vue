@@ -1,5 +1,5 @@
 <template>
-    <v-dialog v-model="ctx.show" class="dialog" closable>
+    <v-dialog v-model="ctx.show" class="dialog" closable max-width="500px">
         <v-sheet class="px-5 py-5">
             <h2>{{ ctx.title }}</h2>
             <p class="my-4">
@@ -25,10 +25,3 @@ defineProps<{
 }>()
 
 </script>
-
-<style scoped>
-.dialog {
-    top: -67.5%;
-    width: 20%;
-}
-</style>

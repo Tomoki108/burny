@@ -1,12 +1,6 @@
 /* フォント定義 */
 @import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap");
 
-html {
-  height: 100vh;
-  margin: 0;
-  overflow-y: auto;
-}
-
 :root {
   /* 独自のカラーパレット */
   /* https://coolors.co/d8e2dc-ffe5d9-ffcad4-f4acb7-9d8189 */
