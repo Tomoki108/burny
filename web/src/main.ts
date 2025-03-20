@@ -21,10 +21,3 @@ createApp(App)
   .use(router)
   .use(vuetify)
   .mount("#app");
-
-// async function enableMocking() {
-//   if (import.meta.env.VITE_MOCK_API == "true") {
-//     const { worker } = await import("./mock/mock_server.ts");
-//     return worker.start();
-//   }
-// }

@@ -11,7 +11,7 @@ SPA for Burny.
 | **UI Component**     | [Vuetify](https://vuetifyjs.com/ja/)                                 |
 | **Routing**          | [Vue Router](https://router.vuejs.org/)                              |
 | **State Management** | [Pinia](https://pinia.vuejs.org/)                                    |
-| **Test**             | [Playwright](https://playwright.dev/), [MSW](https://mswjsio/)       |
+| **Test**             | [Playwright](https://playwright.dev/)                                |
 
 ## How to run
 
@@ -29,7 +29,9 @@ npm install
 ### Other Commands
 
 ```shell
-# run test (you can specify test file path as argument)
+# run scenario tests
+#  - web server must be running on port 5179
+#  - you can specify test file path as argument
 npm run test
 npm run testh # headed mode
 npm run testhd # headed mode & debug mode
