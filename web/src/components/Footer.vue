@@ -130,6 +130,8 @@ h2 {
 
 .site-footer.non-home {
     height: 56px;
+    position: absolute;
+    bottom: 0;
 }
 
 .footer-content-non-home {
