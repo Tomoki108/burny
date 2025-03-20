@@ -24,6 +24,9 @@ npm run dev
 ```shell
 cp .env.sample .env
 npm install
+
+# install playwright deps (can't install by npm install)
+npx playwright install --with-deps
 ```
 
 ### Other Commands
