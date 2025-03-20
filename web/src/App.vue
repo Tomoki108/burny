@@ -8,8 +8,6 @@
 #app {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  /* min-heightをheightに変更 */  overflow-y: auto; /* コンテンツが高さを超える場合のみスクロール可能に */
 }
 
 main {
