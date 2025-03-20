@@ -176,20 +176,20 @@ export async function mockUpdateProjectApi(page: Page) {
   await page.route("**/api/v1/projects/10", async (route) => {
     const method = route.request().method();
 
-    // // OPTIONS (プリフライトリクエスト) の処理
-    // if (method === "OPTIONS") {
-    //   route.fulfill({
-    //     status: 200,
-    //     headers: {
-    //       "Access-Control-Allow-Origin": "*",
-    //       "Access-Control-Allow-Methods":
-    //         "PUT, PATCH, POST, GET, DELETE, OPTIONS",
-    //       "Access-Control-Allow-Headers": "Content-Type, Authorization",
-    //       "Access-Control-Max-Age": "86400",
-    //     },
-    //   });
-    //   return;
-    // }
+    // OPTIONS (プリフライトリクエスト) の処理
+    if (method === "OPTIONS") {
+      route.fulfill({
+        status: 200,
+        headers: {
+          "Access-Control-Allow-Origin": "*",
+          "Access-Control-Allow-Methods":
+            "PUT, PATCH, POST, GET, DELETE, OPTIONS",
+          "Access-Control-Allow-Headers": "Content-Type, Authorization",
+          "Access-Control-Max-Age": "86400",
+        },
+      });
+      return;
+    }
 
     // 実際のPUTリクエストの処理
     if (method === "PUT") {
