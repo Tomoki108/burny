@@ -31,7 +31,6 @@
 
 <script lang="ts" setup>
 const emit = defineEmits(['open-signin-modal']);
-
 defineProps<{ isHome: boolean }>();
 
 const openSignInModal = (isSignUp: boolean) => {
@@ -129,13 +128,29 @@ h2 {
 }
 
 .site-footer.non-home {
-    height: 56px;
-    position: absolute;
+    min-height: 56px;
+    position: relative;
+}
+
+.site-footer.non-home.fixed {
+    position: fixed;
     bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+/* コンテンツが少ない時（スクロールバーが表示されない時）のみ固定表示 */
+:root:has(body:not(:has(*:hover))) .site-footer.non-home,
+:root:has(main:only-child) .site-footer.non-home,
+:root:has(body > #app > main:not(:has(:first-child:last-child))) .site-footer.non-home {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
 }
 
 .footer-content-non-home {
-    height: 56px;
+    min-height: 56px;
     display: flex;
     justify-content: center;
     align-items: center;
