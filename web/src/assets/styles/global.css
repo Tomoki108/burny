@@ -96,6 +96,10 @@ h5 {
   color: var(--color-text-light);
 }
 
+.color-muted {
+  color: var(--color-muted);
+}
+
 .button-large {
   font-family: var(--font-family-base);
   background-color: var(--color-primary);

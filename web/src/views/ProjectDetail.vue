@@ -38,13 +38,13 @@
                         <td data-testid="end_date">{{ sprint.end_date }}</td>
                         <td data-testid="ideal_sp">{{ sprint.ideal_sp }}</td>
                         <td data-testid="actual_sp">{{ sprint.actual_sp }}</td>
-                        <td>
+                        <td v-if="isSprintStarted(sprint)">
                             <button data-testid="update-sprint-button" class="button-small"
-                                v-if="isSprintStarted(sprint)" @click.prevent="openUpdateSprintModal(idx + 1, sprint)">
+                                @click.prevent="openUpdateSprintModal(idx + 1, sprint)">
                                 Update
                             </button>
-                            <span v-else>not started</span>
                         </td>
+                        <td v-else><span class="color-muted">not started</span></td>
                     </tr>
                 </tbody>
             </v-table>
@@ -144,3 +144,9 @@ const submitUpdateProject = async (updatedProject: Project) => {
     }
 };
 </script>
+
+<style scoped>
+tr>td {
+    min-width: 110px;
+}
+</style>
