@@ -1,14 +1,14 @@
 <template>
     <ContentsContainer title="Projects" :alertCtx="alertCtx">
         <v-row>
-            <v-col v-for="project in projectsStore.getProjects()" :key="project.id" lg="3" md="6" sm="12">
+            <v-col v-for="project in projectsStore.getProjects()" :key="project.id" lg="3" md="6" sm="12" xs="12">
                 <router-link :to="'/projects/' + project.id" :props="project">
                     <div class="project-card" :data-testid="'project-card-' + project.id">
                         <h2 class="mb-2">{{ project.title }}</h2>
                         <p>{{ project.start_date }} to {{ getEndDate(project) }}, {{ project.sprint_count }} sprints, {{
                             project.total_sp }} total sp</p>
                         <p class="mb-2"></p>
-                        <p v-if="windowWidth >= 600">{{ project.description }}</p>
+                        <p class="project-description">{{ project.description }}</p>
                         <div class="project-actions">
                             <button :data-testid="'edit-project-button-' + project.id" class="button-small"
                                 @click.prevent="openUpdateProjectModal(project)">Edit
@@ -39,7 +39,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, onUnmounted } from 'vue'
+import { ref, onMounted } from 'vue'
 import ContentsContainer from '../components/ContentsContainer.vue'
 import ProjectModal from '../components/ProjectModal.vue'
 import { useProjectsStore } from '../stores/projects_store.ts'
@@ -53,19 +53,10 @@ const projectsStore = useProjectsStore()
 const { alertCtx, alert } = useAlertComposable()
 const { dialogCtx, dialog } = useDialogComposable()
 
-const windowWidth = ref(window.innerWidth)
-const updateWindowWidth = () => {
-    windowWidth.value = window.innerWidth
-}
-
 onMounted(() => {
     projectsStore.fetchProjects()
-    window.addEventListener('resize', updateWindowWidth)
 })
 
-onUnmounted(() => {
-    window.removeEventListener('resize', updateWindowWidth)
-})
 
 // Create Project
 const newProjectModal = ref(false)
@@ -117,14 +108,30 @@ const submitDeleteProject = (id: number) => {
 .project-card-new {
     background: var(--color-tertiary-secondary);
     padding: 20px;
+
     border-radius: 4px;
     min-width: 220px;
     width: auto;
-    height: 200px;
+    min-height: 200px;
     text-align: left;
     position: relative;
     color: var(--color-text-light);
     cursor: pointer;
+}
+
+.project-card {
+    /* ボタン用のスペースを確保 */
+    padding-bottom: 70px;
+}
+
+.project-description {
+    max-height: 100px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 4;
+    -webkit-box-orient: vertical;
+    margin-bottom: 40px;
 }
 
 .project-card-new {
