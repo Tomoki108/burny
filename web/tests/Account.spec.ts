@@ -6,7 +6,6 @@ test.describe("Account page", () => {
   test("User can view their account information", async ({ page }) => {
     await mockAllApis(page);
 
-    await page.goto(WEB_LOCAL_HOST);
     await login(page);
 
     // Click on the account page

@@ -54,7 +54,7 @@ const TEST_CREATE_PROJECT: Project = {
 const TEST_DEMO_PROJECT: Project = {
   id: 1,
   user_id: 1,
-  title: "Test Project",
+  title: "Demo Project",
   sprint_count: 5,
   description: "This is a demo project",
   sprint_duration: 1,
@@ -148,161 +148,126 @@ export async function mockSignUpApi(page: Page) {
   });
 }
 
-export async function mockListProjectsApi(page: Page) {
+export async function mockProjectsApi(page: Page) {
   await page.route("**/api/v1/projects", (route) => {
-    if (route.request().method() === "GET") {
-      route.fulfill({
-        contentType: "application/json",
-        status: 200,
-        body: JSON.stringify([TEST_DEMO_PROJECT]),
-      });
-    }
-  });
-}
-
-export async function mockCreateProjectApi(page: Page) {
-  await page.route("**/api/v1/projects", (route) => {
-    if (route.request().method() === "POST") {
-      route.fulfill({
-        contentType: "application/json",
-        status: 201,
-        body: JSON.stringify(TEST_CREATE_PROJECT),
-      });
-    }
-  });
-}
-
-export async function mockUpdateProjectApi(page: Page) {
-  await page.route("**/api/v1/projects/10", async (route) => {
     const method = route.request().method();
-
-    // OPTIONS (プリフライトリクエスト) の処理
-    if (method === "OPTIONS") {
-      route.fulfill({
-        status: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods":
-            "PUT, PATCH, POST, GET, DELETE, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-          "Access-Control-Max-Age": "86400",
-        },
-      });
-      return;
-    }
-
-    // 実際のPUTリクエストの処理
-    if (method === "PUT") {
-      const body = JSON.parse((await route.request().postData()) || "{}");
-      const req = body as UpdateProjectRequest;
-
-      // TEST_CREATE_PROJECTをコピーして更新
-      const updatedProject = { ...TEST_CREATE_PROJECT };
-      updatedProject.title = req.title;
-      updatedProject.description = req.description;
-      updatedProject.total_sp = req.total_sp;
-      updatedProject.sprint_count = req.sprint_count;
-
-      route.fulfill({
-        contentType: "application/json",
-        status: 200,
-        body: JSON.stringify(updatedProject),
-      });
+    switch (method) {
+      case "GET":
+        route.fulfill({
+          contentType: "application/json",
+          status: 200,
+          body: JSON.stringify([TEST_DEMO_PROJECT]),
+        });
+        break;
+      case "POST":
+        route.fulfill({
+          contentType: "application/json",
+          status: 201,
+          body: JSON.stringify(TEST_CREATE_PROJECT),
+        });
+        break;
     }
   });
 }
 
-export async function mockDeleteProjectApi(page: Page) {
-  await page.route("**/api/v1/projects/**", (route) => {
-    if (route.request().method() === "DELETE") {
-      route.fulfill({
-        contentType: "application/json",
-        status: 204,
-      });
+export async function mockProjectApi(page: Page) {
+  await page.route("**/api/v1/projects/**", async (route) => {
+    const method = route.request().method();
+    switch (method) {
+      case "PUT":
+        const body = JSON.parse((await route.request().postData()) || "{}");
+        const req = body as UpdateProjectRequest;
+
+        // TEST_CREATE_PROJECTをコピーして更新
+        const updatedProject = { ...TEST_CREATE_PROJECT };
+        updatedProject.title = req.title;
+        updatedProject.description = req.description;
+        updatedProject.total_sp = req.total_sp;
+        updatedProject.sprint_count = req.sprint_count;
+
+        route.fulfill({
+          contentType: "application/json",
+          status: 200,
+          body: JSON.stringify(updatedProject),
+        });
+        break;
+      case "DELETE":
+        route.fulfill({
+          contentType: "application/json",
+          status: 204,
+        });
+        break;
     }
   });
 }
 
-// スプリント系APIのモック
-export async function mockListSprintsApi(page: Page) {
+export async function mockSprintsApi(page: Page) {
   await page.route("**/api/v1/projects/*/sprints", (route) => {
-    if (route.request().method() === "GET") {
-      const url = route.request().url();
-      const projectIdMatch = url.match(/\/projects\/(\d+)\/sprints/);
-      const projectId = projectIdMatch ? projectIdMatch[1] : null;
+    const method = route.request().method();
+    switch (method) {
+      case "GET":
+        const url = route.request().url();
+        const projectIdMatch = url.match(/\/projects\/(\d+)\/sprints/);
+        const projectId = projectIdMatch ? projectIdMatch[1] : null;
 
-      if (projectId === "1") {
-        route.fulfill({
-          contentType: "application/json",
-          status: 200,
-          body: JSON.stringify(TEST_DEMO_PROJECT_SPRINTS),
-        });
-      } else {
-        route.fulfill({
-          contentType: "application/json",
-          status: 200,
-          body: JSON.stringify([]),
-        });
-      }
+        if (projectId === "1") {
+          route.fulfill({
+            contentType: "application/json",
+            status: 200,
+            body: JSON.stringify(TEST_DEMO_PROJECT_SPRINTS),
+          });
+        } else {
+          route.fulfill({
+            contentType: "application/json",
+            status: 200,
+            body: JSON.stringify([]),
+          });
+        }
+        break;
     }
   });
 }
 
-export async function mockUpdateSprintApi(page: Page) {
+export async function mockSprintApi(page: Page) {
   await page.route("**/api/v1/projects/*/sprints/*", async (route) => {
     const method = route.request().method();
+    switch (method) {
+      case "PATCH":
+        const url = route.request().url();
+        const sprintIdMatch = url.match(/\/sprints\/(\d+)$/);
+        const sprintId = sprintIdMatch ? sprintIdMatch[1] : null;
 
-    // OPTIONS (プリフライトリクエスト) の処理
-    if (method === "OPTIONS") {
-      route.fulfill({
-        status: 200,
-        headers: {
-          "Access-Control-Allow-Origin": "*",
-          "Access-Control-Allow-Methods":
-            "PUT, PATCH, POST, GET, DELETE, OPTIONS",
-          "Access-Control-Allow-Headers": "Content-Type, Authorization",
-          "Access-Control-Max-Age": "86400",
-        },
-      });
-      return;
-    }
+        const body = JSON.parse((await route.request().postData()) || "{}");
+        const req = body as UpdateSprintRequest;
 
-    // 実際のPATCHリクエストの処理
-    if (method === "PATCH") {
-      const url = route.request().url();
-      const sprintIdMatch = url.match(/\/sprints\/(\d+)$/);
-      const sprintId = sprintIdMatch ? sprintIdMatch[1] : null;
+        // スプリントを検索
+        const sprintIndex = TEST_DEMO_PROJECT_SPRINTS.findIndex(
+          (sprint) => sprint.id.toString() === sprintId
+        );
 
-      const body = JSON.parse((await route.request().postData()) || "{}");
-      const req = body as UpdateSprintRequest;
+        if (sprintIndex === -1) {
+          route.fulfill({
+            contentType: "application/json",
+            status: 404,
+            body: JSON.stringify({ message: "Sprint not found" }),
+          });
+          return;
+        }
 
-      // スプリントを検索
-      const sprintIndex = TEST_DEMO_PROJECT_SPRINTS.findIndex(
-        (sprint) => sprint.id.toString() === sprintId
-      );
+        // スプリントを更新
+        const updatedSprint = { ...TEST_DEMO_PROJECT_SPRINTS[sprintIndex] };
+        updatedSprint.actual_sp = req.actual_sp;
+        updatedSprint.updated_at = new Date().toISOString();
 
-      if (sprintIndex === -1) {
+        // 配列を更新して状態を維持
+        TEST_DEMO_PROJECT_SPRINTS[sprintIndex] = updatedSprint;
+
         route.fulfill({
           contentType: "application/json",
-          status: 404,
-          body: JSON.stringify({ message: "Sprint not found" }),
+          status: 200,
+          body: JSON.stringify(updatedSprint),
         });
-        return;
-      }
-
-      // スプリントを更新
-      const updatedSprint = { ...TEST_DEMO_PROJECT_SPRINTS[sprintIndex] };
-      updatedSprint.actual_sp = req.actual_sp;
-      updatedSprint.updated_at = new Date().toISOString();
-
-      // 配列を更新して状態を維持
-      TEST_DEMO_PROJECT_SPRINTS[sprintIndex] = updatedSprint;
-
-      route.fulfill({
-        contentType: "application/json",
-        status: 200,
-        body: JSON.stringify(updatedSprint),
-      });
+        break;
     }
   });
 }
@@ -310,12 +275,10 @@ export async function mockUpdateSprintApi(page: Page) {
 export async function mockAllApis(page: Page) {
   await mockSignInApi(page);
   await mockSignUpApi(page);
-  await mockListProjectsApi(page);
-  await mockCreateProjectApi(page);
-  await mockUpdateProjectApi(page);
-  await mockDeleteProjectApi(page);
-  await mockListSprintsApi(page);
-  await mockUpdateSprintApi(page);
+  await mockProjectsApi(page);
+  await mockProjectApi(page);
+  await mockSprintsApi(page);
+  await mockSprintApi(page);
 }
 
 // デコード可能なモックJWTトークン
