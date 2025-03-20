@@ -63,28 +63,7 @@
             </div>
         </section>
 
-        <footer class="site-footer">
-            <div class="cta-section">
-                <div class="content-container">
-                    <h2>Get Started Now</h2>
-                    <div class="cta-buttons">
-                        <button @click="openSignInModal(false)" class="button-large">Sign In</button>
-                        <button @click="openSignInModal(true)" class="button-large">Sign Up</button>
-                    </div>
-                </div>
-            </div>
-            <div class="footer-content">
-                <div class="content-container">
-                    <div class="footer-links">
-                        <a href="https://github.com/tomoki108/burny" target="_blank" rel="noopener noreferrer"
-                            class="github-link">
-                            <span>View Source Code on GitHub</span>
-                        </a>
-                    </div>
-                    <p class="copyright">&copy; {{ new Date().getFullYear() }} Burny. All rights reserved.</p>
-                </div>
-            </div>
-        </footer>
+        <Footer @open-signin-modal="openSignInModal" />
 
         <SignInModal :isVisible="showSignInModal" :initialSignUp="isSignUp" @close="closeSignInModal"
             @auth-success="handleAuthSuccess" />
@@ -97,6 +76,7 @@ import { useRoute } from 'vue-router';
 import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler } from 'chart.js';
 import { Line } from 'vue-chartjs';
 import SignInModal from '../components/SignInModal.vue';
+import Footer from '../components/Footer.vue';
 
 // Register Chart.js components
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler);
@@ -235,8 +215,7 @@ const burnUpChartOptions = {
 
 .about-section,
 .features-section,
-.why-section,
-.cta-section {
+.why-section {
     padding: 3rem 0;
     width: 100%;
     box-sizing: border-box;
@@ -289,56 +268,6 @@ const burnUpChartOptions = {
     background-color: var(--color-background);
 }
 
-.cta-section {
-    padding: 3rem 0 2rem;
-    text-align: center;
-}
-
-.footer-content {
-    padding: 2rem 0 1.5rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-}
-
-.cta-buttons {
-    display: flex;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 1.5rem;
-}
-
-.site-footer {
-    background: var(--color-secondary-tertiary);
-    color: var(--color-text-light);
-    width: 100%;
-}
-
-.footer-links {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 0.75rem;
-}
-
-.github-link {
-    color: var(--color-text-light);
-    text-decoration: none;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-weight: bold;
-}
-
-.github-link:hover {
-    color: var(--color-primary);
-    text-decoration: underline;
-}
-
-.copyright {
-    text-align: center;
-    font-size: 0.875rem;
-    margin-top: 0.75rem;
-    color: rgba(255, 255, 255, 0.7);
-}
-
 h2 {
     margin-top: 0;
     margin-bottom: 0.75rem;
@@ -369,13 +298,6 @@ h3 {
         max-width: 300px;
     }
 
-    .cta-buttons {
-        flex-direction: column;
-        width: 100%;
-        max-width: 300px;
-        margin: 1.5rem auto 0;
-    }
-
     .chart-container {
         width: 100%;
         margin-top: 2rem;
@@ -383,13 +305,11 @@ h3 {
 
     .about-section,
     .features-section,
-    .why-section,
-    .cta-section {
+    .why-section {
         padding: 2rem 0;
     }
 
-    .hero-actions,
-    .cta-buttons {
+    .hero-actions {
         flex-direction: column;
         width: 100%;
         max-width: 200px;
@@ -397,8 +317,7 @@ h3 {
         margin-right: auto;
     }
 
-    .hero-actions .button,
-    .cta-buttons .button {
+    .hero-actions .button {
         width: 100%;
     }
 }
