@@ -8,11 +8,13 @@
         <hr />
         <slot></slot>
     </main>
+    <Footer :includeCta=false />
 </template>
 
 <script setup lang="ts">
 import { defineProps } from 'vue'
 import Sidebar from './Sidebar.vue'
+import Footer from './Footer.vue'
 import type { AlertContext } from '../composables/alert_composable'
 
 defineProps<{

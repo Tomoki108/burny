@@ -63,7 +63,7 @@
             </div>
         </section>
 
-        <Footer @open-signin-modal="openSignInModal" />
+        <Footer :includeCta=true @open-signin-modal="openSignInModal" />
 
         <SignInModal :isVisible="showSignInModal" :initialSignUp="isSignUp" @close="closeSignInModal"
             @auth-success="handleAuthSuccess" />

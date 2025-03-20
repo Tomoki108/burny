@@ -1,6 +1,6 @@
 <template>
     <footer class="site-footer">
-        <div class="cta-section">
+        <div v-if="includeCta" class="cta-section">
             <div class="content-container">
                 <h2>Get Started Now</h2>
                 <div class="cta-buttons">
@@ -25,6 +25,8 @@
 
 <script lang="ts" setup>
 const emit = defineEmits(['open-signin-modal']);
+
+defineProps<{ includeCta: boolean }>();
 
 const openSignInModal = (isSignUp: boolean) => {
     emit('open-signin-modal', isSignUp);
