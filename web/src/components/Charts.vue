@@ -92,7 +92,17 @@ const burnUpchartOptions = computed(() => {
                 ticks: {
                     stepSize: 10,
                 },
+                title: {
+                    display: true,
+                    text: 'Story Points'
+                }
             },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Sprints'
+                }
+            }
         },
     };
 });
@@ -107,7 +117,7 @@ const velocityChartData = computed(() => ({
     labels: props.sprints.map((_, index) => `Sprint ${index + 1}`),
     datasets: [
         {
-            label: 'velocity',
+            label: 'Velocity',
             borderColor: '#ff5252', // var(--color-danger)
             data: velocity.value,
             fill: true,
@@ -122,7 +132,17 @@ const velocityChartOptions = computed(() => {
         scales: {
             y: {
                 min: 0,
+                title: {
+                    display: true,
+                    text: 'Story Points'
+                }
             },
+            x: {
+                title: {
+                    display: true,
+                    text: 'Sprints'
+                }
+            }
         },
     };
 });

@@ -181,7 +181,7 @@ const burnUpChartOptions = {
         x: {
             title: {
                 display: true,
-                text: 'Sprint'
+                text: 'Sprints'
             }
         }
     }
