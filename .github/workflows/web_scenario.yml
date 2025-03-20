@@ -1,4 +1,4 @@
-name: Web Senario Tests
+name: Web Senario Test
 
 on:
   push:
