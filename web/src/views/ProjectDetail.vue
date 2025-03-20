@@ -1,6 +1,11 @@
 <template>
     <ContentsContainer :title="'Projects > ' + project.title" :alertCtx="alertCtx">
-        <v-card title="Basic Info" class="mb-5" :text="projectBasicInfo" />
+        <v-card title="Basic Info" class="mb-5" :text="projectBasicInfo">
+            <button data-testid="edit-project-button" class="button-small ml-4 mb-4"
+                @click.prevent="openUpdateProjectModal">
+                Edit
+            </button>
+        </v-card>
         <v-card title="Description" class="mb-5" :text="project.description" />
         <v-card title="Sprint Stats" class="mb-5 p-5">
             <v-table class="m-5">
@@ -51,6 +56,9 @@
 
         <SprintModal :show="updateSprintModal" :modalTitle="'Update Sprint ' + updateSprintNo" :sprint="updateSprint"
             @update:show="updateSprintModal = $event" @submit="submitUpdateSprint" />
+
+        <ProjectModal :show="updateProjectModal" modalTitle="Edit Project" :project="updateProject"
+            @update:show="updateProjectModal = $event" @submit="submitUpdateProject" />
     </ContentsContainer>
 </template>
 
@@ -59,11 +67,12 @@ import ContentsContainer from '../components/ContentsContainer.vue';
 import { useProjectsStore } from '../stores/projects_store';
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { defaultProject } from '../api/project_api';
+import { defaultProject, type Project } from '../api/project_api';
 import { getEndDate } from '../utils/project_helper';
 import { type Sprint } from '../api/sprint_api';
 import { isSprintStarted } from '../utils/sprint_helper';
 import SprintModal from '../components/SprintModal.vue';
+import ProjectModal from '../components/ProjectModal.vue';
 import { useSprintsStore } from '../stores/sprints_store';
 import { useAlertComposable } from '../composables/alert_composable';
 import { Chart as ChartJS, Title, Tooltip, Legend, Filler, LineElement, PointElement, LinearScale, CategoryScale } from 'chart.js';
@@ -112,6 +121,26 @@ const submitUpdateSprint = async (sprint: Sprint) => {
         alert("Sprint updated successfully", "success");
     } catch (error: any) {
         alert(`Sprint update failed: ${error.message}`, 'error');
+    }
+};
+
+// Update Project
+const updateProjectModal = ref(false);
+const updateProject = ref<Project>({} as Project);
+
+const openUpdateProjectModal = () => {
+    updateProject.value = { ...project.value };
+    updateProjectModal.value = true;
+};
+
+const submitUpdateProject = async (updatedProject: Project) => {
+    try {
+        await projectsStore.updateProject(updatedProject);
+        project.value = updatedProject;
+        projectEndDate.value = getEndDate(updatedProject);
+        alert("Project updated successfully", "success");
+    } catch (error: any) {
+        alert(`Project update failed: ${error.message}`, 'error');
     }
 };
 </script>
