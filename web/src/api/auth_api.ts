@@ -1,5 +1,4 @@
-import { API_BASE_URL } from "../config";
-import { ErrorResponse } from "./api_helper";
+import { ErrorResponse, API_BASE_URL } from "./api_helper";
 
 export interface SignInResponse {
   token: string;
