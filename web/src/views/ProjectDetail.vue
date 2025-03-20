@@ -59,22 +59,22 @@ import ContentsContainer from '../components/ContentsContainer.vue';
 import { useProjectsStore } from '../stores/projects_store';
 import { ref, onMounted, computed } from 'vue';
 import { useRoute } from 'vue-router';
-import { type Project } from '../api/project_api';
+import { defaultProject } from '../api/project_api';
 import { getEndDate } from '../utils/project_helper';
 import { type Sprint } from '../api/sprint_api';
 import { isSprintStarted } from '../utils/sprint_helper';
 import SprintModal from '../components/SprintModal.vue';
 import { useSprintsStore } from '../stores/sprints_store';
 import { useAlertComposable } from '../composables/alert_composable';
-import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale } from 'chart.js';
+import { Chart as ChartJS, Title, Tooltip, Legend, Filler, LineElement, PointElement, LinearScale, CategoryScale } from 'chart.js';
 import Charts from '../components/Charts.vue';
 
-ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale);
+ChartJS.register(Title, Tooltip, Legend, Filler, LineElement, PointElement, LinearScale, CategoryScale);
 
 const route = useRoute();
 
 const projectsStore = useProjectsStore();
-const project = ref({} as Project);
+const project = ref(defaultProject);
 const projectEndDate = ref('');
 
 const projectBasicInfo = computed(() => {
