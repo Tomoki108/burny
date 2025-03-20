@@ -1,6 +1,6 @@
 <template>
-    <footer class="site-footer">
-        <div v-if="includeCta" class="cta-section">
+    <footer v-if="isHome" class="site-footer">
+        <div class="cta-section">
             <div class="content-container">
                 <h2>Get Started Now</h2>
                 <div class="cta-buttons">
@@ -21,12 +21,18 @@
             </div>
         </div>
     </footer>
+
+    <footer v-else class="site-footer non-home">
+        <div class="footer-content-non-home">
+            <p class="copyright">&copy; {{ new Date().getFullYear() }} Burny. All rights reserved.</p>
+        </div>
+    </footer>
 </template>
 
 <script lang="ts" setup>
 const emit = defineEmits(['open-signin-modal']);
 
-defineProps<{ includeCta: boolean }>();
+defineProps<{ isHome: boolean }>();
 
 const openSignInModal = (isSignUp: boolean) => {
     emit('open-signin-modal', isSignUp);
@@ -68,7 +74,7 @@ const openSignInModal = (isSignUp: boolean) => {
 .footer-links {
     display: flex;
     justify-content: center;
-    margin-bottom: 0.75rem;
+    margin-bottom: 1.5rem;
 }
 
 .github-link {
@@ -88,7 +94,6 @@ const openSignInModal = (isSignUp: boolean) => {
 .copyright {
     text-align: center;
     font-size: 0.875rem;
-    margin-top: 0.75rem;
     color: rgba(255, 255, 255, 0.7);
 }
 
@@ -121,5 +126,23 @@ h2 {
     .cta-buttons .button {
         width: 100%;
     }
+}
+
+.site-footer.non-home {
+    height: 56px;
+    /* position: fixed;
+    bottom: 0; */
+}
+
+.footer-content-non-home {
+    height: 56px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.footer-content-non-home .copyright {
+    margin: 0;
 }
 </style>

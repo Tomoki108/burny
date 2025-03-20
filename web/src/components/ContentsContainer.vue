@@ -8,7 +8,7 @@
         <hr />
         <slot></slot>
     </main>
-    <Footer :includeCta=false />
+    <Footer :isHome=false />
 </template>
 
 <script setup lang="ts">
