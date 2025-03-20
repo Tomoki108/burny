@@ -8,7 +8,7 @@
                         <p>{{ project.start_date }} to {{ getEndDate(project) }}, {{ project.sprint_count }} sprints, {{
                             project.total_sp }} total sp</p>
                         <p class="mb-2"></p>
-                        <p class="project-description">{{ project.description }}</p>
+                        <p class="project-description">{{ truncateStr(project.description, 70) }}</p>
                         <div class="project-actions">
                             <button :data-testid="'edit-project-button-' + project.id" class="button-small"
                                 @click.prevent="openUpdateProjectModal(project)">Edit
@@ -48,6 +48,7 @@ import { useAlertComposable } from '../composables/alert_composable.ts'
 import Dialog from '../components/Dialog.vue'
 import { useDialogComposable } from '../composables/dialog_composable'
 import { getEndDate } from '../utils/project_helper'
+import { truncateStr } from '../utils/string_helper'
 
 const projectsStore = useProjectsStore()
 const { alertCtx, alert } = useAlertComposable()
