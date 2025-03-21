@@ -18,6 +18,16 @@ func NewAPIKeyHandler(usecase usecase.APIKeyUseCase) APIKeyHandler {
 	}
 }
 
+func (h APIKeyHandler) Create(c echo.Context) error {
+	userID := c.Get("user_id").(uint)
+	apiKey, err := h.Usecase.Create(userID)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
+	}
+
+	return c.JSON(http.StatusCreated, apiKey)
+}
+
 func (h APIKeyHandler) Get(c echo.Context) error {
 	userID := c.Get("user_id").(uint)
 
@@ -27,16 +37,6 @@ func (h APIKeyHandler) Get(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, apiKeys)
-}
-
-func (h APIKeyHandler) Create(c echo.Context) error {
-	userID := c.Get("user_id").(uint)
-	apiKey, err := h.Usecase.Create(userID)
-	if err != nil {
-		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
-	}
-
-	return c.JSON(http.StatusCreated, apiKey)
 }
 
 func (h APIKeyHandler) Delete(c echo.Context) error {
