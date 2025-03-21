@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"log"
 	"net/http"
 	"strings"
 
@@ -30,8 +29,6 @@ func (m *APIKeyAuthMiddleware) Middleware() echo.MiddlewareFunc {
 				return next(c)
 			}
 
-			log.Default().Print("hello")
-
 			authHeader := c.Request().Header.Get("Authorization")
 			if authHeader == "" {
 				return echo.NewHTTPError(http.StatusUnauthorized, "Missing Authorization Header")
@@ -42,25 +39,30 @@ func (m *APIKeyAuthMiddleware) Middleware() echo.MiddlewareFunc {
 				return echo.NewHTTPError(http.StatusUnauthorized, "Invalid Authorization Header")
 			}
 
-			apiKey := parts[1]
+			apiKeyRaw := parts[1]
 
-			// すべてのAPIKeyを取得して検証
-			// 注: パフォーマンスを考慮すると、キーのハッシュをインデックス化するなど
-			// より効率的な方法を検討する必要がある
-			allKeys, err := m.repo.GetAll(m.transactioner.Default())
+			// Get all API keys and find matching one
+			// We need to check all because bcrypt hash can't be used for direct DB lookup
+			apiKeys, err := m.repo.GetAll(m.transactioner.Default())
 			if err != nil {
 				return echo.NewHTTPError(http.StatusInternalServerError, "Failed to validate ApiKey")
 			}
 
-			for _, key := range allKeys {
-				if err := bcrypt.CompareHashAndPassword([]byte(key.Key), []byte(apiKey)); err == nil {
-					c.Set("user_id", key.UserID)
-					c.Set("auth_method", "apikey")
-					return next(c)
+			var authenticated *domain.APIKey
+			for _, key := range apiKeys {
+				if err := bcrypt.CompareHashAndPassword([]byte(key.Key), []byte(apiKeyRaw)); err == nil {
+					authenticated = key
+					break
 				}
 			}
 
-			return echo.NewHTTPError(http.StatusUnauthorized, "Invalid ApiKey")
+			if authenticated == nil {
+				return echo.NewHTTPError(http.StatusUnauthorized, "Invalid ApiKey")
+			}
+
+			c.Set("user_id", authenticated.UserID)
+			c.Set("auth_method", "apikey")
+			return next(c)
 		}
 	}
 }
