@@ -46,24 +46,24 @@ func TestScenario(t *testing.T) {
 
 	// Authentication
 	UserCanSignUp(t)
-	token := UserCanSignIn(t)
+	jwtToken := UserCanSignIn(t)
 
 	// Project Operations
-	projectID := UserCanCreateProject(t, token)
-	UserCanListProjects(t, token)
-	UserCanGetProject(t, token, projectID)
-	UserCanUpdateProject(t, token, projectID)
-	defer UserCanDeleteProject(t, token, projectID)
-
-	// Sprint Operations
-	sprintID := UserCanListSprints(t, token, projectID)
-	UserCanUpdateSprint(t, token, projectID, sprintID)
+	projectID := UserCanCreateProject(t, jwtToken)
+	UserCanListProjects(t, jwtToken)
+	UserCanGetProject(t, jwtToken, projectID)
+	UserCanUpdateProject(t, jwtToken, projectID)
+	defer UserCanDeleteProject(t, jwtToken, projectID)
 
 	// API Key Operations
-	UserCanCheckAPIKeyStatus(t, token)
-	UserCanCreateAPIKey(t, token)
-	UserCanCheckAPIKeyStatus(t, token)
-	UserCanDeleteAPIKey(t, token)
+	UserCanCheckAPIKeyStatus(t, jwtToken)
+	apiKey := UserCanCreateAPIKey(t, jwtToken)
+	UserCanCheckAPIKeyStatus(t, jwtToken)
+	defer UserCanDeleteAPIKey(t, jwtToken)
+
+	// Sprint Operations
+	sprintID := UserCanListSprints(t, apiKey, projectID)
+	UserCanUpdateSprint(t, apiKey, projectID, sprintID)
 }
 
 func UserCanSignUp(t *testing.T) {
@@ -238,11 +238,11 @@ func UserCanDeleteProject(t *testing.T, token string, projectID uint) {
 	}
 }
 
-func UserCanListSprints(t *testing.T, token string, projectID uint) (sprintID uint) {
+func UserCanListSprints(t *testing.T, apiKey string, projectID uint) (sprintID uint) {
 	// Arrange
 	url := "/api/v1/projects/" + uintToStr(projectID) + "/sprints"
 	req := httptest.NewRequest(http.MethodGet, url, nil)
-	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
+	req.Header.Set(echo.HeaderAuthorization, "ApiKey "+apiKey)
 	recorder := httptest.NewRecorder()
 
 	// Act
@@ -266,7 +266,7 @@ func UserCanListSprints(t *testing.T, token string, projectID uint) (sprintID ui
 	return res[0].ID
 }
 
-func UserCanUpdateSprint(t *testing.T, token string, projectID, sprintID uint) {
+func UserCanUpdateSprint(t *testing.T, apiKey string, projectID, sprintID uint) {
 	// Arrange
 	url := "/api/v1/projects/" + uintToStr(projectID) + "/sprints/" + uintToStr(sprintID)
 	updateJSON := `{
@@ -275,7 +275,7 @@ func UserCanUpdateSprint(t *testing.T, token string, projectID, sprintID uint) {
 	reqBody := strings.NewReader(updateJSON)
 	req := httptest.NewRequest(http.MethodPatch, url, reqBody)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
+	req.Header.Set(echo.HeaderAuthorization, "ApiKey "+apiKey)
 	recorder := httptest.NewRecorder()
 
 	// Act
