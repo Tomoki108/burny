@@ -25,16 +25,19 @@ func InitDIContainer() {
 		{handler.NewAuthHandler, nil},
 		{handler.NewProjectHandler, nil},
 		{handler.NewSprintHandler, nil},
+		{handler.NewAPIKeyHandler, nil},
 		// subscriber
 		{subscriber.NewUserEventSubscriber, nil},
 		// usecase
 		{usecase.NewProjectUseCase, nil},
 		{usecase.NewSprintUseCase, nil},
 		{usecase.NewAuthUseCase, nil},
+		{usecase.NewAPIKeyUseCase, nil},
 		// infra
 		{infrastructure.NewUserRepository, []dig.ProvideOption{dig.As(new(domain.UserRepository))}},
 		{infrastructure.NewProjectRepository, []dig.ProvideOption{dig.As(new(domain.ProjectRepository))}},
 		{infrastructure.NewSprintRepository, []dig.ProvideOption{dig.As(new(domain.SprintRepository))}},
+		{infrastructure.NewAPIKeyRepository, []dig.ProvideOption{dig.As(new(domain.APIKeyRepository))}},
 		{infrastructure.NewTransactioner, []dig.ProvideOption{dig.As(new(domain.Transactioner))}},
 		// other
 		{EventBus.New, nil},

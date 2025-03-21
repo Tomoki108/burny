@@ -31,16 +31,16 @@ func NewEchoServer() *echo.Echo {
 		userEventSub = s
 	})
 
+	// API DOC
+	e.GET("/swagger/*", echoSwagger.WrapHandler)
+	docs.SwaggerInfo.Host = config.Conf.Host
+
 	// イベントサブスクライバー登録
 	var bus EventBus.Bus
 	Container.Invoke(func(b EventBus.Bus) {
 		bus = b
 	})
 	bus.Subscribe(domain.UserCreatedTopic, userEventSub.HandleUserCreatedEvent)
-
-	// API DOC
-	e.GET("/swagger/*", echoSwagger.WrapHandler)
-	docs.SwaggerInfo.Host = config.Conf.Host
 
 	// DIコンテナからハンドラーを取得
 	var authH handler.AuthHandler
@@ -54,6 +54,10 @@ func NewEchoServer() *echo.Echo {
 	var sprintH handler.SprintHandler
 	Container.Invoke(func(h handler.SprintHandler) {
 		sprintH = h
+	})
+	var apiKeyH handler.APIKeyHandler
+	Container.Invoke(func(h handler.APIKeyHandler) {
+		apiKeyH = h
 	})
 
 	// ルーティング
@@ -69,6 +73,9 @@ func NewEchoServer() *echo.Echo {
 	ug.DELETE("/projects/:project_id", projectH.Delete)
 	ug.GET("/projects/:project_id/sprints", sprintH.List)
 	ug.PATCH("/projects/:project_id/sprints/:sprint_id", sprintH.Update)
+	ug.GET("/apikeys/status", apiKeyH.CheckStatus)
+	ug.POST("/apikeys", apiKeyH.Create)
+	ug.DELETE("/apikeys", apiKeyH.Delete)
 
 	return e
 }

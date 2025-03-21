@@ -30,6 +30,7 @@ func ConnectDB() error {
 		&model.User{},
 		&model.Project{},
 		&model.Sprint{},
+		&model.APIKey{},
 	); err != nil {
 		return fmt.Errorf("could not migrate DB: %w", err)
 	}
