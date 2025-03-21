@@ -19,8 +19,95 @@ const docTemplate = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/apikeys": {
+            "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Create API Key",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API Key"
+                ],
+                "summary": "Create API Key",
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/io.CreateAPIKeyResponse"
+                        }
+                    },
+                    "409": {
+                        "description": "Conflict",
+                        "schema": {
+                            "$ref": "#/definitions/io.ErrorResponse"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Delete API Key",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API Key"
+                ],
+                "summary": "Delete API Key",
+                "responses": {
+                    "204": {
+                        "description": "No Content"
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/io.ErrorResponse"
+                        }
+                    }
+                }
+            }
+        },
+        "/apikeys/status": {
+            "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
+                "description": "Check if the user has an API key",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "API Key"
+                ],
+                "summary": "Check API Key Status",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/io.APIKeyStatusResponse"
+                        }
+                    }
+                }
+            }
+        },
         "/projects": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "List projects",
                 "consumes": [
                     "application/json"
@@ -45,6 +132,11 @@ const docTemplate = `{
                 }
             },
             "post": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Create a project",
                 "consumes": [
                     "application/json"
@@ -85,6 +177,11 @@ const docTemplate = `{
         },
         "/projects/{project_id}": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Get a project",
                 "consumes": [
                     "application/json"
@@ -121,6 +218,11 @@ const docTemplate = `{
                 }
             },
             "put": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Update a project",
                 "consumes": [
                     "application/json"
@@ -172,6 +274,11 @@ const docTemplate = `{
                 }
             },
             "delete": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Delete a projects",
                 "consumes": [
                     "application/json"
@@ -207,6 +314,11 @@ const docTemplate = `{
         },
         "/projects/{project_id}/sprints": {
             "get": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "List sprints",
                 "consumes": [
                     "application/json"
@@ -248,6 +360,11 @@ const docTemplate = `{
         },
         "/projects/{project_id}/sprints/{sprint_id}": {
             "patch": {
+                "security": [
+                    {
+                        "ApiKeyAuth": []
+                    }
+                ],
                 "description": "Update a sprint",
                 "consumes": [
                     "application/json"
@@ -470,6 +587,23 @@ const docTemplate = `{
                 }
             }
         },
+        "io.APIKeyStatusResponse": {
+            "type": "object",
+            "properties": {
+                "exists": {
+                    "description": "APIキーが存在するかどうか",
+                    "type": "boolean"
+                }
+            }
+        },
+        "io.CreateAPIKeyResponse": {
+            "type": "object",
+            "properties": {
+                "raw_key": {
+                    "type": "string"
+                }
+            }
+        },
         "io.CreateProjectRequest": {
             "type": "object",
             "required": [
@@ -553,9 +687,6 @@ const docTemplate = `{
         },
         "io.SignInResponse": {
             "type": "object",
-            "required": [
-                "token"
-            ],
             "properties": {
                 "token": {
                     "type": "string"
@@ -607,15 +738,20 @@ const docTemplate = `{
         },
         "io.UpdateSprintRequest": {
             "type": "object",
-            "required": [
-                "actual_sp"
-            ],
             "properties": {
                 "actual_sp": {
                     "type": "integer",
-                    "maximum": 100
+                    "maximum": 1000
                 }
             }
+        }
+    },
+    "securityDefinitions": {
+        "": {
+            "description": "value must be \"ApiKey {API_KEY}\"\"",
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "Header"
         }
     }
 }`
@@ -624,7 +760,7 @@ const docTemplate = `{
 var SwaggerInfo = &swag.Spec{
 	Version:          "1.0",
 	Host:             "",
-	BasePath:         "/api/v1",
+	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "Burny API",
 	Description:      "API Doc of Burny Backend",

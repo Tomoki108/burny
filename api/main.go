@@ -13,6 +13,10 @@ import (
 // @description     API Doc of Burny Backend
 // @license.name  AGPL 3.0
 // @license.url   https://www.gnu.org/licenses/agpl-3.0.en.html
+// @securityDefinitions.apikey
+// @in Header
+// @name Authorization
+// @description value must be "ApiKey {API_KEY}""
 // @BasePath  /api/v1
 func main() {
 	// 環境変数の読み込み

@@ -1,4 +1,3 @@
-basePath: /api/v1
 definitions:
   domain.Project:
     properties:
@@ -56,6 +55,17 @@ definitions:
         description: always must be hashed
         type: string
       updated_at:
+        type: string
+    type: object
+  io.APIKeyStatusResponse:
+    properties:
+      exists:
+        description: APIキーが存在するかどうか
+        type: boolean
+    type: object
+  io.CreateAPIKeyResponse:
+    properties:
+      raw_key:
         type: string
     type: object
   io.CreateProjectRequest:
@@ -119,8 +129,6 @@ definitions:
     properties:
       token:
         type: string
-    required:
-    - token
     type: object
   io.SignUpRequest:
     properties:
@@ -156,10 +164,8 @@ definitions:
   io.UpdateSprintRequest:
     properties:
       actual_sp:
-        maximum: 100
+        maximum: 1000
         type: integer
-    required:
-    - actual_sp
     type: object
 info:
   contact: {}
@@ -170,6 +176,56 @@ info:
   title: Burny API
   version: "1.0"
 paths:
+  /apikeys:
+    delete:
+      description: Delete API Key
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete API Key
+      tags:
+      - API Key
+    post:
+      description: Create API Key
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/io.CreateAPIKeyResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create API Key
+      tags:
+      - API Key
+  /apikeys/status:
+    get:
+      description: Check if the user has an API key
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/io.APIKeyStatusResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Check API Key Status
+      tags:
+      - API Key
   /projects:
     get:
       consumes:
@@ -184,6 +240,8 @@ paths:
             items:
               $ref: '#/definitions/domain.Project'
             type: array
+      security:
+      - ApiKeyAuth: []
       summary: List projects
       tags:
       - projects
@@ -209,6 +267,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/io.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Create a project
       tags:
       - projects
@@ -232,6 +292,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/io.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Delete a projects
       tags:
       - projects
@@ -256,6 +318,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/io.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Get a project
       tags:
       - projects
@@ -290,6 +354,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/io.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Update a project
       tags:
       - projects
@@ -317,6 +383,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/io.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: List sprints
       tags:
       - sprints
@@ -353,6 +421,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/io.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Update a sprint
       tags:
       - sprints
@@ -408,4 +478,10 @@ paths:
       summary: Sign up
       tags:
       - auth
+securityDefinitions:
+  "":
+    description: value must be "ApiKey {API_KEY}""
+    in: Header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

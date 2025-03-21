@@ -23,6 +23,7 @@ func NewProjectHandler(usecase usecase.ProjectUseCase) ProjectHandler {
 // @Summary      List projects
 // @Description  List projects
 // @Tags         projects
+// @Security	 ApiKeyAuth
 // @Accept       json
 // @Produce      json
 // @Success      200 {array} domain.Project
@@ -41,6 +42,7 @@ func (h ProjectHandler) List(c echo.Context) error {
 // @Summary      Create a project
 // @Description  Create a project
 // @Tags         projects
+// @Security	 ApiKeyAuth
 // @Accept       json
 // @Produce      json
 // @Param 	 	 request body io.CreateProjectRequest true "request"
@@ -65,6 +67,7 @@ func (h ProjectHandler) Create(c echo.Context) error {
 // @Summary      Get a project
 // @Description  Get a project
 // @Tags         projects
+// @Security	 ApiKeyAuth
 // @Accept       json
 // @Produce      json
 // @Param 	 	 project_id path int true "project_id"
@@ -91,6 +94,7 @@ func (h ProjectHandler) Get(c echo.Context) error {
 // @Summary      Update a project
 // @Description  Update a project
 // @Tags         projects
+// @Security	 ApiKeyAuth
 // @Accept       json
 // @Produce      json
 // @Param 	 	 project_id path int true "project_id"
@@ -121,6 +125,7 @@ func (h ProjectHandler) Update(c echo.Context) error {
 // @Summary      Delete a projects
 // @Description  Delete a projects
 // @Tags         projects
+// @Security	 ApiKeyAuth
 // @Accept       json
 // @Produce      json
 // @Param 	 	 project_id path int true "project_id"
