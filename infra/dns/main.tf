@@ -14,7 +14,6 @@ resource "google_dns_managed_zone" "zone" {
 # dev environment
 ####################
 
-# APIサーバー用のCNAMEレコード
 resource "google_dns_record_set" "dev_api_cname" {
   name         = var.dev_api_cname_name
   managed_zone = google_dns_managed_zone.zone.name
@@ -31,7 +30,6 @@ data "terraform_remote_state" "dev_state" {
   }
 }
 
-// Webサイト用のAレコード
 resource "google_dns_record_set" "dev_web_a_record" {
   name         = var.dev_web_a_name
   managed_zone = google_dns_managed_zone.zone.name
@@ -43,3 +41,18 @@ resource "google_dns_record_set" "dev_web_a_record" {
 ####################
 # prod environment
 ####################
+
+
+####################
+# mailer (AWS SES)
+####################
+
+resource "google_dns_record_set" "mailer_records" {
+  for_each     = { for idx, record in var.mailer_records : idx => record }
+  name         = each.value.name
+  managed_zone = google_dns_managed_zone.zone.name
+  type         = each.value.type
+  ttl          = 300
+  rrdatas      = [each.value.rrdata]
+}
+

@@ -27,3 +27,21 @@ variable "dev_terraform_state_bucket" {
   description = "Terraform state bucket for dev environment"
   type        = string
 }
+
+####################
+# prod environment
+####################
+
+
+####################
+# mailer (AWS SES)
+####################
+
+variable "mailer_records" {
+  description = "dns records for mailer"
+  type = list(object({
+    name   = string
+    type   = string
+    rrdata = string
+  }))
+}
