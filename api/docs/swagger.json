@@ -1,7 +1,7 @@
 {
     "swagger": "2.0",
     "info": {
-        "description": "API Doc of Burny Backend",
+        "description": "Burny Backend API Doc. \\nNOTE: JWT Auhtentication is also supported but not displayed due to swagger generaton tool limitation.",
         "title": "Burny API",
         "contact": {},
         "license": {
@@ -18,14 +18,14 @@
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Create API Key",
+                "description": "Create apikey",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "API Key"
+                    "apikeys"
                 ],
-                "summary": "Create API Key",
+                "summary": "Create apikey",
                 "responses": {
                     "201": {
                         "description": "Created",
@@ -47,14 +47,14 @@
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Delete API Key",
+                "description": "Delete apikey",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "API Key"
+                    "apikeys"
                 ],
-                "summary": "Delete API Key",
+                "summary": "Delete apikey",
                 "responses": {
                     "204": {
                         "description": "No Content"
@@ -75,14 +75,14 @@
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Check if the user has an API key",
+                "description": "Check if the user has an apikey",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "API Key"
+                    "apikeys"
                 ],
-                "summary": "Check API Key Status",
+                "summary": "Check apikey Status",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -739,7 +739,7 @@
         }
     },
     "securityDefinitions": {
-        "": {
+        "ApiKeyAuth": {
             "description": "value must be \"ApiKey {API_KEY}\"\"",
             "type": "apiKey",
             "name": "Authorization",

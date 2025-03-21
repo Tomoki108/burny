@@ -26,14 +26,14 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Create API Key",
+                "description": "Create apikey",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "API Key"
+                    "apikeys"
                 ],
-                "summary": "Create API Key",
+                "summary": "Create apikey",
                 "responses": {
                     "201": {
                         "description": "Created",
@@ -55,14 +55,14 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Delete API Key",
+                "description": "Delete apikey",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "API Key"
+                    "apikeys"
                 ],
-                "summary": "Delete API Key",
+                "summary": "Delete apikey",
                 "responses": {
                     "204": {
                         "description": "No Content"
@@ -83,14 +83,14 @@ const docTemplate = `{
                         "ApiKeyAuth": []
                     }
                 ],
-                "description": "Check if the user has an API key",
+                "description": "Check if the user has an apikey",
                 "produces": [
                     "application/json"
                 ],
                 "tags": [
-                    "API Key"
+                    "apikeys"
                 ],
-                "summary": "Check API Key Status",
+                "summary": "Check apikey Status",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -747,7 +747,7 @@ const docTemplate = `{
         }
     },
     "securityDefinitions": {
-        "": {
+        "ApiKeyAuth": {
             "description": "value must be \"ApiKey {API_KEY}\"\"",
             "type": "apiKey",
             "name": "Authorization",
@@ -763,7 +763,7 @@ var SwaggerInfo = &swag.Spec{
 	BasePath:         "",
 	Schemes:          []string{},
 	Title:            "Burny API",
-	Description:      "API Doc of Burny Backend",
+	Description:      "Burny Backend API Doc. \\nNOTE: JWT Auhtentication is also supported but not displayed due to swagger generaton tool limitation.",
 	InfoInstanceName: "swagger",
 	SwaggerTemplate:  docTemplate,
 	LeftDelim:        "{{",
