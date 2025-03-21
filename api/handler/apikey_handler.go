@@ -1,6 +1,7 @@
 package handler
 
 import (
+	"errors"
 	"net/http"
 
 	"github.com/Tomoki108/burny/handler/io"
@@ -22,27 +23,36 @@ func NewAPIKeyHandler(usecase usecase.APIKeyUseCase) APIKeyHandler {
 // @Description  Create API Key
 // @Tags         API Key
 // @Produce      json
-// @Success      200 {object} io.CreateAPIKeyResponse
-// @Router       /apikey [post]
+// @Success      201 {object} io.CreateAPIKeyResponse
+// @Failure      409 {object} io.ErrorResponse
+// @Router       /apikeys [post]
 func (h APIKeyHandler) Create(c echo.Context) error {
 	userID := c.Get("user_id").(uint)
-	apiKey, err := h.Usecase.Create(userID)
+	apiKeyResp, err := h.Usecase.Create(userID)
 	if err != nil {
+		if errors.Is(err, usecase.ErrAPIKeyAlreadyExists) {
+			return c.JSON(http.StatusConflict, io.NewErrResp(err.Error()))
+		}
 		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}
 
-	return c.JSON(http.StatusCreated, apiKey)
+	return c.JSON(http.StatusCreated, apiKeyResp)
 }
 
-func (h APIKeyHandler) Get(c echo.Context) error {
+// @Summary      Check API Key Status
+// @Description  Check if the user has an API key
+// @Tags         API Key
+// @Produce      json
+// @Success      200 {object} io.APIKeyStatusResponse
+// @Router       /apikeys/status [get]
+func (h APIKeyHandler) CheckStatus(c echo.Context) error {
 	userID := c.Get("user_id").(uint)
-
-	apiKeys, err := h.Usecase.Get(userID)
+	exists, err := h.Usecase.CheckStatus(userID)
 	if err != nil {
 		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}
 
-	return c.JSON(http.StatusOK, apiKeys)
+	return c.JSON(http.StatusOK, io.APIKeyStatusResponse{Exists: exists})
 }
 
 // @Summary      Delete API Key
@@ -51,11 +61,14 @@ func (h APIKeyHandler) Get(c echo.Context) error {
 // @Produce      json
 // @Success      204
 // @Failure      404 {object} io.ErrorResponse
-// @Router       /apikey [delete]
+// @Router       /apikeys [delete]
 func (h APIKeyHandler) Delete(c echo.Context) error {
 	userID := c.Get("user_id").(uint)
 	err := h.Usecase.Delete(userID)
 	if err != nil {
+		if errors.Is(err, usecase.ErrAPIKeyNotFound) {
+			return c.JSON(http.StatusNotFound, io.NewErrResp(err.Error()))
+		}
 		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}
 

@@ -73,9 +73,9 @@ func NewEchoServer() *echo.Echo {
 	ug.DELETE("/projects/:project_id", projectH.Delete)
 	ug.GET("/projects/:project_id/sprints", sprintH.List)
 	ug.PATCH("/projects/:project_id/sprints/:sprint_id", sprintH.Update)
-	ug.GET("/apikey", apiKeyH.Get)
-	ug.POST("/apikey", apiKeyH.Create)
-	ug.DELETE("/apikey", apiKeyH.Delete)
+	ug.GET("/apikeys/status", apiKeyH.CheckStatus)
+	ug.POST("/apikeys", apiKeyH.Create)
+	ug.DELETE("/apikeys", apiKeyH.Delete)
 
 	return e
 }

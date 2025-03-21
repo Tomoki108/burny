@@ -3,11 +3,16 @@ package usecase
 import (
 	"crypto/rand"
 	"encoding/base64"
+	"errors"
 	"fmt"
 
 	"github.com/Tomoki108/burny/domain"
+	"github.com/Tomoki108/burny/handler/io"
 	"golang.org/x/crypto/bcrypt"
 )
+
+var ErrAPIKeyAlreadyExists = errors.New("API Key already exists, please delete it first")
+var ErrAPIKeyNotFound = errors.New("API Key not exists")
 
 type APIKeyUseCase struct {
 	repo          domain.APIKeyRepository
@@ -21,11 +26,24 @@ func NewAPIKeyUseCase(repo domain.APIKeyRepository, transactioner domain.Transac
 	}
 }
 
-func (u *APIKeyUseCase) Get(userID uint) (*domain.APIKey, error) {
-	return u.repo.GetByUserID(u.transactioner.Default(), userID)
+func (u *APIKeyUseCase) CheckStatus(userID uint) (bool, error) {
+	apiKey, err := u.repo.GetByUserID(u.transactioner.Default(), userID)
+	if err != nil {
+		return false, err
+	}
+	return apiKey != nil, nil
 }
 
-func (u *APIKeyUseCase) Create(userID uint) (*domain.APIKey, error) {
+func (u *APIKeyUseCase) Create(userID uint) (*io.CreateAPIKeyResponse, error) {
+	exists, err := u.CheckStatus(userID)
+	if err != nil {
+		return nil, err
+	}
+
+	if exists {
+		return nil, ErrAPIKeyAlreadyExists
+	}
+
 	// Generate a random API key
 	rawKey, err := generateRandomKey(32) // 32 bytes = 256 bits
 	if err != nil {
@@ -44,18 +62,26 @@ func (u *APIKeyUseCase) Create(userID uint) (*domain.APIKey, error) {
 	}
 
 	// Store the hashed key in the database
-	createdKey, err := u.repo.Create(u.transactioner.Default(), key)
+	_, err = u.repo.Create(u.transactioner.Default(), key)
 	if err != nil {
 		return nil, err
 	}
 
-	// Return the created key with the raw (unhashed) key for the client
-	// This is the only time the raw key will be exposed
-	createdKey.Key = rawKey
-	return createdKey, nil
+	return &io.CreateAPIKeyResponse{
+		RawKey: rawKey,
+	}, nil
 }
 
 func (u *APIKeyUseCase) Delete(userID uint) error {
+	exists, err := u.CheckStatus(userID)
+	if err != nil {
+		return err
+	}
+
+	if !exists {
+		return ErrAPIKeyNotFound
+	}
+
 	return u.repo.DeleteByUserID(u.transactioner.Default(), userID)
 }
 
