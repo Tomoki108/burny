@@ -44,15 +44,26 @@ func init() {
 func TestScenario(t *testing.T) {
 	defer testTx.Rollback()
 
+	// Authentication
 	UserCanSignUp(t)
 	token := UserCanSignIn(t)
+
+	// Project Operations
 	projectID := UserCanCreateProject(t, token)
 	UserCanListProjects(t, token)
 	UserCanGetProject(t, token, projectID)
 	UserCanUpdateProject(t, token, projectID)
+	defer UserCanDeleteProject(t, token, projectID)
+
+	// Sprint Operations
 	sprintID := UserCanListSprints(t, token, projectID)
 	UserCanUpdateSprint(t, token, projectID, sprintID)
-	UserCanDeleteProject(t, token, projectID)
+
+	// API Key Operations
+	UserCanCheckAPIKeyStatus(t, token)
+	UserCanCreateAPIKey(t, token)
+	UserCanCheckAPIKeyStatus(t, token)
+	UserCanDeleteAPIKey(t, token)
 }
 
 func UserCanSignUp(t *testing.T) {
@@ -211,6 +222,22 @@ func UserCanUpdateProject(t *testing.T, token string, projectID uint) {
 	goldie.New(t).Assert(t, "update_project_response", body)
 }
 
+func UserCanDeleteProject(t *testing.T, token string, projectID uint) {
+	// Arrange
+	url := "/api/v1/projects/" + uintToStr(projectID)
+	req := httptest.NewRequest(http.MethodDelete, url, nil)
+	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
+	recorder := httptest.NewRecorder()
+
+	// Act
+	e.ServeHTTP(recorder, req)
+
+	// Assert
+	if err := assertSatusCode(http.StatusNoContent, recorder); err != nil {
+		t.Fatal(err)
+	}
+}
+
 func UserCanListSprints(t *testing.T, token string, projectID uint) (sprintID uint) {
 	// Arrange
 	url := "/api/v1/projects/" + uintToStr(projectID) + "/sprints"
@@ -265,10 +292,61 @@ func UserCanUpdateSprint(t *testing.T, token string, projectID, sprintID uint) {
 	goldie.New(t).Assert(t, "update_sprint_response", body)
 }
 
-func UserCanDeleteProject(t *testing.T, token string, projectID uint) {
+func UserCanCheckAPIKeyStatus(t *testing.T, token string) {
 	// Arrange
-	url := "/api/v1/projects/" + uintToStr(projectID)
-	req := httptest.NewRequest(http.MethodDelete, url, nil)
+	req := httptest.NewRequest(http.MethodGet, "/api/v1/apikeys/status", nil)
+	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
+	recorder := httptest.NewRecorder()
+
+	// Act
+	e.ServeHTTP(recorder, req)
+
+	// Assert
+	if err := assertSatusCode(http.StatusOK, recorder); err != nil {
+		t.Fatal(err)
+	}
+
+	var response struct {
+		Exists bool `json:"exists"`
+	}
+	if err := json.Unmarshal(recorder.Body.Bytes(), &response); err != nil {
+		t.Fatal(err)
+	}
+	t.Logf("API Key status check result: exists=%v", response.Exists)
+}
+
+func UserCanCreateAPIKey(t *testing.T, token string) (rawKey string) {
+	// Arrange
+	req := httptest.NewRequest(http.MethodPost, "/api/v1/apikeys", nil)
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
+	recorder := httptest.NewRecorder()
+
+	// Act
+	e.ServeHTTP(recorder, req)
+
+	// Assert
+	if err := assertSatusCode(http.StatusCreated, recorder); err != nil {
+		t.Fatal(err)
+	}
+
+	var response struct {
+		RawKey string `json:"raw_key"`
+	}
+	if err := json.Unmarshal(recorder.Body.Bytes(), &response); err != nil {
+		t.Fatal(err)
+	}
+	if response.RawKey == "" {
+		t.Fatal("API key should not be empty")
+	}
+	t.Logf("API Key created successfully: %s", response.RawKey[:5]+"...")
+
+	return response.RawKey
+}
+
+func UserCanDeleteAPIKey(t *testing.T, token string) {
+	// Arrange
+	req := httptest.NewRequest(http.MethodDelete, "/api/v1/apikeys", nil)
 	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
 	recorder := httptest.NewRecorder()
 
@@ -279,4 +357,5 @@ func UserCanDeleteProject(t *testing.T, token string, projectID uint) {
 	if err := assertSatusCode(http.StatusNoContent, recorder); err != nil {
 		t.Fatal(err)
 	}
+	t.Log("API Key deleted successfully")
 }
