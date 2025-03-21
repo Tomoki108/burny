@@ -2,6 +2,15 @@
 
 Burny is a burn-up chart management application designed to help scrum teams track and manage their projects progress efficiently.
 
+## Features
+
+- JWT authentication
+- Email verification
+- Project and Sprint Stats CRUD
+- Visualize Project progress by Burn-up chart and Velocity chart
+- API Key generation
+- Mobile device compatible
+
 ## Project Structure
 
 - [`api/`](/api/README.md) - Backend REST API service written in Go
@@ -9,7 +18,7 @@ Burny is a burn-up chart management application designed to help scrum teams tra
 - [`infra/`](/infra/README.md) - Infrastructure as Code for Google Cloud resources written in Terraform.
 - [`.github/`](/.github/) - CICD workflows for api and web.
 
-For more detailed infomation like setup or teck stack, please refer to each directories README.md.
+For more detailed information like setup or tech stack, please refer to each directories README.md.
 
 ## License
 
