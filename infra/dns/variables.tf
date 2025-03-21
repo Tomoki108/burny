@@ -40,8 +40,8 @@ variable "dev_terraform_state_bucket" {
 variable "mailer_records" {
   description = "dns records for mailer"
   type = list(object({
-    name   = string
-    type   = string
-    rrdata = string
+    name    = string
+    type    = string
+    rrdatas = list(string)
   }))
 }
