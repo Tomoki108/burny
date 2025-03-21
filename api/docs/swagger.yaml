@@ -1,4 +1,3 @@
-basePath: /api/v1
 definitions:
   domain.Project:
     properties:
@@ -56,6 +55,17 @@ definitions:
         description: always must be hashed
         type: string
       updated_at:
+        type: string
+    type: object
+  io.APIKeyStatusResponse:
+    properties:
+      exists:
+        description: APIキーが存在するかどうか
+        type: boolean
+    type: object
+  io.CreateAPIKeyResponse:
+    properties:
+      raw_key:
         type: string
     type: object
   io.CreateProjectRequest:
@@ -119,8 +129,6 @@ definitions:
     properties:
       token:
         type: string
-    required:
-    - token
     type: object
   io.SignUpRequest:
     properties:
@@ -156,20 +164,69 @@ definitions:
   io.UpdateSprintRequest:
     properties:
       actual_sp:
-        maximum: 100
+        maximum: 1000
         type: integer
-    required:
-    - actual_sp
     type: object
 info:
   contact: {}
-  description: API Doc of Burny Backend
+  description: 'Burny Backend API Doc. \nNOTE: JWT Auhtentication is also supported
+    but not displayed due to swagger generaton tool limitation.'
   license:
     name: AGPL 3.0
     url: https://www.gnu.org/licenses/agpl-3.0.en.html
   title: Burny API
   version: "1.0"
 paths:
+  /apikeys:
+    delete:
+      description: Delete apikey
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Delete apikey
+      tags:
+      - apikeys
+    post:
+      description: Create apikey
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/io.CreateAPIKeyResponse'
+        "409":
+          description: Conflict
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Create apikey
+      tags:
+      - apikeys
+  /apikeys/status:
+    get:
+      description: Check if the user has an apikey
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/io.APIKeyStatusResponse'
+      security:
+      - ApiKeyAuth: []
+      summary: Check apikey Status
+      tags:
+      - apikeys
   /projects:
     get:
       consumes:
@@ -184,6 +241,8 @@ paths:
             items:
               $ref: '#/definitions/domain.Project'
             type: array
+      security:
+      - ApiKeyAuth: []
       summary: List projects
       tags:
       - projects
@@ -209,6 +268,8 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/io.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Create a project
       tags:
       - projects
@@ -232,6 +293,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/io.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Delete a projects
       tags:
       - projects
@@ -256,6 +319,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/io.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Get a project
       tags:
       - projects
@@ -290,6 +355,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/io.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Update a project
       tags:
       - projects
@@ -317,6 +384,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/io.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: List sprints
       tags:
       - sprints
@@ -353,6 +422,8 @@ paths:
           description: Not Found
           schema:
             $ref: '#/definitions/io.ErrorResponse'
+      security:
+      - ApiKeyAuth: []
       summary: Update a sprint
       tags:
       - sprints
@@ -408,4 +479,10 @@ paths:
       summary: Sign up
       tags:
       - auth
+securityDefinitions:
+  ApiKeyAuth:
+    description: value must be "ApiKey {API_KEY}""
+    in: Header
+    name: Authorization
+    type: apiKey
 swagger: "2.0"

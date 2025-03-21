@@ -10,9 +10,13 @@ import (
 
 // @title           Burny API
 // @version         1.0
-// @description     API Doc of Burny Backend
+// @description     Burny Backend API Doc. \nNOTE: JWT Auhtentication is also supported but not displayed due to swagger generaton tool limitation.
 // @license.name  AGPL 3.0
 // @license.url   https://www.gnu.org/licenses/agpl-3.0.en.html
+// @securityDefinitions.apikey ApiKeyAuth
+// @in Header
+// @name Authorization
+// @description value must be "ApiKey {API_KEY}""
 // @BasePath  /api/v1
 func main() {
 	// 環境変数の読み込み

@@ -23,6 +23,7 @@ func NewSprintHandler(usecase usecase.SprintUseCase) SprintHandler {
 // @Summary      List sprints
 // @Description  List sprints
 // @Tags         sprints
+// @Security	 ApiKeyAuth
 // @Accept       json
 // @Produce      json
 // @Param 	 	 project_id path int true "project_id"
@@ -46,6 +47,7 @@ func (h SprintHandler) List(c echo.Context) error {
 // @Summary      Update a sprint
 // @Description  Update a sprint
 // @Tags         sprints
+// @Security	 ApiKeyAuth
 // @Accept       json
 // @Produce      json
 // @Param 	 	 project_id path int true "project_id"

@@ -18,4 +18,5 @@ type APIKeyRepository interface {
 	Create(tx Transaction, apiKey *APIKey) (*APIKey, error)
 	GetByUserID(tx Transaction, userID uint) (*APIKey, error)
 	DeleteByUserID(tx Transaction, userID uint) error
+	GetAll(tx Transaction) ([]*APIKey, error) // 追加：すべてのAPIキーを取得するメソッド
 }

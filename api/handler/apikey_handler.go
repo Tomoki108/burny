@@ -19,9 +19,10 @@ func NewAPIKeyHandler(usecase usecase.APIKeyUseCase) APIKeyHandler {
 	}
 }
 
-// @Summary      Create API Key
-// @Description  Create API Key
-// @Tags         API Key
+// @Summary      Create apikey
+// @Description  Create apikey
+// @Tags         apikeys
+// @Security	 ApiKeyAuth
 // @Produce      json
 // @Success      201 {object} io.CreateAPIKeyResponse
 // @Failure      409 {object} io.ErrorResponse
@@ -39,9 +40,10 @@ func (h APIKeyHandler) Create(c echo.Context) error {
 	return c.JSON(http.StatusCreated, apiKeyResp)
 }
 
-// @Summary      Check API Key Status
-// @Description  Check if the user has an API key
-// @Tags         API Key
+// @Summary      Check apikey Status
+// @Description  Check if the user has an apikey
+// @Tags         apikeys
+// @Security	 ApiKeyAuth
 // @Produce      json
 // @Success      200 {object} io.APIKeyStatusResponse
 // @Router       /apikeys/status [get]
@@ -55,9 +57,10 @@ func (h APIKeyHandler) CheckStatus(c echo.Context) error {
 	return c.JSON(http.StatusOK, io.APIKeyStatusResponse{Exists: exists})
 }
 
-// @Summary      Delete API Key
-// @Description  Delete API Key
-// @Tags         API Key
+// @Summary      Delete apikey
+// @Description  Delete apikey
+// @Tags         apikeys
+// @Security	 ApiKeyAuth
 // @Produce      json
 // @Success      204
 // @Failure      404 {object} io.ErrorResponse
