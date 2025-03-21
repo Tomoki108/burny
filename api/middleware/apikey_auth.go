@@ -1,6 +1,7 @@
 package middleware
 
 import (
+	"log"
 	"net/http"
 	"strings"
 
@@ -19,10 +20,16 @@ func NewAPIKeyAuthMiddleware(repo domain.APIKeyRepository) *APIKeyAuthMiddleware
 	}
 }
 
-// NOTE: APIKeyAuthMiddleware must be used before JWTAuthMiddleware
+// NOTE: make sure APIKeyAuthMiddleware is called after JWTAuthMiddleware
 func (m *APIKeyAuthMiddleware) Middleware() echo.MiddlewareFunc {
 	return func(next echo.HandlerFunc) echo.HandlerFunc {
 		return func(c echo.Context) error {
+			if c.Get("auth_method") == "jwt" {
+				return next(c)
+			}
+
+			log.Default().Print("hello")
+
 			authHeader := c.Request().Header.Get("Authorization")
 			if authHeader == "" {
 				return echo.NewHTTPError(http.StatusUnauthorized, "Missing Authorization Header")
@@ -30,7 +37,7 @@ func (m *APIKeyAuthMiddleware) Middleware() echo.MiddlewareFunc {
 
 			parts := strings.Split(authHeader, " ")
 			if len(parts) != 2 || parts[0] != "ApiKey" {
-				return next(c)
+				return echo.NewHTTPError(http.StatusUnauthorized, "Invalid Authorization Header")
 			}
 
 			apiKey := parts[1]
@@ -40,19 +47,18 @@ func (m *APIKeyAuthMiddleware) Middleware() echo.MiddlewareFunc {
 			// より効率的な方法を検討する必要がある
 			allKeys, err := m.repo.GetAll(nil)
 			if err != nil {
-				return echo.NewHTTPError(http.StatusInternalServerError, "Failed to validate API key")
+				return echo.NewHTTPError(http.StatusInternalServerError, "Failed to validate ApiKey")
 			}
 
 			for _, key := range allKeys {
-				// ハッシュと平文のキーを比較
 				if err := bcrypt.CompareHashAndPassword([]byte(key.Key), []byte(apiKey)); err == nil {
-					// 認証成功
 					c.Set("user_id", key.UserID)
+					c.Set("auth_method", "apikey")
 					return next(c)
 				}
 			}
 
-			return echo.NewHTTPError(http.StatusUnauthorized, "Invalid API key")
+			return echo.NewHTTPError(http.StatusUnauthorized, "Invalid ApiKey")
 		}
 	}
 }

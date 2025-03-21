@@ -1,7 +1,6 @@
 package middleware
 
 import (
-	"net/http"
 	"strconv"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -19,7 +18,7 @@ func NewJWTAuthMiddleware(secret []byte) *JWTAuthMiddleware {
 	}
 }
 
-// NOTE: JWTAuthMiddleware must be used after APIKeyAuthMiddleware
+// NOTE: make sure JWTAuthMiddleware is called before APIKeyAuthMiddleware
 func (m *JWTAuthMiddleware) Middleware() echo.MiddlewareFunc {
 	return echojwt.WithConfig(echojwt.Config{
 		SigningKey: m.secret,
@@ -36,7 +35,8 @@ func (m *JWTAuthMiddleware) Middleware() echo.MiddlewareFunc {
 			c.Set("auth_method", "jwt")
 		},
 		ErrorHandler: func(c echo.Context, err error) error {
-			return echo.NewHTTPError(http.StatusUnauthorized, "invalid token")
+			return nil // ignore error and let the api key middleware handle request
 		},
+		ContinueOnIgnoredError: true,
 	})
 }
