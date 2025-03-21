@@ -1,6 +1,7 @@
 module github.com/Tomoki108/burny
 
 go 1.23
+toolchain go1.24.1
 
 require (
 	github.com/asaskevich/EventBus v0.0.0-20200907212545-49d423059eef
@@ -15,7 +16,7 @@ require (
 	github.com/swaggo/echo-swagger v1.4.1
 	github.com/swaggo/swag v1.16.4
 	go.uber.org/dig v1.18.0
-	golang.org/x/crypto v0.33.0
+	golang.org/x/crypto v0.35.0
 	gorm.io/driver/postgres v1.5.7
 	gorm.io/gorm v1.25.10
 )
@@ -46,7 +47,7 @@ require (
 	github.com/swaggo/files/v2 v2.0.2 // indirect
 	github.com/valyala/bytebufferpool v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.2.2 // indirect
-	golang.org/x/net v0.35.0 // indirect
+	golang.org/x/net v0.36.0 // indirect
 	golang.org/x/sync v0.11.0 // indirect
 	golang.org/x/sys v0.30.0 // indirect
 	golang.org/x/text v0.22.0 // indirect
