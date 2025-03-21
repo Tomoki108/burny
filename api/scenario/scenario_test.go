@@ -56,9 +56,9 @@ func TestScenario(t *testing.T) {
 	defer UserCanDeleteProject(t, jwtToken, projectID)
 
 	// API Key Operations
-	UserCanCheckAPIKeyStatus(t, jwtToken)
+	UserCanCheckAPIKeyStatus(t, jwtToken, false)
 	apiKey := UserCanCreateAPIKey(t, jwtToken)
-	UserCanCheckAPIKeyStatus(t, jwtToken)
+	UserCanCheckAPIKeyStatus(t, jwtToken, true)
 	defer UserCanDeleteAPIKey(t, jwtToken)
 
 	// Sprint Operations
@@ -238,6 +238,75 @@ func UserCanDeleteProject(t *testing.T, token string, projectID uint) {
 	}
 }
 
+func UserCanCheckAPIKeyStatus(t *testing.T, token string, expected bool) {
+	// Arrange
+	req := httptest.NewRequest(http.MethodGet, "/api/v1/apikeys/status", nil)
+	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
+	recorder := httptest.NewRecorder()
+
+	// Act
+	e.ServeHTTP(recorder, req)
+
+	// Assert
+	if err := assertSatusCode(http.StatusOK, recorder); err != nil {
+		t.Fatal(err)
+	}
+	var response struct {
+		Exists bool `json:"exists"`
+	}
+	if err := json.Unmarshal(recorder.Body.Bytes(), &response); err != nil {
+		t.Fatal(err)
+	}
+	if response.Exists != expected {
+		t.Fatalf("Expected API key status to be %v, but got %v", expected, response.Exists)
+	}
+}
+
+func UserCanCreateAPIKey(t *testing.T, token string) (rawKey string) {
+	// Arrange
+	req := httptest.NewRequest(http.MethodPost, "/api/v1/apikeys", nil)
+	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
+	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
+	recorder := httptest.NewRecorder()
+
+	// Act
+	e.ServeHTTP(recorder, req)
+
+	// Assert
+	if err := assertSatusCode(http.StatusCreated, recorder); err != nil {
+		t.Fatal(err)
+	}
+
+	var response struct {
+		RawKey string `json:"raw_key"`
+	}
+	if err := json.Unmarshal(recorder.Body.Bytes(), &response); err != nil {
+		t.Fatal(err)
+	}
+	if response.RawKey == "" {
+		t.Fatal("API key should not be empty")
+	}
+	t.Logf("API Key created successfully: %s", response.RawKey[:5]+"...")
+
+	return response.RawKey
+}
+
+func UserCanDeleteAPIKey(t *testing.T, token string) {
+	// Arrange
+	req := httptest.NewRequest(http.MethodDelete, "/api/v1/apikeys", nil)
+	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
+	recorder := httptest.NewRecorder()
+
+	// Act
+	e.ServeHTTP(recorder, req)
+
+	// Assert
+	if err := assertSatusCode(http.StatusNoContent, recorder); err != nil {
+		t.Fatal(err)
+	}
+	t.Log("API Key deleted successfully")
+}
+
 func UserCanListSprints(t *testing.T, apiKey string, projectID uint) (sprintID uint) {
 	// Arrange
 	url := "/api/v1/projects/" + uintToStr(projectID) + "/sprints"
@@ -290,72 +359,4 @@ func UserCanUpdateSprint(t *testing.T, apiKey string, projectID, sprintID uint) 
 		t.Fatal(err)
 	}
 	goldie.New(t).Assert(t, "update_sprint_response", body)
-}
-
-func UserCanCheckAPIKeyStatus(t *testing.T, token string) {
-	// Arrange
-	req := httptest.NewRequest(http.MethodGet, "/api/v1/apikeys/status", nil)
-	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
-	recorder := httptest.NewRecorder()
-
-	// Act
-	e.ServeHTTP(recorder, req)
-
-	// Assert
-	if err := assertSatusCode(http.StatusOK, recorder); err != nil {
-		t.Fatal(err)
-	}
-
-	var response struct {
-		Exists bool `json:"exists"`
-	}
-	if err := json.Unmarshal(recorder.Body.Bytes(), &response); err != nil {
-		t.Fatal(err)
-	}
-	t.Logf("API Key status check result: exists=%v", response.Exists)
-}
-
-func UserCanCreateAPIKey(t *testing.T, token string) (rawKey string) {
-	// Arrange
-	req := httptest.NewRequest(http.MethodPost, "/api/v1/apikeys", nil)
-	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
-	recorder := httptest.NewRecorder()
-
-	// Act
-	e.ServeHTTP(recorder, req)
-
-	// Assert
-	if err := assertSatusCode(http.StatusCreated, recorder); err != nil {
-		t.Fatal(err)
-	}
-
-	var response struct {
-		RawKey string `json:"raw_key"`
-	}
-	if err := json.Unmarshal(recorder.Body.Bytes(), &response); err != nil {
-		t.Fatal(err)
-	}
-	if response.RawKey == "" {
-		t.Fatal("API key should not be empty")
-	}
-	t.Logf("API Key created successfully: %s", response.RawKey[:5]+"...")
-
-	return response.RawKey
-}
-
-func UserCanDeleteAPIKey(t *testing.T, token string) {
-	// Arrange
-	req := httptest.NewRequest(http.MethodDelete, "/api/v1/apikeys", nil)
-	req.Header.Set(echo.HeaderAuthorization, "Bearer "+token)
-	recorder := httptest.NewRecorder()
-
-	// Act
-	e.ServeHTTP(recorder, req)
-
-	// Assert
-	if err := assertSatusCode(http.StatusNoContent, recorder); err != nil {
-		t.Fatal(err)
-	}
-	t.Log("API Key deleted successfully")
 }
