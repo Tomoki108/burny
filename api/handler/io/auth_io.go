@@ -8,5 +8,5 @@ type SignUpRequest struct {
 type SignInRequest SignUpRequest
 
 type SignInResponse struct {
-	JwtToken string `json:"token" validate:"required"`
+	JwtToken string `json:"token"`
 }
