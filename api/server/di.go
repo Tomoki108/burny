@@ -1,9 +1,11 @@
 package server
 
 import (
+	"github.com/Tomoki108/burny/config"
 	"github.com/Tomoki108/burny/domain"
 	"github.com/Tomoki108/burny/handler"
 	"github.com/Tomoki108/burny/infrastructure"
+	"github.com/Tomoki108/burny/middleware"
 	"github.com/Tomoki108/burny/subscriber"
 	"github.com/Tomoki108/burny/usecase"
 	"github.com/asaskevich/EventBus"
@@ -26,6 +28,14 @@ func InitDIContainer() {
 		{handler.NewProjectHandler, nil},
 		{handler.NewSprintHandler, nil},
 		{handler.NewAPIKeyHandler, nil},
+		// middleware
+		{middleware.NewAPIKeyAuthMiddleware, nil},
+		{
+			func() *middleware.JWTAuthMiddleware {
+				return middleware.NewJWTAuthMiddleware([]byte(config.Conf.JwtSecret))
+			},
+			nil,
+		},
 		// subscriber
 		{subscriber.NewUserEventSubscriber, nil},
 		// usecase

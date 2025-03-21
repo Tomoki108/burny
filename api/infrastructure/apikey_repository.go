@@ -41,3 +41,26 @@ func (r *APIKeyRepository) DeleteByUserID(tx domain.Transaction, userID uint) er
 	db := tx.(*gorm.DB)
 	return db.Where("user_id = ?", userID).Delete(&model.APIKey{}).Error
 }
+
+// GetAll すべてのAPIキーを取得する
+func (r *APIKeyRepository) GetAll(tx domain.Transaction) ([]*domain.APIKey, error) {
+	var db *gorm.DB
+	if tx == nil {
+		db = DB
+	} else {
+		db = tx.(*gorm.DB)
+	}
+
+	var apiKeys []model.APIKey
+	if err := db.Find(&apiKeys).Error; err != nil {
+		return nil, err
+	}
+
+	// モデルをドメインオブジェクトに変換
+	result := make([]*domain.APIKey, len(apiKeys))
+	for i, key := range apiKeys {
+		result[i] = key.ToDomain()
+	}
+
+	return result, nil
+}
