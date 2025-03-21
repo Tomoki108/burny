@@ -39,20 +39,19 @@ func NewEchoServer() *echo.Echo {
 
 	// DIコンテナからハンドラーを取得
 	var authH handler.AuthHandler
-	Container.Invoke(func(h handler.AuthHandler) {
-		authH = h
-	})
 	var projectH handler.ProjectHandler
-	Container.Invoke(func(h handler.ProjectHandler) {
-		projectH = h
-	})
 	var sprintH handler.SprintHandler
-	Container.Invoke(func(h handler.SprintHandler) {
-		sprintH = h
-	})
 	var apiKeyH handler.APIKeyHandler
-	Container.Invoke(func(h handler.APIKeyHandler) {
-		apiKeyH = h
+	Container.Invoke(func(
+		ah handler.AuthHandler,
+		ph handler.ProjectHandler,
+		sh handler.SprintHandler,
+		aph handler.APIKeyHandler,
+	) {
+		authH = ah
+		projectH = ph
+		sprintH = sh
+		apiKeyH = aph
 	})
 
 	// 認証ミドルウェアをDIコンテナから取得
