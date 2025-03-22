@@ -272,6 +272,39 @@ export async function mockSprintApi(page: Page) {
   });
 }
 
+export async function mockApiKeyStatusApi(page: Page, exists: boolean = false) {
+  await page.route("**/api/v1/apikeys/status", (route) => {
+    route.fulfill({
+      contentType: "application/json",
+      status: 200,
+      body: JSON.stringify({ exists }),
+    });
+  });
+}
+
+export async function mockApiKeyApi(page: Page) {
+  await page.route("**/api/v1/apikeys", (route) => {
+    const method = route.request().method();
+    switch (method) {
+      case "POST":
+        route.fulfill({
+          contentType: "application/json",
+          status: 201,
+          body: JSON.stringify({
+            raw_key: "testapikey123456789abcdefghijklmn",
+          }),
+        });
+        break;
+      case "DELETE":
+        route.fulfill({
+          contentType: "application/json",
+          status: 204,
+        });
+        break;
+    }
+  });
+}
+
 export async function mockAllApis(page: Page) {
   await mockSignInApi(page);
   await mockSignUpApi(page);
@@ -279,6 +312,8 @@ export async function mockAllApis(page: Page) {
   await mockProjectApi(page);
   await mockSprintsApi(page);
   await mockSprintApi(page);
+  await mockApiKeyStatusApi(page);
+  await mockApiKeyApi(page);
 }
 
 // デコード可能なモックJWTトークン
