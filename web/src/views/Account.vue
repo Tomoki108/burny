@@ -26,10 +26,8 @@
         <v-alert type="info" class="mt-3">API Document: {{ API_DOC_URL }}</v-alert>
     </ContentsContainer>
 
-    <Dialog v-if="apikeyExists" :ctx="dialogCtx" :callback="submitDeleteAPIKey" />
-    <Dialog v-else :ctx="dialogCtx">
-        hogegeg
-    </Dialog>
+    <Dialog :ctx="dialogCtx" :callback="submitDeleteAPIKey" />
+    <ApikeyDialog :ctx="apikeyCtx" />
 </template>
 
 <script setup lang="ts">
@@ -40,7 +38,9 @@ import { checkAPIKeyStatus, createAPIKey, deleteAPIKey } from '../api/apikey_api
 import { API_BASE_URL, ErrorResponse } from '../api/api_helper';
 import { useAlertComposable } from '../composables/alert_composable.ts';
 import Dialog from '../components/Dialog.vue';
+import ApikeyDialog from '../components/ApikeyDialog.vue';
 import { useDialogComposable } from '../composables/dialog_composable';
+import { useApikeyComposable } from '../composables/apikey_composable.ts';
 
 const authStore = useAuthStore();
 
@@ -49,6 +49,7 @@ const API_DOC_URL = API_BASE_URL.replace('api/v1', '') + 'swagger/index.html';
 
 const { alertCtx, alert } = useAlertComposable()
 const { dialogCtx, dialog } = useDialogComposable()
+const { apikeyCtx, showRawKey } = useApikeyComposable()
 
 onMounted(async () => {
     const status = await checkAPIKeyStatus();
@@ -61,8 +62,7 @@ const submitCreateAPIKey = async () => {
         if (res instanceof ErrorResponse) {
             throw new Error(res.getMessage());
         }
-        dialog(`API Key`, `API Key created successfully. Please copy and save it in a safe place. It cannot be retrieved again.`)
-
+        showRawKey(res.raw_key);
         apikeyExists.value = true;
         alert("API Key created successfully", "success")
     } catch (error: any) {
