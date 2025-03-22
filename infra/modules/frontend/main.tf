@@ -13,9 +13,8 @@ resource "google_storage_bucket" "static_website" {
   # バケットのACL設定
   uniform_bucket_level_access = true
 
-  # CORS設定（必要に応じて）
   cors {
-    origin          = ["*"] # 本番環境では特定のドメインに限定することをお勧めします
+    origin          = ["*"]
     method          = ["GET", "HEAD", "OPTIONS"]
     response_header = ["Content-Type", "Access-Control-Allow-Origin"]
     max_age_seconds = 3600
