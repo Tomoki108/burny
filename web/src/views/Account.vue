@@ -27,7 +27,7 @@
     </ContentsContainer>
 
     <Dialog :ctx="dialogCtx" :callback="submitDeleteAPIKey" />
-    <ApikeyDialog :ctx="apikeyCtx" />
+    <ApiKeyDialog :ctx="apikeyCtx" />
 </template>
 
 <script setup lang="ts">
@@ -38,7 +38,7 @@ import { checkAPIKeyStatus, createAPIKey, deleteAPIKey } from '../api/apikey_api
 import { API_BASE_URL, ErrorResponse } from '../api/api_helper';
 import { useAlertComposable } from '../composables/alert_composable.ts';
 import Dialog from '../components/Dialog.vue';
-import ApikeyDialog from '../components/ApikeyDialog.vue';
+import ApiKeyDialog from '../components/ApiKeyDialog.vue';
 import { useDialogComposable } from '../composables/dialog_composable';
 import { useApikeyComposable } from '../composables/apikey_composable.ts';
 
