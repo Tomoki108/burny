@@ -16,11 +16,13 @@
                     Create
                 </button>
                 <button data-testid="delete-apikey-button"
-                    :class="['button-small', { 'bg-color-muted': !apikeyExists }]" @click="submitDeleteAPIKey"
+                    :class="['button-small', { 'bg-color-muted': !apikeyExists }]"
+                    @click.prevent="dialog(`Delete API Key`, `Are you sure to delete your API Key? This action cannot be undone.`)"
                     :disabled="!apikeyExists">
                     Delete
                 </button>
             </v-card-actions>
+            <Dialog :ctx="dialogCtx" :callback="submitDeleteAPIKey" />
         </v-card>
         <v-alert type="info" class="mt-3">API Document: {{ API_DOC_URL }}</v-alert>
     </ContentsContainer>
@@ -33,6 +35,8 @@ import { onMounted, ref } from 'vue';
 import { checkAPIKeyStatus, createAPIKey, deleteAPIKey } from '../api/apikey_api';
 import { API_BASE_URL, ErrorResponse } from '../api/api_helper';
 import { useAlertComposable } from '../composables/alert_composable.ts';
+import Dialog from '../components/Dialog.vue';
+import { useDialogComposable } from '../composables/dialog_composable';
 
 
 const authStore = useAuthStore();
@@ -41,6 +45,7 @@ const apikeyExists = ref(false);
 const API_DOC_URL = API_BASE_URL.replace('api/v1', '') + 'swagger/index.html';
 
 const { alertCtx, alert } = useAlertComposable()
+const { dialogCtx, dialog } = useDialogComposable()
 
 onMounted(async () => {
     const status = await checkAPIKeyStatus();

@@ -152,7 +152,7 @@ h5 {
 
 .button-small,
 .button-small-danger,
-.button-small-cancel {
+.button-small-close {
   font-family: var(--font-family-base);
   background-color: var(--color-primary);
   color: var(--color-text-light) !important;
@@ -169,7 +169,7 @@ h5 {
   background-color: var(--color-error);
 }
 
-.button-small-cancel {
+.button-small-close {
   background-color: var(--color-shadow);
 }
 

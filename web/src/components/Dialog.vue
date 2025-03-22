@@ -7,10 +7,11 @@
             </p>
 
             <div class="mt-1 text-right">
-                <button data-testid="dialog-proceed" class="button-small-danger ml-20"
-                    @click="callback(); ctx.show = false">Proceed</button>
-                <button data-testid="dialog-cancel" class="button-small-cancel ml-2"
-                    @click="ctx.show = false">Cancel</button>
+                <button v-if="props.callback !== undefined" data-testid="dialog-proceed"
+                    class="button-small-danger ml-20" @click="props.callback(); ctx.show = false">Proceed</button>
+                <button data-testid="dialog-close"
+                    :class="['button-small-close', { 'ml-2': props.callback !== undefined }]"
+                    @click="ctx.show = false">Close</button>
             </div>
         </v-sheet>
     </v-dialog>
@@ -19,9 +20,9 @@
 <script setup lang="ts">
 import type { DialogContext } from '../composables/dialog_composable';
 
-defineProps<{
+const props = defineProps<{
     ctx: DialogContext
-    callback: () => void
+    callback?: () => void
 }>()
 
 </script>
