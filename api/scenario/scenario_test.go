@@ -311,7 +311,7 @@ func UserCanListSprints(t *testing.T, apiKey string, projectID uint) (sprintID u
 	// Arrange
 	url := "/api/v1/projects/" + uintToStr(projectID) + "/sprints"
 	req := httptest.NewRequest(http.MethodGet, url, nil)
-	req.Header.Set(echo.HeaderAuthorization, "ApiKey "+apiKey)
+	req.Header.Set("X-API-Key", apiKey)
 	recorder := httptest.NewRecorder()
 
 	// Act
@@ -344,7 +344,7 @@ func UserCanUpdateSprint(t *testing.T, apiKey string, projectID, sprintID uint) 
 	reqBody := strings.NewReader(updateJSON)
 	req := httptest.NewRequest(http.MethodPatch, url, reqBody)
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-	req.Header.Set(echo.HeaderAuthorization, "ApiKey "+apiKey)
+	req.Header.Set("X-API-Key", apiKey)
 	recorder := httptest.NewRecorder()
 
 	// Act

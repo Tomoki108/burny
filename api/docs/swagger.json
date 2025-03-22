@@ -15,7 +15,7 @@
             "post": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "Create apikey",
@@ -44,7 +44,7 @@
             "delete": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "Delete apikey",
@@ -72,7 +72,7 @@
             "get": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "Check if the user has an apikey",
@@ -97,7 +97,7 @@
             "get": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "List projects",
@@ -126,7 +126,7 @@
             "post": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "Create a project",
@@ -171,7 +171,7 @@
             "get": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "Get a project",
@@ -212,7 +212,7 @@
             "put": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "Update a project",
@@ -268,7 +268,7 @@
             "delete": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "Delete a projects",
@@ -308,7 +308,7 @@
             "get": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "List sprints",
@@ -354,7 +354,7 @@
             "patch": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "Update a sprint",
@@ -739,10 +739,9 @@
         }
     },
     "securityDefinitions": {
-        "ApiKeyAuth": {
-            "description": "value must be \"ApiKey {API_KEY}\"\"",
+        "Account API Key": {
             "type": "apiKey",
-            "name": "Authorization",
+            "name": "X-API-Key",
             "in": "Header"
         }
     }

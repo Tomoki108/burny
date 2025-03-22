@@ -2,7 +2,6 @@ package middleware
 
 import (
 	"net/http"
-	"strings"
 
 	"github.com/Tomoki108/burny/domain"
 	"github.com/labstack/echo/v4"
@@ -29,17 +28,10 @@ func (m *APIKeyAuthMiddleware) Middleware() echo.MiddlewareFunc {
 				return next(c)
 			}
 
-			authHeader := c.Request().Header.Get("Authorization")
-			if authHeader == "" {
-				return echo.NewHTTPError(http.StatusUnauthorized, "Missing Authorization Header")
+			apiKeyRaw := c.Request().Header.Get("X-API-Key")
+			if apiKeyRaw == "" {
+				return echo.NewHTTPError(http.StatusUnauthorized)
 			}
-
-			parts := strings.Split(authHeader, " ")
-			if len(parts) != 2 || parts[0] != "ApiKey" {
-				return echo.NewHTTPError(http.StatusUnauthorized, "Invalid Authorization Header")
-			}
-
-			apiKeyRaw := parts[1]
 
 			// Get all API keys and find matching one
 			// We need to check all because bcrypt hash can't be used for direct DB lookup

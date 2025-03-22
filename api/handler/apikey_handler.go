@@ -22,7 +22,7 @@ func NewAPIKeyHandler(usecase usecase.APIKeyUseCase) APIKeyHandler {
 // @Summary      Create apikey
 // @Description  Create apikey
 // @Tags         apikeys
-// @Security	 ApiKeyAuth
+// @Security	 Account API Key
 // @Produce      json
 // @Success      201 {object} io.CreateAPIKeyResponse
 // @Failure      409 {object} io.ErrorResponse
@@ -43,7 +43,7 @@ func (h APIKeyHandler) Create(c echo.Context) error {
 // @Summary      Check apikey Status
 // @Description  Check if the user has an apikey
 // @Tags         apikeys
-// @Security	 ApiKeyAuth
+// @Security	 Account API Key
 // @Produce      json
 // @Success      200 {object} io.APIKeyStatusResponse
 // @Router       /apikeys/status [get]
@@ -60,7 +60,7 @@ func (h APIKeyHandler) CheckStatus(c echo.Context) error {
 // @Summary      Delete apikey
 // @Description  Delete apikey
 // @Tags         apikeys
-// @Security	 ApiKeyAuth
+// @Security	 Account API Key
 // @Produce      json
 // @Success      204
 // @Failure      404 {object} io.ErrorResponse
