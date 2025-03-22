@@ -36,5 +36,5 @@ export async function deleteAPIKey(): Promise<void | ErrorResponse> {
     const errorData = await response.json();
     return Object.assign(new ErrorResponse(), errorData);
   }
-  return await response.json();
+  return;
 }
