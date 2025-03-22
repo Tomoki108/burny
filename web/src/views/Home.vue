@@ -37,11 +37,11 @@
                 <div class="features-grid">
                     <div class="feature-card">
                         <h3>Project Tracking</h3>
-                        <p>Centrally manage multiple projects and check progress at a glance.</p>
+                        <p>Centrally manage multiple projects and easily verify completion predictions.</p>
                     </div>
                     <div class="feature-card">
                         <h3>Chart Visualization</h3>
-                        <p>Visually display project progress and easily verify completion predictions.</p>
+                        <p>Visually display project progress and team velocity.</p>
                     </div>
                     <div class="feature-card">
                         <h3>API Integration</h3>
