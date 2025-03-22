@@ -33,19 +33,20 @@
 
         <section class="features-section">
             <div class="content-container">
-                <h2>Key Features</h2>
+                <h2>Key Features ✨</h2>
                 <div class="features-grid">
-                    <div class="feature-card">
-                        <h3>Burn-up Charts</h3>
-                        <p>Visually display project progress and easily verify completion predictions.</p>
-                    </div>
                     <div class="feature-card">
                         <h3>Project Tracking</h3>
                         <p>Centrally manage multiple projects and check progress at a glance.</p>
                     </div>
                     <div class="feature-card">
-                        <h3>Sprint Management</h3>
-                        <p>Effectively manage agile development sprints and improve team productivity.</p>
+                        <h3>Chart Visualization</h3>
+                        <p>Visually display project progress and easily verify completion predictions.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>API Integration</h3>
+                        <p>Data can be updated using an API key, and progress tracking can be automated using script
+                            runners such as Google Apps Script.</p>
                     </div>
                 </div>
             </div>
@@ -53,7 +54,7 @@
 
         <section class="why-section">
             <div class="content-container">
-                <h2>Why I Built This</h2>
+                <h2>Why I Built This 🐾</h2>
                 <p>
                     I have developed burn-up chart tools in my spare time at two organizations. Because both
                     organizations customized task management systems, their native chart generation capabilities were
