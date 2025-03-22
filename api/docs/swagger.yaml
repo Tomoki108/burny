@@ -190,7 +190,7 @@ paths:
           schema:
             $ref: '#/definitions/io.ErrorResponse'
       security:
-      - ApiKeyAuth: []
+      - Account API Key: []
       summary: Delete apikey
       tags:
       - apikeys
@@ -208,7 +208,7 @@ paths:
           schema:
             $ref: '#/definitions/io.ErrorResponse'
       security:
-      - ApiKeyAuth: []
+      - Account API Key: []
       summary: Create apikey
       tags:
       - apikeys
@@ -223,7 +223,7 @@ paths:
           schema:
             $ref: '#/definitions/io.APIKeyStatusResponse'
       security:
-      - ApiKeyAuth: []
+      - Account API Key: []
       summary: Check apikey Status
       tags:
       - apikeys
@@ -242,7 +242,7 @@ paths:
               $ref: '#/definitions/domain.Project'
             type: array
       security:
-      - ApiKeyAuth: []
+      - Account API Key: []
       summary: List projects
       tags:
       - projects
@@ -269,7 +269,7 @@ paths:
           schema:
             $ref: '#/definitions/io.ErrorResponse'
       security:
-      - ApiKeyAuth: []
+      - Account API Key: []
       summary: Create a project
       tags:
       - projects
@@ -294,7 +294,7 @@ paths:
           schema:
             $ref: '#/definitions/io.ErrorResponse'
       security:
-      - ApiKeyAuth: []
+      - Account API Key: []
       summary: Delete a projects
       tags:
       - projects
@@ -320,7 +320,7 @@ paths:
           schema:
             $ref: '#/definitions/io.ErrorResponse'
       security:
-      - ApiKeyAuth: []
+      - Account API Key: []
       summary: Get a project
       tags:
       - projects
@@ -356,7 +356,7 @@ paths:
           schema:
             $ref: '#/definitions/io.ErrorResponse'
       security:
-      - ApiKeyAuth: []
+      - Account API Key: []
       summary: Update a project
       tags:
       - projects
@@ -385,7 +385,7 @@ paths:
           schema:
             $ref: '#/definitions/io.ErrorResponse'
       security:
-      - ApiKeyAuth: []
+      - Account API Key: []
       summary: List sprints
       tags:
       - sprints
@@ -423,7 +423,7 @@ paths:
           schema:
             $ref: '#/definitions/io.ErrorResponse'
       security:
-      - ApiKeyAuth: []
+      - Account API Key: []
       summary: Update a sprint
       tags:
       - sprints
@@ -480,9 +480,8 @@ paths:
       tags:
       - auth
 securityDefinitions:
-  ApiKeyAuth:
-    description: value must be "ApiKey {API_KEY}""
+  Account API Key:
     in: Header
-    name: Authorization
+    name: X-API-Key
     type: apiKey
 swagger: "2.0"

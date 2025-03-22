@@ -23,7 +23,7 @@ const docTemplate = `{
             "post": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "Create apikey",
@@ -52,7 +52,7 @@ const docTemplate = `{
             "delete": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "Delete apikey",
@@ -80,7 +80,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "Check if the user has an apikey",
@@ -105,7 +105,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "List projects",
@@ -134,7 +134,7 @@ const docTemplate = `{
             "post": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "Create a project",
@@ -179,7 +179,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "Get a project",
@@ -220,7 +220,7 @@ const docTemplate = `{
             "put": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "Update a project",
@@ -276,7 +276,7 @@ const docTemplate = `{
             "delete": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "Delete a projects",
@@ -316,7 +316,7 @@ const docTemplate = `{
             "get": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "List sprints",
@@ -362,7 +362,7 @@ const docTemplate = `{
             "patch": {
                 "security": [
                     {
-                        "ApiKeyAuth": []
+                        "Account API Key": []
                     }
                 ],
                 "description": "Update a sprint",
@@ -747,10 +747,9 @@ const docTemplate = `{
         }
     },
     "securityDefinitions": {
-        "ApiKeyAuth": {
-            "description": "value must be \"ApiKey {API_KEY}\"\"",
+        "Account API Key": {
             "type": "apiKey",
-            "name": "Authorization",
+            "name": "X-API-Key",
             "in": "Header"
         }
     }
