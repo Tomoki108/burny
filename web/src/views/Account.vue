@@ -13,20 +13,16 @@
             </v-card-actions>
         </v-card>
         <v-alert type="info" class="mt-3">API Document: http://localhost:1323/swagger/index.html</v-alert>
-
-
     </ContentsContainer>
 </template>
 
 <script setup lang="ts">
 import { useAuthStore } from '../stores/auth_store';
 import ContentsContainer from '../components/ContentsContainer.vue';
+import { onMounted } from 'vue';
 
 const authStore = useAuthStore();
-</script>
 
-<style scoped>
-.v-container {
-    max-width: 800px;
-}
-</style>
+onMounted(() => {
+});
+</script>
