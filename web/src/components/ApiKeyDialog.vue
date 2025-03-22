@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import type { ApikeyContext } from '../composables/apikey_composable';
 import { useClipboard } from '@vueuse/core'
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 
 const props = defineProps<{
     ctx: ApikeyContext
