@@ -103,6 +103,10 @@ h5 {
   color: var(--color-muted);
 }
 
+.bg-color-muted {
+  background-color: var(--color-muted) !important;
+}
+
 .button-large {
   font-family: var(--font-family-base);
   background-color: var(--color-primary);
