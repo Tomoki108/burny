@@ -16,16 +16,20 @@
                     Create
                 </button>
                 <button data-testid="delete-apikey-button"
-                    :class="['button-small', { 'bg-color-muted': !apikeyExists }]"
+                    :class="['button-small-danger', { 'bg-color-muted': !apikeyExists }]"
                     @click.prevent="dialog(`Delete API Key`, `Are you sure to delete your API Key? This action cannot be undone.`)"
                     :disabled="!apikeyExists">
                     Delete
                 </button>
             </v-card-actions>
-            <Dialog :ctx="dialogCtx" :callback="submitDeleteAPIKey" />
         </v-card>
         <v-alert type="info" class="mt-3">API Document: {{ API_DOC_URL }}</v-alert>
     </ContentsContainer>
+
+    <Dialog v-if="apikeyExists" :ctx="dialogCtx" :callback="submitDeleteAPIKey" />
+    <Dialog v-else :ctx="dialogCtx">
+        hogegeg
+    </Dialog>
 </template>
 
 <script setup lang="ts">
@@ -37,7 +41,6 @@ import { API_BASE_URL, ErrorResponse } from '../api/api_helper';
 import { useAlertComposable } from '../composables/alert_composable.ts';
 import Dialog from '../components/Dialog.vue';
 import { useDialogComposable } from '../composables/dialog_composable';
-
 
 const authStore = useAuthStore();
 
@@ -58,6 +61,8 @@ const submitCreateAPIKey = async () => {
         if (res instanceof ErrorResponse) {
             throw new Error(res.getMessage());
         }
+        dialog(`API Key`, `API Key created successfully. Please copy and save it in a safe place. It cannot be retrieved again.`)
+
         apikeyExists.value = true;
         alert("API Key created successfully", "success")
     } catch (error: any) {

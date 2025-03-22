@@ -4,6 +4,7 @@
             <h2>{{ ctx.title }}</h2>
             <p class="my-4">
                 {{ ctx.text }}
+                <slot></slot>
             </p>
 
             <div class="mt-1 text-right">
@@ -24,5 +25,4 @@ const props = defineProps<{
     ctx: DialogContext
     callback?: () => void
 }>()
-
 </script>
