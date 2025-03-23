@@ -21,6 +21,7 @@ type AuthUseCase struct {
 	Repo          domain.UserRepository
 	Transactioner domain.Transactioner
 	EventBus      evbus.Bus
+	Mailer        domain.Mailer // TODO: mod constructor and DI setting
 }
 
 func NewAuthUseCase(repo domain.UserRepository, transactioner domain.Transactioner, eventBus evbus.Bus) AuthUseCase {
@@ -50,13 +51,35 @@ func (u AuthUseCase) SignUp(req io.SignUpRequest) (*domain.User, error) {
 		Password: string(hassedPassword),
 	}
 
-	user, err = u.Repo.Create(u.Transactioner.Default(), user)
+	err = u.Transactioner.Transaction(func(tx domain.Transaction) error {
+		user, err = u.Repo.Create(tx, user)
+		if err != nil {
+			return err
+		}
+
+		claims := &jwt.MapClaims{
+			"user_id": user.ID,
+			"email":   user.Email,
+			"exp":     time.Now().Add(time.Minute * 20).Unix(),
+		}
+		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+		verificationToken, err := token.SignedString([]byte(config.Conf.JwtSecret))
+		if err != nil {
+			return err
+		}
+
+		mail := domain.NewEmailVerificationMail(user.Email, verificationToken)
+		if err := u.Mailer.Send(mail); err != nil {
+			return err
+		}
+
+		u.EventBus.Publish(domain.UserCreatedTopic, domain.UserCreatedEvent{UserID: user.ID})
+		return nil
+	})
+
 	if err != nil {
 		return nil, err
 	}
-
-	u.EventBus.Publish(domain.UserCreatedTopic, domain.UserCreatedEvent{UserID: user.ID})
-
 	return user, nil
 }
 
