@@ -42,7 +42,15 @@ func (u AuthUseCase) SignUp(req io.SignUpRequest) (*domain.User, error) {
 		return nil, err
 	}
 	if exisitingUser != nil {
-		return nil, ErrEmailAlreadyExists
+		if exisitingUser.EmailVerified {
+			return nil, ErrEmailAlreadyExists
+		}
+
+		err := u.sendEmailVerificationMail(exisitingUser)
+		if err != nil {
+			return nil, err
+		}
+		return exisitingUser, nil
 	}
 
 	// NOTE: ハッシュ生成時には内部でランダムなソルトが利用される。ハッシュにはソルトの情報も含まれるため、後で平文と比較検証ができる。
@@ -60,29 +68,32 @@ func (u AuthUseCase) SignUp(req io.SignUpRequest) (*domain.User, error) {
 		if err != nil {
 			return err
 		}
-
-		claims := &jwt.MapClaims{
-			"user_id": user.ID,
-			"email":   user.Email,
-			"exp":     time.Now().Add(time.Minute * 20).Unix(),
-		}
-		token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
-		verificationToken, err := token.SignedString([]byte(config.Conf.JwtSecret))
-		if err != nil {
-			return err
-		}
-
-		mail := domain.NewEmailVerificationMail(user.Email, verificationToken)
-		if err := u.Mailer.Send(mail); err != nil {
-			return err
-		}
-		return nil
+		return u.sendEmailVerificationMail(user)
 	})
 
 	if err != nil {
 		return nil, err
 	}
 	return user, nil
+}
+
+func (u AuthUseCase) sendEmailVerificationMail(user *domain.User) error {
+	claims := &jwt.MapClaims{
+		"user_id": user.ID,
+		"email":   user.Email,
+		"exp":     time.Now().Add(time.Minute * 20).Unix(),
+	}
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+	verificationToken, err := token.SignedString([]byte(config.Conf.JwtSecret))
+	if err != nil {
+		return err
+	}
+
+	mail := domain.NewEmailVerificationMail(user.Email, verificationToken)
+	if err := u.Mailer.Send(mail); err != nil {
+		return err
+	}
+	return nil
 }
 
 func (u AuthUseCase) SignIn(req io.SignInRequest) (tokenStr string, err error) {
