@@ -520,8 +520,8 @@ const docTemplate = `{
                     }
                 ],
                 "responses": {
-                    "204": {
-                        "description": "No Content"
+                    "302": {
+                        "description": "Redirect to web app"
                     },
                     "400": {
                         "description": "Bad Request",

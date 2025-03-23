@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/Tomoki108/burny/config"
 	"github.com/Tomoki108/burny/handler/io"
 	"github.com/Tomoki108/burny/usecase"
 	"github.com/labstack/echo/v4"
@@ -76,7 +77,7 @@ func (h AuthHandler) SignIn(c echo.Context) error {
 // @Accept       json
 // @Produce      json
 // @Param        token query string true "verification jwt token"
-// @Success      204
+// @Success      302 "Redirect to web app"
 // @Failure      400 {object} io.ErrorResponse
 // @Router       /verify_email [get]
 func (h AuthHandler) VerifyEmail(c echo.Context) error {
@@ -92,5 +93,5 @@ func (h AuthHandler) VerifyEmail(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}
 
-	return c.NoContent(http.StatusNoContent)
+	return c.Redirect(http.StatusFound, config.Conf.WebBaseURL+"?email_verified=true")
 }
