@@ -7,17 +7,19 @@ import (
 
 type User struct {
 	gorm.Model
-	Email    string `json:"email" gorm:"uniqueIndex"`
-	Password string `json:"password"`
+	Email         string `json:"email" gorm:"uniqueIndex"`
+	EmailVerified bool   `json:"email_verified"`
+	Password      string `json:"password"`
 }
 
 func (u *User) ToDomain() *domain.User {
 	return &domain.User{
-		ID:        u.ID,
-		Email:     u.Email,
-		Password:  u.Password,
-		CreatedAt: u.CreatedAt,
-		UpdatedAt: u.UpdatedAt,
+		ID:            u.ID,
+		Email:         u.Email,
+		EmailVerified: u.EmailVerified,
+		Password:      u.Password,
+		CreatedAt:     u.CreatedAt,
+		UpdatedAt:     u.UpdatedAt,
 	}
 }
 
@@ -28,7 +30,8 @@ func FromDomainUser(user *domain.User) *User {
 			CreatedAt: user.CreatedAt,
 			UpdatedAt: user.UpdatedAt,
 		},
-		Email:    user.Email,
-		Password: user.Password,
+		Email:         user.Email,
+		EmailVerified: user.EmailVerified,
+		Password:      user.Password,
 	}
 }
