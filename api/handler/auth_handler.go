@@ -53,6 +53,7 @@ func (h AuthHandler) SignUp(c echo.Context) error {
 // @Param        request body io.SignInRequest true "sign in request"
 // @Success      200 {object} io.SignInResponse
 // @Failure      400 {object} io.ErrorResponse
+// @Failure      401 {object} io.ErrorResponse
 // @Router       /sign_in [post]
 func (h AuthHandler) SignIn(c echo.Context) error {
 	req := new(io.SignInRequest)
@@ -61,8 +62,10 @@ func (h AuthHandler) SignIn(c echo.Context) error {
 	}
 
 	jwtToken, err := h.Usecase.SignIn(*req)
-	if errors.Is(err, usecase.ErrUserNotExists) || errors.Is(err, usecase.ErrInvalidPassword) {
+	if errors.Is(err, usecase.ErrUserNotExists) || errors.Is(err, usecase.ErrInvalidPassword) || errors.Is(err, usecase.ErrUserEmailNotVerified) {
 		return c.JSON(http.StatusUnauthorized, io.NewErrResp(err.Error()))
+	} else if err != nil {
+		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}
 
 	res := io.SignInResponse{

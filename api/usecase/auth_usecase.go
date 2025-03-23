@@ -16,6 +16,7 @@ import (
 var ErrEmailAlreadyExists = errors.New("email has already been registered")
 var ErrUserNotExists = errors.New("user not exists")
 var ErrInvalidPassword = errors.New("password is invalid")
+var ErrUserEmailNotVerified = errors.New("user email is not verified")
 var ErrInvalidEmailVerificationToken = errors.New("invalid email verification token")
 
 type AuthUseCase struct {
@@ -90,6 +91,9 @@ func (u AuthUseCase) SignIn(req io.SignInRequest) (tokenStr string, err error) {
 	}
 	if user == nil {
 		return "", ErrUserNotExists
+	}
+	if !user.EmailVerified {
+		return "", ErrUserEmailNotVerified
 	}
 
 	if err := bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(req.Password)); err != nil {
