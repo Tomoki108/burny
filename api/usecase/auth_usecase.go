@@ -24,11 +24,12 @@ type AuthUseCase struct {
 	Mailer        domain.Mailer // TODO: mod constructor and DI setting
 }
 
-func NewAuthUseCase(repo domain.UserRepository, transactioner domain.Transactioner, eventBus evbus.Bus) AuthUseCase {
+func NewAuthUseCase(repo domain.UserRepository, transactioner domain.Transactioner, eventBus evbus.Bus, mailer domain.Mailer) AuthUseCase {
 	return AuthUseCase{
 		Repo:          repo,
 		Transactioner: transactioner,
 		EventBus:      eventBus,
+		Mailer:        mailer,
 	}
 }
 
