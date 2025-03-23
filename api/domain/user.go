@@ -32,8 +32,8 @@ type UserRepository interface {
 	Update(tx Transaction, user *User) (*User, error)
 }
 
-const UserCreatedTopic = "user:created"
+const UserEmailVerifiedTopic = "user:email:verified"
 
-type UserCreatedEvent struct {
+type UserEmailVerifiedEvent struct {
 	UserID uint
 }

@@ -35,7 +35,7 @@ func NewEchoServer() *echo.Echo {
 	Container.Invoke(func(b EventBus.Bus) {
 		bus = b
 	})
-	bus.Subscribe(domain.UserCreatedTopic, userEventSub.HandleUserCreatedEvent)
+	bus.Subscribe(domain.UserEmailVerifiedTopic, userEventSub.HandleUserEmailVerifiedEvent)
 
 	// DIコンテナからハンドラーを取得
 	var authH handler.AuthHandler

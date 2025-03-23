@@ -75,7 +75,7 @@ func (u AuthUseCase) SignUp(req io.SignUpRequest) (*domain.User, error) {
 			return err
 		}
 
-		u.EventBus.Publish(domain.UserCreatedTopic, domain.UserCreatedEvent{UserID: user.ID})
+		u.EventBus.Publish(domain.UserEmailVerifiedTopic, domain.UserEmailVerifiedEvent{UserID: user.ID})
 		return nil
 	})
 
@@ -137,6 +137,8 @@ func (u AuthUseCase) VerifyEmail(tokenStr string) error {
 		if _, err := u.Repo.Update(u.Transactioner.Default(), user); err != nil {
 			return err
 		}
+
+		u.EventBus.Publish(domain.UserEmailVerifiedTopic, domain.UserEmailVerifiedEvent{UserID: user.ID})
 	} else {
 		return ErrInvalidEmailVerificationToken
 	}
