@@ -74,8 +74,6 @@ func (u AuthUseCase) SignUp(req io.SignUpRequest) (*domain.User, error) {
 		if err := u.Mailer.Send(mail); err != nil {
 			return err
 		}
-
-		u.EventBus.Publish(domain.UserEmailVerifiedTopic, domain.UserEmailVerifiedEvent{UserID: user.ID})
 		return nil
 	})
 
