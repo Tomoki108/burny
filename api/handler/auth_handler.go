@@ -69,3 +69,28 @@ func (h AuthHandler) SignIn(c echo.Context) error {
 	}
 	return c.JSON(http.StatusOK, res)
 }
+
+// @Summary      Verify email
+// @Description  Verify email
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        token path string true "verification jwt token"
+// @Success      204
+// @Failure      400 {object} io.ErrorResponse
+// @Router       /verify_email [get]
+func (h AuthHandler) VerifyEmail(c echo.Context) error {
+	req := new(io.VerifyEmailRequest)
+	if err := handleReq(c, req); err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
+	err := h.Usecase.VerifyEmail(req.Token)
+	if errors.Is(err, usecase.ErrInvalidEmailVerificationToken) {
+		return c.JSON(http.StatusBadRequest, io.NewErrResp(err.Error()))
+	} else if err != nil {
+		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
+	}
+
+	return c.NoContent(http.StatusNoContent)
+}

@@ -29,6 +29,7 @@ type UserRepository interface {
 	Create(tx Transaction, user *User) (*User, error)
 	Get(tx Transaction, id uint) (*User, error)
 	GetByEmail(tx Transaction, email string) (*User, error)
+	Update(tx Transaction, user *User) (*User, error)
 }
 
 const UserCreatedTopic = "user:created"

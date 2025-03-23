@@ -16,6 +16,7 @@ import (
 var ErrEmailAlreadyExists = errors.New("email has already been registered")
 var ErrUserNotExists = errors.New("user not exists")
 var ErrInvalidPassword = errors.New("password is invalid")
+var ErrInvalidEmailVerificationToken = errors.New("invalid email verification token")
 
 type AuthUseCase struct {
 	Repo          domain.UserRepository
@@ -109,4 +110,36 @@ func (u AuthUseCase) SignIn(req io.SignInRequest) (tokenStr string, err error) {
 	}
 
 	return t, nil
+}
+
+func (u AuthUseCase) VerifyEmail(tokenStr string) error {
+	token, err := jwt.Parse(tokenStr, func(token *jwt.Token) (interface{}, error) {
+		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
+			return nil, ErrInvalidEmailVerificationToken
+		}
+		return []byte(config.Conf.JwtSecret), nil
+	})
+	if err != nil {
+		return err
+	}
+
+	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+		userID := claims["user_id"].(uint)
+		user, err := u.Repo.Get(u.Transactioner.Default(), userID)
+		if err != nil {
+			return err
+		}
+		if user == nil {
+			return ErrUserNotExists
+		}
+
+		user.EmailVerified = true
+		if _, err := u.Repo.Update(u.Transactioner.Default(), user); err != nil {
+			return err
+		}
+	} else {
+		return ErrInvalidEmailVerificationToken
+	}
+
+	return nil
 }

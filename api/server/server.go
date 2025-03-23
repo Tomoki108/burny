@@ -66,6 +66,7 @@ func NewEchoServer() *echo.Echo {
 	g := e.Group("/api/v1")
 	g.POST("/sign_up", authH.SignUp)
 	g.POST("/sign_in", authH.SignIn)
+	g.GET("/verify_email", authH.VerifyEmail)
 
 	ug := g.Group("", jwtAuth.Middleware(), apiKeyAuth.Middleware())
 	ug.GET("/projects", projectH.List)
