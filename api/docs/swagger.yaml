@@ -49,6 +49,8 @@ definitions:
         type: string
       email:
         type: string
+      email_verified:
+        type: boolean
       id:
         type: integer
       password:
@@ -477,6 +479,29 @@ paths:
           schema:
             $ref: '#/definitions/io.ErrorResponse'
       summary: Sign up
+      tags:
+      - auth
+  /verify_email:
+    get:
+      consumes:
+      - application/json
+      description: Verify email
+      parameters:
+      - description: verification jwt token
+        in: query
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: No Content
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
+      summary: Verify email
       tags:
       - auth
 securityDefinitions:

@@ -75,7 +75,7 @@ func (h AuthHandler) SignIn(c echo.Context) error {
 // @Tags         auth
 // @Accept       json
 // @Produce      json
-// @Param        token path string true "verification jwt token"
+// @Param        token query string true "verification jwt token"
 // @Success      204
 // @Failure      400 {object} io.ErrorResponse
 // @Router       /verify_email [get]

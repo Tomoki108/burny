@@ -12,5 +12,5 @@ type SignInResponse struct {
 }
 
 type VerifyEmailRequest struct {
-	Token string `json:"-" param:"token"`
+	Token string `json:"-" query:"token"`
 }
