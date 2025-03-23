@@ -19,7 +19,6 @@
 
 <script setup lang="ts">
 import { type Sprint } from '../api/sprint_api';
-import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale } from 'chart.js';
 import { Line } from 'vue-chartjs';
 import { computed, ref, onMounted, onUnmounted } from 'vue';
 import { isSprintStarted } from '../utils/sprint_helper';
@@ -32,7 +31,6 @@ const props = defineProps<{
 const activeTab = ref(0);
 const windowWidth = ref(window.innerWidth);
 
-ChartJS.register(Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale);
 
 // Burn Up Chart
 const cumulativeActualSp = computed(() => {

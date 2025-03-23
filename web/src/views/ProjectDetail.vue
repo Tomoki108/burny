@@ -75,10 +75,10 @@ import SprintModal from '../components/SprintModal.vue';
 import ProjectModal from '../components/ProjectModal.vue';
 import { useSprintsStore } from '../stores/sprints_store';
 import { useAlertComposable } from '../composables/alert_composable';
-import { Chart as ChartJS, Title, Tooltip, Legend, Filler, LineElement, PointElement, LinearScale, CategoryScale } from 'chart.js';
 import Charts from '../components/Charts.vue';
+import { Chart as ChartJS, Title, Tooltip, Legend, LineElement, PointElement, LinearScale, CategoryScale, Filler } from 'chart.js';
 
-ChartJS.register(Title, Tooltip, Legend, Filler, LineElement, PointElement, LinearScale, CategoryScale);
+ChartJS.register(Title, Tooltip, Legend, Filler, LineElement, PointElement, LinearScale, CategoryScale,);
 
 const route = useRoute();
 
