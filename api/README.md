@@ -27,12 +27,19 @@ go run .
 
 ### Prerequisites
 
-Install [goenv](https://github.com/go-nv/goenv), specified go version and tools.
+- Install [goenv](https://github.com/go-nv/goenv), specified go version and tools.
 
 ```shell
 brew install goenv
 goenv install 1.23.4
 go install github.com/swaggo/swag/cmd/swag@latest
+```
+
+- Install and setting [direnv](https://github.com/direnv/direnv). Then create envrc.
+
+```shell
+cp .envrc.sample .envrc
+direnv allow
 ```
 
 ### Other Commands
