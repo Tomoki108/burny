@@ -1,4 +1,6 @@
-# IAM credentials for AWS SES sending
+export WEB_BASE_URL=http://localhost:5179
+
+# IAM credentials for AWS SES sending (some of these are required implicitly by AWS SDK)
 export AWS_ACCESS_KEY_ID=
 export AWS_SECRET_ACCESS_KEY=
 export AWS_REGION=

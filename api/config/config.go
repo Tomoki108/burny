@@ -7,6 +7,7 @@ type Config struct {
 	JwtSecret  string `env:"JWT_SECRET" envDefault:"random-str"`
 	Host       string `env:"HOST" envDefault:"localhost"`
 	Port       string `env:"PORT" envDefault:"1323"`
+	WebBaseURL string `env:"WEB_BASE_URL" envDefault:"localhost:5179"`
 	DB_HOST    string `env:"DB_HOST" envDefault:"localhost"`
 	DB_NAME    string `env:"DB_NAME" envDefault:"burny_db"`
 	DB_USER    string `env:"DB_USER" envDefault:"burny_user"`
