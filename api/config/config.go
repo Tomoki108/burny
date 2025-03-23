@@ -14,6 +14,13 @@ type Config struct {
 	AWS_REGION string `env:"AWS_REGION" envDefault:"ap-northeast-1"` // for AWS SES
 }
 
+func (c Config) APIBaseURL() string {
+	if c.Host == "localhost" {
+		return "http://" + c.Host + ":" + c.Port + "/api/v1"
+	}
+	return "https://" + c.Host + "/api/v1"
+}
+
 var Conf Config
 
 func Init() error {
