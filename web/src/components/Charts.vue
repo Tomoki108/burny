@@ -20,7 +20,7 @@
 <script setup lang="ts">
 import { type Sprint } from '../api/sprint_api';
 import { Line } from 'vue-chartjs';
-import { computed, ref, onMounted, onUnmounted } from 'vue';
+import { computed, ref } from 'vue';
 import { isSprintStarted } from '../utils/sprint_helper';
 
 const props = defineProps<{
@@ -30,7 +30,6 @@ const props = defineProps<{
 
 const activeTab = ref(0);
 const windowWidth = ref(window.innerWidth);
-
 
 // Burn Up Chart
 const cumulativeActualSp = computed(() => {
@@ -144,27 +143,6 @@ const velocityChartOptions = computed(() => {
             }
         },
     };
-});
-
-// ウィンドウサイズが変更された時にチャートを再レンダリングする
-const handleResize = () => {
-    windowWidth.value = window.innerWidth;
-
-    const charts = document.querySelectorAll('canvas');
-    charts.forEach(canvas => {
-        const chart = ChartJS.getChart(canvas);
-        if (chart) {
-            chart.resize();
-        }
-    });
-};
-
-onMounted(() => {
-    window.addEventListener('resize', handleResize);
-});
-
-onUnmounted(() => {
-    window.removeEventListener('resize', handleResize);
 });
 </script>
 
