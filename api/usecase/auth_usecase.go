@@ -2,6 +2,7 @@ package usecase
 
 import (
 	"errors"
+	"strconv"
 	"time"
 
 	"github.com/golang-jwt/jwt/v5"
@@ -126,8 +127,23 @@ func (u AuthUseCase) VerifyEmail(tokenStr string) error {
 	}
 
 	if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
-		userID := claims["user_id"].(uint)
-		user, err := u.Repo.Get(u.Transactioner.Default(), userID)
+		userID := claims["user_id"]
+		var userIDUint uint
+
+		// whether user_id is string or float64 is not guaranteed
+		if userIDFloat, ok := userID.(float64); ok {
+			userIDUint = uint(userIDFloat)
+		} else if userIDStr, ok := userID.(string); ok {
+			userIDInt, err := strconv.Atoi(userIDStr)
+			if err != nil {
+				return err
+			}
+			userIDUint = uint(userIDInt)
+		} else {
+			return ErrInvalidEmailVerificationToken
+		}
+
+		user, err := u.Repo.Get(u.Transactioner.Default(), userIDUint)
 		if err != nil {
 			return err
 		}
