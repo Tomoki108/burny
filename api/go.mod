@@ -6,6 +6,7 @@ toolchain go1.24.1
 
 require (
 	github.com/asaskevich/EventBus v0.0.0-20200907212545-49d423059eef
+	github.com/aws/aws-sdk-go v1.55.6
 	github.com/caarlos0/env/v11 v11.3.1
 	github.com/go-playground/locales v0.14.1
 	github.com/go-playground/universal-translator v0.18.1
@@ -24,7 +25,6 @@ require (
 
 require (
 	github.com/KyleBanks/depth v1.2.1 // indirect
-	github.com/aws/aws-sdk-go v1.55.6 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.8 // indirect
 	github.com/ghodss/yaml v1.0.0 // indirect
 	github.com/go-openapi/jsonpointer v0.21.0 // indirect
