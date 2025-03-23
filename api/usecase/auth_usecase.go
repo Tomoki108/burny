@@ -161,6 +161,9 @@ func (u AuthUseCase) VerifyEmail(tokenStr string) error {
 		if user == nil {
 			return ErrUserNotExists
 		}
+		if user.EmailVerified {
+			return nil
+		}
 
 		user.EmailVerified = true
 		if _, err := u.Repo.Update(u.Transactioner.Default(), user); err != nil {
