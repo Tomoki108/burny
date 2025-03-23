@@ -29,7 +29,7 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <button class="button-small" data-testid="project-save" @click.prevent="onSubmit">Save</button>
-                <button class="button-small-cancel" data-testid="project-cancel" @click="onCancel">Cancel</button>
+                <button class="button-small-close" data-testid="project-cancel" @click="onCancel">Close</button>
             </v-card-actions>
         </v-card>
     </v-dialog>
