@@ -23,7 +23,8 @@ jobs:
         if: ${{ github.event.workflow_run.head_branch == 'main' || github.ref_name == 'main' }} # ref is for workflow_dispatch (manual) trigger
         uses: ./.github/actions/api_deployment
         with:
-          domain: ${{ secrets.PROD_API_DOMAIN }}
+          domain: api.burny.page
+          web-base-url: https://burny.page
           workload-identity-provider: ${{ secrets.PROD_GITHUB_WIP }}
           service-account: ${{ secrets.PROD_GITHUB_SA }}
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
@@ -34,6 +35,7 @@ jobs:
         uses: ./.github/actions/api_deployment
         with:
           domain: ${{ secrets.DEV_API_DOMAIN }}
+          web-base-url: ${{ secrets.DEV_WEB_BASE_URL }}
           workload-identity-provider: ${{ secrets.DEV_GITHUB_WIP }}
           service-account: ${{ secrets.DEV_GITHUB_SA }}
           ref: ${{ github.event.workflow_run.head_sha || github.sha }}
