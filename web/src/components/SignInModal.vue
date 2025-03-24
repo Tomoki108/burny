@@ -36,6 +36,7 @@ import { ErrorResponse } from '../api/api_helper'
 const props = defineProps<{
     isVisible: boolean
     initialIsSignUp: boolean
+    isEmailVerified: boolean
 }>()
 
 const emit = defineEmits(['close', 'auth-success'])
@@ -52,6 +53,14 @@ const authStore = useAuthStore()
 watch(() => props.initialIsSignUp, (newVal) => {
     isSignUp.value = newVal
 })
+
+watch(() => props.isEmailVerified, (newVal) => {
+    if (newVal) {
+        successMessage.value = 'Email verified successfully! You can now sign in.'
+        isSignUp.value = false
+    }
+})
+
 
 const onSubmit = async () => {
     error.value = ''

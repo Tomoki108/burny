@@ -87,8 +87,8 @@
             </div>
         </footer>
 
-        <SignInModal :isVisible="showSignInModal" :initialIsSignUp="isSignUp" @close="closeSignInModal"
-            @auth-success="handleAuthSuccess" />
+        <SignInModal :isVisible="showSignInModal" :initialIsSignUp="isSignUp" :isEmailVerified="isEmailVerified"
+            @close="closeSignInModal" @auth-success="handleAuthSuccess" />
     </div>
 </template>
 
@@ -104,9 +104,10 @@ ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, T
 
 const route = useRoute();
 const chartReady = ref(false);
+
 const showSignInModal = ref(false);
 const isSignUp = ref(false);
-
+const isEmailVerified = ref(false);
 
 onMounted(() => {
     // Delay chart initialization to prevent rendering issues
@@ -114,24 +115,26 @@ onMounted(() => {
         chartReady.value = true;
     }, 100);
 
-    // Check if redirected from a protected route
     if (route.query.auth === 'required') {
         openSignInModal(false);
     }
-
-    // Check if signup parameter was provided
     if (route.query.signup === 'true') {
         openSignInModal(true);
     }
+    if (route.query.email_verified === 'true') {
+        openSignInModal(false, true);
+    }
 });
+
 
 const scrollToAbout = () => {
     document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' });
 };
 
-const openSignInModal = (signup = false) => {
+const openSignInModal = (signup = false, emailVerified = false) => {
     isSignUp.value = signup;
     showSignInModal.value = true;
+    isEmailVerified.value = emailVerified;
 };
 
 const closeSignInModal = () => {
