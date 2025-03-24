@@ -8,7 +8,6 @@ variable "project_region" {
   type        = string
 }
 
-
 ####################
 # dev environment
 ####################
@@ -32,6 +31,20 @@ variable "dev_terraform_state_bucket" {
 # prod environment
 ####################
 
+variable "prod_api_cname_name" {
+  description = "CNAME record name for prod api"
+  type        = string
+}
+
+variable "prod_web_a_name" {
+  description = "A record name for prod web"
+  type        = string
+}
+
+variable "prod_terraform_state_bucket" {
+  description = "Terraform state bucket for prod environment"
+  type        = string
+}
 
 ####################
 # mailer (AWS SES)

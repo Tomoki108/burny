@@ -42,6 +42,29 @@ resource "google_dns_record_set" "dev_web_a_record" {
 # prod environment
 ####################
 
+resource "google_dns_record_set" "prod_api_cname" {
+  name         = var.prod_api_cname_name
+  managed_zone = google_dns_managed_zone.zone.name
+  type         = "CNAME"
+  ttl          = 300
+  rrdatas      = ["ghs.googlehosted.com."]
+}
+
+data "terraform_remote_state" "prod_state" {
+  backend = "gcs"
+  config = {
+    bucket = var.prod_terraform_state_bucket
+  }
+}
+
+resource "google_dns_record_set" "prod_web_a_record" {
+  name         = var.prod_web_a_name
+  managed_zone = google_dns_managed_zone.zone.name
+  type         = "A"
+  ttl          = 300
+  rrdatas      = [data.terraform_remote_state.prod_state.outputs.website_ip]
+}
+
 
 ####################
 # mailer (AWS SES)
