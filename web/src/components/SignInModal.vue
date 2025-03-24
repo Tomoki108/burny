@@ -18,6 +18,7 @@
                     {{ isSignUp ? 'Sign Up' : 'Sign In' }}</button>
             </form>
             <v-alert v-if="error" type="error" :text="error" closable class="mt-7" />
+            <v-alert data-testid="auth-info" v-if="infoMessage" type="info" :text="infoMessage" closable class="mt-7" />
             <v-alert data-testid="auth-success" v-if="successMessage" type="success" :text="successMessage" closable
                 class="mt-7" />
         </div>
@@ -43,6 +44,7 @@ const email = ref('')
 const password = ref('')
 const error = ref('')
 const successMessage = ref('')
+const infoMessage = ref('')
 const isSignUp = ref(props.initialIsSignUp)
 const router = useRouter()
 const authStore = useAuthStore()
@@ -61,20 +63,19 @@ const onSubmit = async () => {
             if (response instanceof ErrorResponse) {
                 error.value = response.getMessage()
             } else {
-                successMessage.value = 'Registration successful. Please sign in.'
-                isSignUp.value = false
+                infoMessage.value = 'Verification email sent to your email address. Please check your inbox.'
             }
         } else {
             await authStore.signIn(email.value, password.value)
             await router.push(PATH_PROJECTS)
 
-            // ページ遷移してしまうのでmodalを閉じるためのイベント発火はしなくてもいいが念のため。
+            // actually no need to emit this event for closing modal due to page transition, but just in case.
             emit('auth-success')
         }
     } catch (err) {
         error.value = isSignUp.value
             ? 'Registration failed. Please check your input.'
-            : 'Login failed. Please check your credentials.'
+            : 'Sign in failed: ' + (err as Error).message
     }
 }
 
