@@ -23,7 +23,8 @@
                 </button>
             </v-card-actions>
         </v-card>
-        <v-alert type="info" class="mt-3">API Document: {{ API_DOC_URL }}</v-alert>
+        <v-alert type="info" class="mt-3"><a class="apidoc-link" :href=API_DOC_URL>Reference API Document by click this
+                link</a></v-alert>
     </ContentsContainer>
 
     <Dialog :ctx="dialogCtx" :callback="submitDeleteAPIKey" />
@@ -83,3 +84,12 @@ const submitDeleteAPIKey = async () => {
     }
 };
 </script>
+
+<style scoped>
+.apidoc-link {
+    color: var(--color-text-light);
+    text-decoration: underline;
+    font-weight: bold;
+
+}
+</style>
