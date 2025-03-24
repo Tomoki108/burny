@@ -87,7 +87,7 @@
             </div>
         </footer>
 
-        <SignInModal :isVisible="showSignInModal" :initialSignUp="isSignUp" @close="closeSignInModal"
+        <SignInModal :isVisible="showSignInModal" :initialIsSignUp="isSignUp" @close="closeSignInModal"
             @auth-success="handleAuthSuccess" />
     </div>
 </template>

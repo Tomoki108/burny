@@ -32,16 +32,10 @@ import { PATH_PROJECTS } from '../router'
 import { signUp } from '../api/auth_api'
 import { ErrorResponse } from '../api/api_helper'
 
-const props = defineProps({
-    isVisible: {
-        type: Boolean,
-        required: true
-    },
-    initialSignUp: {
-        type: Boolean,
-        default: false
-    }
-})
+const props = defineProps<{
+    isVisible: boolean
+    initialIsSignUp: boolean
+}>()
 
 const emit = defineEmits(['close', 'auth-success'])
 
@@ -49,11 +43,11 @@ const email = ref('')
 const password = ref('')
 const error = ref('')
 const successMessage = ref('')
-const isSignUp = ref(props.initialSignUp)
+const isSignUp = ref(props.initialIsSignUp)
 const router = useRouter()
 const authStore = useAuthStore()
 
-watch(() => props.initialSignUp, (newVal) => {
+watch(() => props.initialIsSignUp, (newVal) => {
     isSignUp.value = newVal
 })
 
