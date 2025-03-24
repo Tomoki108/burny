@@ -170,7 +170,7 @@ resource "google_service_account_iam_member" "github_actions_act_as_cloud_run_sa
 # Secret Manager
 ####################
 locals {
-  backend_secret_ids = ["db_name", "db_user", "db_password", "db_host"]
+  backend_secret_ids = ["db_name", "db_user", "db_password", "db_host", "aws_access_key_id", "aws_secret_access_key", "aws_region"]
 }
 
 resource "google_secret_manager_secret" "backend_secrets" {
