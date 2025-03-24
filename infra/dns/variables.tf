@@ -8,6 +8,11 @@ variable "project_region" {
   type        = string
 }
 
+variable "ownership_proof_txt_rrdata" {
+  description = "Google Search Console ownership proof TXT record data"
+  type        = string
+}
+
 ####################
 # dev environment
 ####################

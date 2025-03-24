@@ -10,6 +10,16 @@ resource "google_dns_managed_zone" "zone" {
   project     = var.project_id
 }
 
+// This is a DNS record for Google Search Console verification (needed to use domain with resources)
+resource "google_dns_record_set" "ownership_proof_txt" {
+  name         = "burny.page."
+  managed_zone = google_dns_managed_zone.zone.name
+  type         = "TXT"
+  ttl          = 300
+  rrdatas      = [var.ownership_proof_txt_rrdata]
+}
+
+
 ####################
 # dev environment
 ####################
