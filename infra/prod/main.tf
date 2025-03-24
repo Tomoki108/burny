@@ -9,6 +9,8 @@ module "backend" {
   project_id              = var.project_id
   project_region          = var.project_region
   api_domain              = var.api_domain
+  web_base_url            = "https://${var.web_domain}"
+  enable_db_backup        = true
   secrets                 = var.secrets
   github_actions_sa_email = module.github.github_actions_sa.email
 }

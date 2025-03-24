@@ -32,6 +32,10 @@ resource "google_cloud_run_service" "api" {
           name  = "HOST"
           value = var.api_domain
         }
+        env {
+          name  = "WEB_BASE_URL"
+          value = var.web_base_url
+        }
 
         dynamic "env" {
           for_each = local.backend_secret_ids
@@ -112,6 +116,13 @@ resource "google_sql_database_instance" "postgres_instance" {
 
   settings {
     tier = "db-f1-micro"
+
+
+    backup_configuration {
+      enabled = var.enable_db_backup
+      # JST=02:00
+      start_time = "17:00"
+    }
   }
 }
 

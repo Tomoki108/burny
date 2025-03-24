@@ -23,7 +23,7 @@ jobs:
         uses: ./.github/actions/web_deployment
         with:
           bucket-name: ${{ secrets.PROD_WEB_BUCKET }}
-          api-base-url: https://${{ secrets.PROD_API_DOMAIN }}/api/v1
+          api-base-url: https://api.burny.page/api/v1
           workload-identity-provider: ${{ secrets.PROD_GITHUB_WIP }}
           service-account: ${{ secrets.PROD_GITHUB_SA }}
           ref: ${{ github.event.workflow_run.head_sha }}
