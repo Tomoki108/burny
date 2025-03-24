@@ -19,10 +19,21 @@ test.describe("Home page", () => {
     await pageFill(page, "email", "test@example.com");
     await pageFill(page, "password", "burnyburny");
     await pageClick(page, "auth-submit-button");
-    const signUpSuccessMsg = await pageTextContent(page, "auth-success");
-    expect(signUpSuccessMsg).toBe("Registration successful. Please sign in.");
+    const signUpInfoMsg = await pageTextContent(page, "auth-info");
+    expect(signUpInfoMsg).toBe(
+      "Verification email sent to your email address. Please check your inbox."
+    );
+
+    // verify email
+    await page.goto(WEB_LOCAL_HOST + "?email_verified=true");
+    const emailVerifiedMsg = await pageTextContent(page, "auth-success");
+    expect(emailVerifiedMsg).toBe(
+      "Email verified successfully! You can now sign in."
+    );
 
     // sign in
+    await pageFill(page, "email", "test@example.com");
+    await pageFill(page, "password", "burnyburny");
     await pageClick(page, "auth-submit-button");
     await expect(page).toHaveURL(/\/projects$/);
   });

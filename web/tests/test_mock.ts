@@ -128,10 +128,6 @@ export async function mockSignInApi(page: Page) {
       status: 200,
       body: JSON.stringify({
         token: generateMockJWT(),
-        user: {
-          id: "1",
-          email: "test@example.com",
-        },
       }),
     });
   });
@@ -142,7 +138,11 @@ export async function mockSignUpApi(page: Page) {
     route.fulfill({
       status: 201,
       body: JSON.stringify({
-        message: "Registration successful. Please sign in.",
+        id: "1",
+        email: "test@example.com",
+        email_verified: false,
+        created_at: new Date().toISOString(),
+        updated_at: new Date().toISOString(),
       }),
     });
   });
