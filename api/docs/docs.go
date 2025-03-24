@@ -453,6 +453,12 @@ const docTemplate = `{
                         "schema": {
                             "$ref": "#/definitions/io.ErrorResponse"
                         }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/io.ErrorResponse"
+                        }
                     }
                 }
             }
@@ -615,10 +621,6 @@ const docTemplate = `{
                 },
                 "id": {
                     "type": "integer"
-                },
-                "password": {
-                    "description": "always must be hashed",
-                    "type": "string"
                 },
                 "updated_at": {
                     "type": "string"

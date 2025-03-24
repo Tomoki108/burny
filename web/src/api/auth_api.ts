@@ -14,7 +14,7 @@ export interface SignUpResponse {
 export async function signIn(
   email: string,
   password: string
-): Promise<SignInResponse> {
+): Promise<SignInResponse | ErrorResponse> {
   const response = await fetch(`${API_BASE_URL}/sign_in`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -22,7 +22,8 @@ export async function signIn(
   });
 
   if (!response.ok) {
-    throw new Error("Login failed");
+    const errorData = await response.json();
+    return Object.assign(new ErrorResponse(), errorData);
   }
 
   return await response.json();
