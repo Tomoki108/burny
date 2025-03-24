@@ -10,3 +10,7 @@ type SignInRequest SignUpRequest
 type SignInResponse struct {
 	JwtToken string `json:"token"`
 }
+
+type VerifyEmailRequest struct {
+	Token string `json:"-" query:"token"`
+}

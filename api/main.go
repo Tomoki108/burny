@@ -26,6 +26,10 @@ func main() {
 	if err := infrastructure.ConnectDB(); err != nil {
 		log.Fatal(err.Error())
 	}
+	// AWS SES接続
+	if err := infrastructure.ConnectAWSSES(); err != nil {
+		log.Fatal(err.Error())
+	}
 	// DIコンテナの初期化
 	server.InitDIContainer()
 	// サーバーの起動

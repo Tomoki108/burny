@@ -18,7 +18,7 @@ func NewUserEventSubscriber(projectUseCase usecase.ProjectUseCase) UserEventSubs
 	}
 }
 
-func (s *UserEventSubscriber) HandleUserCreatedEvent(event domain.UserCreatedEvent) {
+func (s *UserEventSubscriber) HandleUserEmailVerifiedEvent(event domain.UserEmailVerifiedEvent) {
 	maxRetries := 3
 	for i := 0; i < maxRetries; i++ {
 		err := s.projectUseCase.CreateDemoProject(event.UserID)

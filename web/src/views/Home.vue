@@ -321,7 +321,7 @@ const burnUpChartOptions = {
 
 .github-link {
     color: var(--color-text-light);
-    text-decoration: none;
+    text-decoration: underline;
     display: flex;
     align-items: center;
     gap: 0.5rem;

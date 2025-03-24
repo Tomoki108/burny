@@ -48,3 +48,13 @@ func (r *UserRepository) GetByEmail(tx domain.Transaction, email string) (*domai
 
 	return user.ToDomain(), nil
 }
+
+func (r *UserRepository) Update(tx domain.Transaction, user *domain.User) (*domain.User, error) {
+	model := model.FromDomainUser(user)
+	db := tx.(*gorm.DB)
+	if err := db.Save(model).Error; err != nil {
+		return nil, err
+	}
+
+	return model.ToDomain(), nil
+}

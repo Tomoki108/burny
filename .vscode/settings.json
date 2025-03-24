@@ -25,7 +25,6 @@
     "editor.defaultFormatter": "Vue.volar"
   },
   "[ts]": {
-    // "editor.defaultFormatter": "dbaeumer.vscode-eslint"
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[css]": {
