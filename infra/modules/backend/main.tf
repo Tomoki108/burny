@@ -32,6 +32,10 @@ resource "google_cloud_run_service" "api" {
           name  = "HOST"
           value = var.api_domain
         }
+        env {
+          name  = "WEB_BASE_URL"
+          value = var.web_base_url
+        }
 
         dynamic "env" {
           for_each = local.backend_secret_ids

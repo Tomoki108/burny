@@ -10,6 +10,10 @@ variable "api_domain" {
   type = string
 }
 
+variable "web_base_url" {
+  type = string
+}
+
 variable "secrets" {
   type = object({
     db_name : string,
