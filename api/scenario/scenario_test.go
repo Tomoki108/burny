@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"net/http/httptest"
+	"regexp"
 	"strings"
 	"testing"
 
@@ -52,7 +53,8 @@ func TestScenario(t *testing.T) {
 	defer testTx.Rollback()
 
 	// Authentication
-	UserCanSignUp(t)
+	emailVerificationLink := UserCanSignUp(t)
+	UserCanVerifyEmail(t, emailVerificationLink)
 	jwtToken := UserCanSignIn(t)
 
 	// Project Operations
@@ -73,7 +75,7 @@ func TestScenario(t *testing.T) {
 	UserCanUpdateSprint(t, apiKey, projectID, sprintID)
 }
 
-func UserCanSignUp(t *testing.T) string {
+func UserCanSignUp(t *testing.T) (emailVerificationLink string) {
 	// Arrange
 	reqBody := strings.NewReader(`{"email":"test@test.com","password":"passwd12345"}`)
 	req := httptest.NewRequest(http.MethodPost, "/api/v1/sign_up", reqBody)
@@ -102,8 +104,26 @@ func UserCanSignUp(t *testing.T) string {
 		t.Fatalf("Expected mail subject to be Burny Email Verification but got %s", sentMail.Subject)
 	}
 
-	// sentMail.Bodyからメールアドレス検証URLを抽出して返す
+	re := regexp.MustCompile(`(https?://[^\s]+/verify_email[^\s]*)`)
+	matches := re.FindStringSubmatch(sentMail.Body)
+	if len(matches) < 2 {
+		t.Fatalf("Verification URL not found in email body: %s", sentMail.Body)
+	}
+	return matches[1]
+}
 
+func UserCanVerifyEmail(t *testing.T, verificationLink string) {
+	// Arrange
+	req := httptest.NewRequest(http.MethodGet, verificationLink, nil)
+	recorder := httptest.NewRecorder()
+
+	// Act
+	e.ServeHTTP(recorder, req)
+
+	// Assert
+	if err := assertSatusCode(http.StatusFound, recorder); err != nil {
+		t.Fatal(err)
+	}
 }
 
 func UserCanSignIn(t *testing.T) (token string) {
