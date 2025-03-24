@@ -13,7 +13,7 @@ func NewEmailVerificationMail(to, token string) Mail {
 	return Mail{
 		To:      to,
 		Subject: "Burny Email Verification",
-		Body: "Please verify your email by clicking this link in 20 minitues.\n" + url +
+		Body: "Please verify your email by clicking this link in 20 minutes.\n" + url +
 			"\n\nIf you did not request this, please ignore this email.",
 	}
 }
