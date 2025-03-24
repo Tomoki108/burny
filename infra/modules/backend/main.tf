@@ -116,6 +116,13 @@ resource "google_sql_database_instance" "postgres_instance" {
 
   settings {
     tier = "db-f1-micro"
+
+
+    backup_configuration {
+      enabled = var.enable_db_backup
+      # JST=02:00
+      start_time = "17:00"
+    }
   }
 }
 

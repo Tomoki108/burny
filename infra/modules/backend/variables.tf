@@ -14,6 +14,11 @@ variable "web_base_url" {
   type = string
 }
 
+variable "enable_db_backup" {
+  type    = bool
+  default = false
+}
+
 variable "secrets" {
   type = object({
     db_name : string,
