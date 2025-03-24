@@ -5,13 +5,11 @@ on:
     branches:
       - main
       - dev
-    paths:
-      - "api/**"
-      - ".github/workflows/api_scenario.yml"
   pull_request:
     paths:
       - "api/**"
       - ".github/workflows/api_scenario.yml"
+  workflow_dispatch:
 
 defaults:
   run:
