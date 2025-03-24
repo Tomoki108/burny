@@ -53,9 +53,6 @@ definitions:
         type: boolean
       id:
         type: integer
-      password:
-        description: always must be hashed
-        type: string
       updated_at:
         type: string
     type: object
@@ -450,6 +447,10 @@ paths:
             $ref: '#/definitions/io.SignInResponse'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
+        "401":
+          description: Unauthorized
           schema:
             $ref: '#/definitions/io.ErrorResponse'
       summary: Sign in
