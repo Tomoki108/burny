@@ -1,9 +1,13 @@
 project_id     = ""
 project_region = ""
+ownership_proof_txt_rrdata = ""
 
 dev_api_cname_name = ""
 dev_web_a_name     = ""
-
 dev_terraform_state_bucket = ""
+
+prod_api_cname_name = ""
+prod_web_a_name     = ""
+prod_terraform_state_bucket = ""
 
 mailer_records = [{}]
