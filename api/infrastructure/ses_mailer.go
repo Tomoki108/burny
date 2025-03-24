@@ -28,8 +28,7 @@ const (
 	charSet = "UTF-8"
 )
 
-type AWSSESMailer struct {
-}
+type AWSSESMailer struct{}
 
 func NewAWSSESMailer() domain.Mailer {
 	return &AWSSESMailer{}
@@ -57,5 +56,20 @@ func (m *AWSSESMailer) Send(mail domain.Mail) error {
 	if err != nil {
 		return fmt.Errorf("failed to send email: %w", err)
 	}
+	return nil
+}
+
+type AWSSESMailerMock struct {
+	SentMails []domain.Mail
+}
+
+func NewAWSSESMailerMock() *AWSSESMailerMock {
+	return &AWSSESMailerMock{
+		SentMails: []domain.Mail{},
+	}
+}
+
+func (m *AWSSESMailerMock) Send(mail domain.Mail) error {
+	m.SentMails = append(m.SentMails, mail)
 	return nil
 }
