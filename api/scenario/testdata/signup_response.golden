@@ -1,3 +1,4 @@
 {
-  "email": "test@test.com"
+  "email": "test@test.com",
+  "email_verified": false
 }

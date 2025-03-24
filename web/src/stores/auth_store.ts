@@ -1,6 +1,7 @@
 import { defineStore } from "pinia";
 import { signIn } from "../api/auth_api";
 import { jwtDecode } from "jwt-decode";
+import { ErrorResponse } from "../api/api_helper";
 
 interface DecodedToken {
   exp: number;
@@ -20,10 +21,14 @@ export const useAuthStore = defineStore("auth", {
   actions: {
     async signIn(email: string, password: string) {
       try {
-        const data = await signIn(email, password);
-        this.token = data.token;
+        const res = await signIn(email, password);
+        if (res instanceof ErrorResponse) {
+          throw new Error(res.getMessage());
+        }
+
+        this.token = res.token;
         this.email = email;
-        localStorage.setItem("token", data.token);
+        localStorage.setItem("token", res.token);
         localStorage.setItem("email", email);
       } catch (error) {
         throw error;

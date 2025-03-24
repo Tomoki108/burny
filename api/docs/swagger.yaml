@@ -49,11 +49,10 @@ definitions:
         type: string
       email:
         type: string
+      email_verified:
+        type: boolean
       id:
         type: integer
-      password:
-        description: always must be hashed
-        type: string
       updated_at:
         type: string
     type: object
@@ -450,6 +449,10 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/io.ErrorResponse'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
       summary: Sign in
       tags:
       - auth
@@ -477,6 +480,29 @@ paths:
           schema:
             $ref: '#/definitions/io.ErrorResponse'
       summary: Sign up
+      tags:
+      - auth
+  /verify_email:
+    get:
+      consumes:
+      - application/json
+      description: Verify email
+      parameters:
+      - description: verification jwt token
+        in: query
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "302":
+          description: Redirect to web app
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/io.ErrorResponse'
+      summary: Verify email
       tags:
       - auth
 securityDefinitions:

@@ -26,6 +26,7 @@ func (m *JWTAuthMiddleware) Middleware() echo.MiddlewareFunc {
 			user := c.Get("user").(*jwt.Token)
 			claims := user.Claims.(jwt.MapClaims)
 
+			// whether user_id is string or float64 is not guaranteed
 			if userID, ok := claims["user_id"].(string); ok {
 				userIDInt, _ := strconv.Atoi(userID)
 				c.Set("user_id", uint(userIDInt))

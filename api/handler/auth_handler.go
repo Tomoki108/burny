@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/Tomoki108/burny/config"
 	"github.com/Tomoki108/burny/handler/io"
 	"github.com/Tomoki108/burny/usecase"
 	"github.com/labstack/echo/v4"
@@ -52,6 +53,7 @@ func (h AuthHandler) SignUp(c echo.Context) error {
 // @Param        request body io.SignInRequest true "sign in request"
 // @Success      200 {object} io.SignInResponse
 // @Failure      400 {object} io.ErrorResponse
+// @Failure      401 {object} io.ErrorResponse
 // @Router       /sign_in [post]
 func (h AuthHandler) SignIn(c echo.Context) error {
 	req := new(io.SignInRequest)
@@ -60,12 +62,39 @@ func (h AuthHandler) SignIn(c echo.Context) error {
 	}
 
 	jwtToken, err := h.Usecase.SignIn(*req)
-	if errors.Is(err, usecase.ErrUserNotExists) || errors.Is(err, usecase.ErrInvalidPassword) {
+	if errors.Is(err, usecase.ErrUserNotExists) || errors.Is(err, usecase.ErrInvalidPassword) || errors.Is(err, usecase.ErrUserEmailNotVerified) {
 		return c.JSON(http.StatusUnauthorized, io.NewErrResp(err.Error()))
+	} else if err != nil {
+		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
 	}
 
 	res := io.SignInResponse{
 		JwtToken: jwtToken,
 	}
 	return c.JSON(http.StatusOK, res)
+}
+
+// @Summary      Verify email
+// @Description  Verify email
+// @Tags         auth
+// @Accept       json
+// @Produce      json
+// @Param        token query string true "verification jwt token"
+// @Success      302 "Redirect to web app"
+// @Failure      400 {object} io.ErrorResponse
+// @Router       /verify_email [get]
+func (h AuthHandler) VerifyEmail(c echo.Context) error {
+	req := new(io.VerifyEmailRequest)
+	if err := handleReq(c, req); err != nil {
+		return c.JSON(http.StatusBadRequest, err)
+	}
+
+	err := h.Usecase.VerifyEmail(req.Token)
+	if errors.Is(err, usecase.ErrInvalidEmailVerificationToken) {
+		return c.JSON(http.StatusBadRequest, io.NewErrResp(err.Error()))
+	} else if err != nil {
+		return c.JSON(http.StatusInternalServerError, io.NewErrResp(err.Error()))
+	}
+
+	return c.Redirect(http.StatusFound, config.Conf.WebBaseURL+"?email_verified=true")
 }

@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"net/http/httptest"
+	"regexp"
 	"strings"
 	"testing"
 
@@ -20,6 +21,7 @@ import (
 
 var e *echo.Echo
 var testTx *gorm.DB
+var mailerMock *infrastructure.AWSSESMailerMock
 
 func init() {
 	// 環境変数の読み込み
@@ -37,6 +39,12 @@ func init() {
 	server.Container.Decorate(func(transactioner domain.Transactioner) domain.Transactioner {
 		return infrastructure.Transactioner{DB: testTx}
 	})
+	// テスト用メール送信モックの初期化
+	mailerMock = infrastructure.NewAWSSESMailerMock()
+	server.Container.Decorate(func(m domain.Mailer) domain.Mailer {
+		return mailerMock
+	})
+
 	// サーバーの取得
 	e = server.NewEchoServer()
 }
@@ -45,7 +53,8 @@ func TestScenario(t *testing.T) {
 	defer testTx.Rollback()
 
 	// Authentication
-	UserCanSignUp(t)
+	emailVerificationLink := UserCanSignUp(t)
+	UserCanVerifyEmail(t, emailVerificationLink)
 	jwtToken := UserCanSignIn(t)
 
 	// Project Operations
@@ -66,7 +75,7 @@ func TestScenario(t *testing.T) {
 	UserCanUpdateSprint(t, apiKey, projectID, sprintID)
 }
 
-func UserCanSignUp(t *testing.T) {
+func UserCanSignUp(t *testing.T) (emailVerificationLink string) {
 	// Arrange
 	reqBody := strings.NewReader(`{"email":"test@test.com","password":"passwd12345"}`)
 	req := httptest.NewRequest(http.MethodPost, "/api/v1/sign_up", reqBody)
@@ -86,6 +95,35 @@ func UserCanSignUp(t *testing.T) {
 	}
 	g := goldie.New(t)
 	g.Assert(t, "signup_response", body)
+
+	sentMail := mailerMock.SentMails[0]
+	if sentMail.To != "test@test.com" {
+		t.Fatalf("Expected mail to be test@test.com but got %s", sentMail.To)
+	}
+	if sentMail.Subject != "Burny Email Verification" {
+		t.Fatalf("Expected mail subject to be Burny Email Verification but got %s", sentMail.Subject)
+	}
+
+	re := regexp.MustCompile(`(https?://[^\s]+/verify_email[^\s]*)`)
+	matches := re.FindStringSubmatch(sentMail.Body)
+	if len(matches) < 2 {
+		t.Fatalf("Verification URL not found in email body: %s", sentMail.Body)
+	}
+	return matches[1]
+}
+
+func UserCanVerifyEmail(t *testing.T, verificationLink string) {
+	// Arrange
+	req := httptest.NewRequest(http.MethodGet, verificationLink, nil)
+	recorder := httptest.NewRecorder()
+
+	// Act
+	e.ServeHTTP(recorder, req)
+
+	// Assert
+	if err := assertSatusCode(http.StatusFound, recorder); err != nil {
+		t.Fatal(err)
+	}
 }
 
 func UserCanSignIn(t *testing.T) (token string) {

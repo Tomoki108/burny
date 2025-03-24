@@ -49,6 +49,7 @@ func InitDIContainer() {
 		{infrastructure.NewSprintRepository, []dig.ProvideOption{dig.As(new(domain.SprintRepository))}},
 		{infrastructure.NewAPIKeyRepository, []dig.ProvideOption{dig.As(new(domain.APIKeyRepository))}},
 		{infrastructure.NewTransactioner, []dig.ProvideOption{dig.As(new(domain.Transactioner))}},
+		{infrastructure.NewAWSSESMailer, []dig.ProvideOption{dig.As(new(domain.Mailer))}},
 		// other
 		{EventBus.New, nil},
 	}

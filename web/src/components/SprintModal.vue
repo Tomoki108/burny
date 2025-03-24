@@ -13,7 +13,7 @@
             <v-card-actions>
                 <v-spacer></v-spacer>
                 <button data-testid="sprint-update-button" class="button-small" @click.prevent="onSubmit">Save</button>
-                <button class="button-small-cancel" @click="onCancel">Cancel</button>
+                <button class="button-small-close" @click="onCancel">Close</button>
             </v-card-actions>
         </v-card>
     </v-dialog>
