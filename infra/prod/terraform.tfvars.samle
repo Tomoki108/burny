@@ -1,0 +1,15 @@
+project_id     = ""
+project_region = ""
+
+# Backend設定
+secrets = {
+  db_name     = ""
+  db_user     = ""
+  db_password = ""
+}
+api_domain       = ""
+
+# Frontend設定
+web_domain               = ""
+frontend_bucket_name     = ""
+frontend_bucket_location = ""
