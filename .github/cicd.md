@@ -8,3 +8,7 @@
 - When PR is created and including `/api` diff or `/web` diff:
   - `api_scenario.yml` and `api_scenario.yml` will be triggered.
 - Each workflows can be triggered mannually via GitHub UI.
+
+## Google Cloud Authentication
+
+- For authentication with Google Cloud for deployemnt, [Workload Identity](https://cloud.google.com/blog/ja/products/devops-sre/infrastructure-as-code-with-terraform-and-identity-federation) is used. Relevant resources are defined in [/infra/modules/github](/infra/modules/github/).

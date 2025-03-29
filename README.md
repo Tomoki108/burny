@@ -22,7 +22,7 @@ https://burny.page
 - [`infra/`](/infra/) - Infrastructure as Code for Google Cloud resources written in Terraform.
 - [`.github/`](/.github/) - CICD workflows for api and web.
 
-For more detailed information like setup or tech stack, please refer to each directories README.md.
+For more detailed information like setup or tech stack, please refer to each directories document.
 
 ## License
 
