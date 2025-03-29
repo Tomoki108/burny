@@ -4,8 +4,6 @@ Burny is a burn-up chart management application designed to help scrum teams tra
 
 https://burny.page
 
-![ui sample](/ui.png)
-
 ## Features
 
 - JWT authentication

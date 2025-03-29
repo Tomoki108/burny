@@ -6,17 +6,17 @@ API DOC: https://api.burny.page/swagger/index.html
 
 ## Teck Stack
 
-| Category          | Tool                                       |
-| ----------------- | ------------------------------------------ |
-| **FW**            | https://github.com/labstack/echo           |
-| **ORM**           | https://github.com/go-gorm/gorm            |
-| **DB**            | PostgreSQL                                 |
-| **Architecture**  | Clean Architecture                         |
-| **Validation**    | https://github.com/go-playground/validator |
-| **DI Container**  | https://github.com/uber-go/dig             |
-| **Event Bus**     | https://github.com/asaskevich/EventBus     |
-| **Scenario Test** | https://github.com/sebdah/goldie           |
-| **Swagger**       | https://github.com/swaggo/swag             |
+| Category          | Tool                                                                  |
+| ----------------- | --------------------------------------------------------------------- |
+| **FW**            | [labstack/echo](https://github.com/labstack/echo)                     |
+| **ORM**           | [go-gorm/gorm](https://github.com/go-gorm/gorm)                       |
+| **DB**            | PostgreSQL                                                            |
+| **Architecture**  | Clean Architecture                                                    |
+| **Validation**    | [go-playground/validator](https://github.com/go-playground/validator) |
+| **DI Container**  | [uber-go/dig](https://github.com/uber-go/dig)                         |
+| **Event Bus**     | [asaskevich/EventBus](https://github.com/asaskevich/EventBus)         |
+| **Scenario Test** | [sebdah/goldie](https://github.com/sebdah/goldie)                     |
+| **Swagger**       | [swaggo/swag](https://github.com/swaggo/swag)                         |
 
 ## How to run
 
@@ -38,7 +38,7 @@ go install github.com/swaggo/swag/cmd/swag@latest
 - Install and setting [direnv](https://github.com/direnv/direnv). Then create envrc.
 
 ```shell
-cp .envrc.sample .envrc
+cp .envrc.sample .envrc # AWS access keys must be set
 direnv allow
 ```
 
