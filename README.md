@@ -17,9 +17,9 @@ https://burny.page
 
 ## Project Structure
 
-- [`api/`](/api/README.md) - Backend REST API service written in Go
-- [`web/`](/web/README.md) - Frontend SPA written in Vue.js 3.
-- [`infra/`](/infra/README.md) - Infrastructure as Code for Google Cloud resources written in Terraform.
+- [`api/`](/api/) - Backend REST API service written in Go
+- [`web/`](/web/) - Frontend SPA written in Vue.js 3.
+- [`infra/`](/infra/) - Infrastructure as Code for Google Cloud resources written in Terraform.
 - [`.github/`](/.github/) - CICD workflows for api and web.
 
 For more detailed information like setup or tech stack, please refer to each directories README.md.

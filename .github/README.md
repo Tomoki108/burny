@@ -1,7 +1,5 @@
 # Burny CI/CD
 
-This document describes the CI/CD workflows for the Burny project.
-
 ## Flows
 
 - When code is pushed to `main` or `dev` branches:
