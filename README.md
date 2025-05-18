@@ -22,6 +22,10 @@ https://burny.page
 
 For more detailed information like setup or tech stack, please refer to each directories document.
 
+## Development Article
+
+https://zenn.dev/shinonome81/articles/b80adad01f9be4
+
 ## License
 
 [AGPL 3.0](https://www.gnu.org/licenses/agpl-3.0.en.html)
