@@ -61,6 +61,6 @@ runs:
           --region asia-northeast1 \
           --platform managed \
           --allow-unauthenticated \
-          --set-env-vars=HOST=${{ inputs.domain }},WEB_BASE_URL=${{ input.web-base-url }} \
+          --set-env-vars=HOST=${{ inputs.domain }},WEB_BASE_URL=${{ inputs.web-base-url }} \
           --update-secrets=DB_HOST=db_host:latest,DB_NAME=db_name:latest,DB_USER=db_user:latest,DB_PASSWORD=db_password:latest,AWS_ACCESS_KEY_ID=aws_access_key_id:latest,AWS_SECRET_ACCESS_KEY=aws_secret_access_key:latest,AWS_REGION=aws_region:latest
       shell: bash
