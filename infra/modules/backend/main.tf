@@ -3,10 +3,16 @@ provider "google" {
   region  = var.project_region
 }
 
+provider "google-beta" {
+  project = var.project_id
+  region  = var.project_region
+}
+
 ####################
 # Cloud Run
 ####################
 resource "google_cloud_run_service" "api" {
+  provider = google-beta
   name     = "burny-api"
   location = var.project_region
 
@@ -17,6 +23,16 @@ resource "google_cloud_run_service" "api" {
         "run.googleapis.com/client-version"     = "514.0.0"
         "run.googleapis.com/cloudsql-instances" = "${var.project_id}:${var.project_region}:postgres-instance"
         "autoscaling.knative.dev/maxScale"      = "100"
+        # Liveness probe settings
+        "run.googleapis.com/liveness-probe-http-get-path"         = "/healthz"
+        "run.googleapis.com/liveness-probe-http-get-port"         = "8080"
+        "run.googleapis.com/liveness-probe-initial-delay-seconds" = "5"
+        "run.googleapis.com/liveness-probe-period-seconds"        = "10"
+        # Readiness probe settings
+        "run.googleapis.com/readiness-probe-http-get-path"         = "/healthz"
+        "run.googleapis.com/readiness-probe-http-get-port"         = "8080"
+        "run.googleapis.com/readiness-probe-initial-delay-seconds" = "5"
+        "run.googleapis.com/readiness-probe-period-seconds"        = "10"
       }
     }
 
@@ -27,6 +43,7 @@ resource "google_cloud_run_service" "api" {
         ports {
           container_port = 8080
         }
+
 
         env {
           name  = "HOST"
