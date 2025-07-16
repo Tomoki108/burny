@@ -4,6 +4,11 @@ Burny is a burn-up chart management application designed to help scrum teams tra
 
 https://burny.page
 
+## ⛔ NOTICE
+
+I have destroyed the entire service on 2025-07-16 by `terraform destroy`, But you can still view the top page on Wayback Machine.
+https://web.archive.org/web/20250629041747/https://burny.page/
+
 ## Features
 
 - JWT authentication
