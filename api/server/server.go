@@ -1,6 +1,8 @@
 package server
 
 import (
+	"net/http"
+
 	"github.com/Tomoki108/burny/config"
 	"github.com/Tomoki108/burny/docs"
 	"github.com/Tomoki108/burny/domain"
@@ -79,6 +81,11 @@ func NewEchoServer() *echo.Echo {
 	ug.GET("/apikeys/status", apiKeyH.CheckStatus)
 	ug.POST("/apikeys", apiKeyH.Create)
 	ug.DELETE("/apikeys", apiKeyH.Delete)
+
+	// health check endpoint
+	e.GET("/healthz", func(c echo.Context) error {
+		return c.NoContent(http.StatusOK)
+	})
 
 	return e
 }
