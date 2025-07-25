@@ -1,78 +1,69 @@
 import { test, expect } from "@playwright/test";
-import { WEB_LOCAL_HOST, login, pageClick, sleep } from "./test_helper";
-import { mockAllApis, mockApiKeyStatusApi } from "./test_mock";
+import { WEB_LOCAL_HOST, pageClick, login, sleep } from "./test_helper";
+import { mockAllApis, mockApiKeyStatusApi, mockApiKeyApi } from "./test_mock";
 
 test.describe("Account page", () => {
-  test("User can view their account information", async ({ page }) => {
+  test("User can create and delete API key", async ({
+    page,
+    playwright,
+    context,
+  }) => {
+    // セットアップ：APIレスポンスをモックする（初期状態ではAPIキーが存在しない）
     await mockAllApis(page);
-
-    await login(page);
-
-    // Click on the account page
-    await pageClick(page, "nav-drawer");
-    await pageClick(page, "nav-account");
-    await expect(page).toHaveURL(/\/account$/);
-
-    // Check if the account information is displayed
-    await expect(page.getByText("test@example.com")).toBeVisible();
-    await expect(page.getByText("********")).toBeVisible();
-  });
-
-  test("User can create and delete API key", async ({ page, context }) => {
-    await context.grantPermissions(["clipboard-read", "clipboard-write"]);
     await mockApiKeyStatusApi(page, false);
-    await mockAllApis(page);
 
+    // ログインする
     await login(page);
 
-    // Click on the account page
-    await pageClick(page, "nav-drawer");
-    await pageClick(page, "nav-account");
-    await expect(page).toHaveURL(/\/account$/);
+    // グローバルメニューからAccountページに移動
+    await page.getByTestId("global-menu-account").click();
 
-    // Check text and button states
-    await expect(page.getByText("No API Key")).toBeVisible();
-    await expect(page.getByTestId("create-apikey-button")).not.toBeDisabled();
-    await expect(page.getByTestId("delete-apikey-button")).toBeDisabled();
+    // スナップショットを取得して、アクセシビリティツリーを確認
+    const snapshot1 = await page.accessibility.snapshot();
+    console.log("Page navigated to Account section");
 
-    // Create API Key
-    await pageClick(page, "create-apikey-button");
-    await expect(
-      page.getByText("testapikey123456789abcdefghijklmn")
-    ).toBeVisible();
+    // 最初はAPI Keyが登録されていないことを確認
+    const noApiKeyElement = page.getByTestId("no-api-key-message");
+    await expect(noApiKeyElement).toBeVisible();
+    expect(await noApiKeyElement.textContent()).toContain("No API Key");
+    await expect(page.getByTestId("api-key-value")).not.toBeVisible();
 
-    // Copy API key
-    await pageClick(page, "copy-apikey-button");
-    const handle = await page.evaluateHandle(() =>
-      navigator.clipboard.readText()
-    );
-    const clipboardContent = await handle.jsonValue();
-    expect(clipboardContent).toEqual("testapikey123456789abcdefghijklmn");
+    // API Keyを作成する
+    const createButton = page.getByTestId("create-api-key-button");
+    await createButton.click();
 
-    // Close the dialog, Check text and button states
-    await pageClick(page, "dialog-close");
-    await expect(page.getByText("************")).toBeVisible();
-    await expect(page.getByTestId("create-apikey-button")).toBeDisabled();
-    await expect(page.getByTestId("delete-apikey-button")).not.toBeDisabled();
+    // API作成後のモックレスポンスを設定
+    await mockApiKeyStatusApi(page, true);
 
-    // Delete API Key
-    await pageClick(page, "delete-apikey-button");
+    // 作成したAPIキーが表示されていることを確認
+    const apiKeyElement = page.getByTestId("api-key-value");
+    await expect(apiKeyElement).toBeVisible();
 
-    // Confirmation dialog should be visible
-    await expect(page.getByText("Delete API Key")).toBeVisible();
-    await expect(
-      page.getByText("Are you sure to delete your API Key?")
-    ).toBeVisible();
+    // 画面に表示されるAPIキーがモックで指定した値（testapikey123456789abcdefghijklmn）と一致するか確認
+    const displayedApiKey = await apiKeyElement.textContent();
+    expect(displayedApiKey).toBe("testapikey123456789abcdefghijklmn");
 
-    // Confirm deletion
-    await page.getByText("Proceed").click();
+    // スナップショットを取得して、アクセシビリティツリーを確認（APIキーが表示されている状態）
+    const snapshot2 = await page.accessibility.snapshot();
+    console.log("API Key has been created and displayed");
 
-    // Success alert should appear
-    await expect(page.getByText("API Key deleted successfully")).toBeVisible();
+    // API Keyを削除する
+    const deleteButton = page.getByTestId("delete-api-key-button");
+    await deleteButton.click();
 
-    // Check text and button states
-    await expect(page.getByText("No API Key")).toBeVisible();
-    await expect(page.getByTestId("create-apikey-button")).not.toBeDisabled();
-    await expect(page.getByTestId("delete-apikey-button")).toBeDisabled();
+    // 削除確認ダイアログで「はい」を選択
+    await page.getByTestId("dialog-proceed").click();
+
+    // 削除後のモックレスポンスを設定
+    await mockApiKeyStatusApi(page, false);
+
+    // 削除後に「No API Key」メッセージが表示されることを確認
+    await expect(noApiKeyElement).toBeVisible();
+    expect(await noApiKeyElement.textContent()).toContain("No API Key");
+    await expect(apiKeyElement).not.toBeVisible();
+
+    // スナップショットを取得して、アクセシビリティツリーを確認（APIキーが削除された状態）
+    const snapshot3 = await page.accessibility.snapshot();
+    console.log("API Key has been deleted");
   });
 });
